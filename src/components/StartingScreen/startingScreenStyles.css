@@ -1,0 +1,19 @@
+.titleSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+  
+.deathRow {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 80px;
+}
+
+.startButton {
+    display: flex;
+    justify-content: center;
+}
