@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
 import TimerOffIcon from '@mui/icons-material/TimerOff';
 import TimerIcon from '@mui/icons-material/Timer';
-import { NumberInput } from "@mui/base/Unstable_NumberInput/NumberInput";
+
 import './exerciseSelection.css';
 
 const ExerciseSelection = ({suit, setExercise, showError}) => {
@@ -32,7 +32,7 @@ const ExerciseSelection = ({suit, setExercise, showError}) => {
 
     return (
         <div className="suitColumn">
-            <img className='suitImg' src={`src/images/suits/${suit}.svg`}/>
+            <img className='suitImg' src={`/images/suits/${suit}.svg`}/>
             <TextField
                 label={`${suit} exercise*`}
                 variant="outlined"
