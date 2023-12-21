@@ -32,7 +32,7 @@ const ExerciseSelection = ({suit, setExercise, showError}) => {
 
     return (
         <div className="suitColumn">
-            <img className='suitImg' src={`/src/images/suits/${suit}.svg`}/>
+            <img className='suitImg' src={`src/images/suits/${suit}.svg`}/>
             <TextField
                 label={`${suit} exercise*`}
                 variant="outlined"
