@@ -2,13 +2,13 @@
     width: 100px;
     margin-bottom: 80px;
 
-    &.blackIcon {
+    /* &.blackIcon {
         filter: drop-shadow(0 0 0.25rem black);
     }
 
     &.redIcon {
         filter: drop-shadow(0 0 0.25rem red);
-    }
+    } */
 }
 
 .suitColumn {
@@ -16,4 +16,21 @@
     width: 100%;
     align-items: center;
     flex-direction: column;
+}
+
+.timerRow {
+    display: flex;
+}
+
+.timerToggleButton {
+    margin-right: 10px !important;
+}
+
+.suitExercise {
+    margin-bottom: 20px !important;
+}
+
+.numInput {
+    width: 100px;
+    margin-right: 10px !important;
 }

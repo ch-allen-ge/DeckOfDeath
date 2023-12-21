@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import './countdownStyles.css';
 
-const Countdown = ({setAnimationFinished}) => {
+const Countdown = ({setShowCountdownAnimation, bottomCountdown}) => {
 	
 	useEffect(() => {
 		const nums = document.querySelectorAll('.nums span');
@@ -32,14 +32,14 @@ const Countdown = ({setAnimationFinished}) => {
 					num.nextElementSibling.classList.add('in');
 				} else {
 					counter.classList.add('hide');
-					setAnimationFinished(true);
+					setShowCountdownAnimation(false);
 				}
 			});
 		});
 	}
 
 	return (
-		<div className="counter">
+		<div className={bottomCountdown ? 'bottomCountdown' : 'counter'}>
 			<div className="nums">
 				<span className="in">3</span>
 				<span>2</span>

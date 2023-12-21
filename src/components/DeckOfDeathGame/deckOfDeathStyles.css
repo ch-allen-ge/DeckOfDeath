@@ -15,3 +15,11 @@
 .finishedText {
     padding: 30px;
 }
+
+.instructionsText {
+    height: 50px;
+}
+
+.timerContainer {
+    height: 130px;
+}
