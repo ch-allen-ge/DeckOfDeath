@@ -31,72 +31,77 @@ const ExerciseSelection = ({suit, setExercise, showError}) => {
     }, [exerciseText, timerUsed, minutesToDo, secondsToDo]);
 
     return (
-        <div className="suitColumn">
-            <img className='suitImg' src={`/images/suits/${suit}.svg`}/>
-            <TextField
-                label={`${suit} exercise*`}
-                variant="outlined"
-                autoComplete='off'
-                className="suitExercise"
-                onChange={(e) => {
-                    const exercise = e.target.value;
-                    setExerciseText(exercise);
-                    if (exercise) {
-                        setExercisesChosen(true);
-                    } else {
-                        setExercisesChosen(false);
-                    }
-                }}
-                error={showError && !exercisesChosen}
-            />
-            {suit === 'aces' && (
-                <div className="timerRow">
-                <ToggleButton
-                    selected={timerUsed}
-                    className="timerToggleButton"
-                    value="left"
-                    aria-label="left aligned"
-                    onClick={() => {setTimerUsed(!timerUsed)}}
-                >
-                    {timerUsed ? <TimerIcon /> : <TimerOffIcon />}
-                </ToggleButton>
-                {timerUsed && (
-                    <>
-                        <TextField
-                            className="numInput"
-                            label='minutes'
-                            variant="outlined"
-                            inputProps={{ maxLength: 2 }}
-                            value={minutesToDo}
-                            autoComplete='off'
-                            onChange={(e) => {
-                                const minutes = e.target.value;
-                                if (minutes > 0 || minutes === '') {
-                                    setMinutesToDo(minutes);
-                                }
-                            }}
-                            error={showError && timerUsed && (minutesToDo === '' && secondsToDo === '')}
-                        />
-                        <TextField
-                            className="numInput"
-                            label='seconds'
-                            variant="outlined"
-                            inputProps={{ maxLength: 2 }}
-                            value={secondsToDo}
-                            autoComplete='off'
-                            onChange={(e) => {
-                                const seconds = e.target.value;
-                                if (seconds > 0 || seconds === '') {
-                                    setSecondsToDo(seconds);
-                                }
-                            }}
-                            error={showError && timerUsed && (minutesToDo === '' && secondsToDo === '')}
-                        />
-                    </>
-                )}
+        <div className="card">
+            <div className="suitLabel">
+                {suit}
             </div>
-            )}
-            
+            <div className="suitColumn">
+                <img className='suitImg' src={`/images/suits/${suit}.svg`}/>
+                <TextField
+                    label={`${suit} exercise*`}
+                    variant="outlined"
+                    autoComplete='off'
+                    className="suitExercise"
+                    onChange={(e) => {
+                        const exercise = e.target.value;
+                        setExerciseText(exercise);
+                        if (exercise) {
+                            setExercisesChosen(true);
+                        } else {
+                            setExercisesChosen(false);
+                        }
+                    }}
+                    error={showError && !exercisesChosen}
+                />
+                {suit === 'aces' && (
+                    <div className="timerRow">
+                    <ToggleButton
+                        selected={timerUsed}
+                        className="timerToggleButton"
+                        value="left"
+                        aria-label="left aligned"
+                        onClick={() => {setTimerUsed(!timerUsed)}}
+                    >
+                        {timerUsed ? <TimerIcon /> : <TimerOffIcon />}
+                    </ToggleButton>
+                    {timerUsed && (
+                        <>
+                            <TextField
+                                className="numInput"
+                                label='minutes'
+                                variant="outlined"
+                                inputProps={{ maxLength: 2 }}
+                                value={minutesToDo}
+                                autoComplete='off'
+                                onChange={(e) => {
+                                    const minutes = e.target.value;
+                                    if (minutes > 0 || minutes === '') {
+                                        setMinutesToDo(minutes);
+                                    }
+                                }}
+                                error={showError && timerUsed && (minutesToDo === '' && secondsToDo === '')}
+                            />
+                            <TextField
+                                className="numInput"
+                                label='seconds'
+                                variant="outlined"
+                                inputProps={{ maxLength: 2 }}
+                                value={secondsToDo}
+                                autoComplete='off'
+                                onChange={(e) => {
+                                    const seconds = e.target.value;
+                                    if (seconds > 0 || seconds === '') {
+                                        setSecondsToDo(seconds);
+                                    }
+                                }}
+                                error={showError && timerUsed && (minutesToDo === '' && secondsToDo === '')}
+                            />
+                        </>
+                    )}
+                </div>
+                )}
+                
+            </div>
         </div>
     )
 }

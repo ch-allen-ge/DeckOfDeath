@@ -5,12 +5,9 @@ import './countdownTimerStyles.css';
 const CountdownTimer = ({timerInfo, setTimerStatus}) => {
     const [minutes, setMinutes] = useState(timerInfo.minutes || 0);
     const [seconds, setSeconds] = useState(timerInfo.seconds || 0);
-    const [timerDone, setTimerDone] = useState(false);
 
     const minutesRef = useRef(minutes);
     const secondsRef = useRef(seconds);
-    const timerDoneRef = useRef(timerDone);
-
     const setTheMinutes = (data) => {
         minutesRef.current = data;
         setMinutes(data);
@@ -19,11 +16,6 @@ const CountdownTimer = ({timerInfo, setTimerStatus}) => {
     const setTheSeconds = (data) => {
         secondsRef.current = data;
         setSeconds(data);
-    }
-
-    const setTheTimerDone = (data) => {
-        timerDoneRef.current = data;
-        setTimerDone(data);
     }
 
     const getTimerString = () => {
@@ -66,7 +58,7 @@ const CountdownTimer = ({timerInfo, setTimerStatus}) => {
     
         // cleaning up
         return function cleanup() {
-            clearTimeout(timerId);
+            clearInterval(timerId);
         }
     }, []);
 
@@ -75,20 +67,9 @@ const CountdownTimer = ({timerInfo, setTimerStatus}) => {
             <h1>
                 {getTimerString()}
             </h1>
-            <div>
-            {timerDone && <div>Finished</div>}
-            </div>
             {/* maybe add fireworks animation here if finished  */}
         </div>
     )
-
 }
 
 export default CountdownTimer;
-
-    {/* // currentExerciseRef.current = {
-//     minutes: "1",
-//     seconds: "",
-//     text: "1 minute of aces",
-//     timerUsed: true
-// } */}

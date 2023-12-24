@@ -8,7 +8,7 @@ import './optionsModalStyles.css';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-const OptionsModal = ({modalOpen, handleClose, options, setOptions, setWorkoutOptions}) => {
+const OptionsModal = ({modalOpen, handleClose, options, setWorkoutOptions}) => {
     const [breakOutAces, setBreakOutAces] = useState(options.breakOutAces);
     const [oneHandedSuit, setOneHandedSuit] = useState({
       set: false,
@@ -33,21 +33,22 @@ const OptionsModal = ({modalOpen, handleClose, options, setOptions, setWorkoutOp
         >
             <div className='modalContainer'>
             <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={breakOutAces}
-                            onChange={() => setBreakOutAces(!breakOutAces)}
-                        />
-                    }
-                    label="Break out aces"
-                />
-                <FormControlLabel control={<Switch />} disabled label="One handed suit" /> {/* show a radio button list onchange to choose suit */}
-                <FormControlLabel control={<Switch />} disabled label="Easy deck" />
+                <div className='switchGroupContainer'>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={breakOutAces}
+                                onChange={() => setBreakOutAces(!breakOutAces)}
+                            />
+                        }
+                        label="Break out aces"
+                    />
+                    <FormControlLabel control={<Switch />} disabled label="One handed suit" /> {/* show a radio button list onchange to choose suit */}
+                    <FormControlLabel control={<Switch />} disabled label="Easy deck" />
+                </div>
                 <Button
+                    variant="contained"
                     onClick={() => {
-                        setOptions(getOptions());
-                        //need to find a way to avoid setting both of these options, maybe redux for global state
                         setWorkoutOptions(getOptions());
                         handleClose();
                     }}

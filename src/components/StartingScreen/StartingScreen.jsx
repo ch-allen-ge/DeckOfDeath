@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import ExerciseSelection from "../ExerciseSelection";
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import Modal from '@mui/material/Modal';
 import OptionsModal from "../OptionsModal";
+import { suitsArray } from "../../constants";
 import './startingScreenStyles.css';
 
-const StartingScreen = ({setShowStartingScreen, setExercisesChosen, setWorkoutOptions}) => {
+const StartingScreen = ({setShowStartingScreen, setExercisesChosen, workoutOptions, setWorkoutOptions}) => {
     const [clubsExercise, setClubExercise] = useState({});
     const [diamondsExercise, setDiamondExercise] = useState({});
     const [heartsExercise, setHeartExercise] = useState({});
@@ -15,17 +15,7 @@ const StartingScreen = ({setShowStartingScreen, setExercisesChosen, setWorkoutOp
     const [acesExercise, setAcesExercise] = useState({});
     const [showError, setShowError] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const [options, setOptions] = useState({
-      breakOutAces: false,
-      oneHandedSuit: {
-        set: false,
-        suit: null,
-      },
-      easyDeck: false
-    });
-
-    const suitsArray = ['clubs', 'diamonds', 'hearts', 'spades'];
-
+    
     useEffect(() => {
       if (clubsExercise && diamondsExercise && heartsExercise && spadesExercise) {
         setShowError(false);
@@ -70,15 +60,12 @@ const StartingScreen = ({setShowStartingScreen, setExercisesChosen, setWorkoutOp
 
     return (
       <>
-        <div className='titleSection'>
-          <h1>Deck Of Death</h1>
-        </div>
         <div className='deathRow'>
           {
             suitsArray.map((suit) => <ExerciseSelection key={suit} suit={suit} setExercise={setExercise} showError={showError}/>)
           }
           {
-            options.breakOutAces && <ExerciseSelection key='aces' suit='aces' setExercise={setExercise} showError={showError}/>
+            workoutOptions.breakOutAces && <ExerciseSelection key='aces' suit='aces' setExercise={setExercise} showError={showError}/>
           }
         </div>
         {showError &&
@@ -120,8 +107,7 @@ const StartingScreen = ({setShowStartingScreen, setExercisesChosen, setWorkoutOp
         <OptionsModal
           modalOpen={modalOpen}
           handleClose={() => {setModalOpen(false)}}
-          options={options}
-          setOptions={setOptions}
+          options={workoutOptions}
           setWorkoutOptions={setWorkoutOptions}
         />
       </>

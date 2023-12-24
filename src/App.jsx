@@ -2,6 +2,7 @@ import { useState } from 'react';
 import StartingScreen from './components/StartingScreen';
 import Countdown from './components/Countdown';
 import DeckOfDeathGame from './components/DeckOfDeathGame';
+import Navbar from './components/Navbar';
 
 function App() {
   const [showStartingScreen, setShowStartingScreen] = useState(true);
@@ -17,11 +18,13 @@ function App() {
   const [showCountdownAnimation, setShowCountdownAnimation] = useState(true);
 
   return (
-    <>
+    <div style={{paddingBottom: '30px'}}>
+      <Navbar />
       {showStartingScreen &&
         <StartingScreen
           setShowStartingScreen={setShowStartingScreen}
           setExercisesChosen={setExercisesChosen}
+          workoutOptions={workoutOptions}
           setWorkoutOptions={setWorkoutOptions}
         />
       }
@@ -36,7 +39,7 @@ function App() {
         </>
         
       }
-    </>
+    </div>
   )
 }
 

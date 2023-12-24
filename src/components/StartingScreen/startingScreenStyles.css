@@ -1,21 +1,16 @@
-.titleSection {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-}
-  
+
 .deathRow {
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: space-between;
-    margin-bottom: 50px;
+    justify-content: space-around;
+    margin: 30px 0px;
+    flex-wrap: wrap;
 }
 
-@media (max-width: 850px) {
-    .deathRow {
-        flex-direction: column;
+@media (max-width: 1000px) {
+    .deathRow > div {
+        flex-basis: content;
     }
 }
 
