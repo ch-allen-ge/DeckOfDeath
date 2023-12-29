@@ -4,21 +4,43 @@ import CurrentCard from "../CurrentCard";
 import Button from '@mui/material/Button';
 import DeterminateCountdown from "../DeterminateCountdown/DeterminateCountdown";
 import CountdownTimer from "../CountdownTimer";
+import MetricsBar from "../MetricsBar/MetricsBar";
 import { mobileWidth } from "../../constants";
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+
+import {
+    setDeckId,
+    setCurrentCard,
+    setCardsFinished,
+    setCardsRemaining
+} from "../../reduxSlices/deckSlice";
+
+import { resetExercises } from "../../reduxSlices/exercisesChosenSlice";
+import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
+import { resetUI } from "../../reduxSlices/UISlice";
+import { resetDeck } from "../../reduxSlices/deckSlice";
 
 import './deckOfDeathGameStyles.css'
 
 const DeckOfDeathGame = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const exercisesChosen = useSelector((state) => state.exercisesChosen);
     const breakoutAces = useSelector((state) => state.workoutOptions.breakoutAces);
     const acesExercise = useSelector((state) => state.exercisesChosen.aces.exercise);
     const acesTimerUsed = useSelector((state) => state.exercisesChosen.aces.timerUsed);
     const acesMinutesToDo = useSelector((state) => state.exercisesChosen.aces.minutesToDo);
     const acesSecondsToDo = useSelector((state) => state.exercisesChosen.aces.secondsToDo);
+    const deckId = useSelector((state) => state.deck.deckId);
+    const currentCard = useSelector((state) => state.deck.currentCard);
 
-    const [deckId, setDeckId] = useState(null);
-    const [currentCard, setCurrentCard] = useState(null);
+    const [workoutFinished, setWorkoutFinished] = useState(false);
+
+    //useRef hack to get updated state values into pre-bound event listener
+    //is there a better way to do this?
+    //////////////////////////////////////
     const [currentExercise, setCurrentExercise] = useState(null);
     const [showCountdownAnimation, setShowCountdownAnimation] = useState(false);
     const [showWorkoutTimer, setShowWorkoutTimer] = useState(false);
@@ -27,8 +49,7 @@ const DeckOfDeathGame = () => {
         inProgress: false,
         finished: false
     });
-    const [workoutFinished, setWorkoutFinished] = useState(false);
-
+    
     const currentExerciseRef = useRef(currentExercise);
     const showWorkoutTimerRef = useRef(false);
     const currentCardAceRef = useRef(false);
@@ -52,6 +73,7 @@ const DeckOfDeathGame = () => {
         timerStatusRef.current = data;
         setTimerStatus(data);
     }
+    //////////////////////////////////////////
 
     const isMobile = window.innerWidth < mobileWidth;
 
@@ -59,9 +81,9 @@ const DeckOfDeathGame = () => {
     useEffect(() => {
         axios.get('https://deckofcardsapi.com/api/deck/new/shuffle/')
             .then((response) => {
-                setDeckId(response.data.deck_id);
+                dispatch(setDeckId(response.data.deck_id));
             })
-            .catch((error) => console.log('could not get new deck', error));
+            .catch((error) => console.error('could not get new deck', error));
     }, []);
 
     const startTheTimer = () => {
@@ -79,23 +101,22 @@ const DeckOfDeathGame = () => {
             setShowCountdownAnimation(false);
             setShowTheWorkoutTimer(true);
         }, 6000);
-    }
+    };
 
     //attachs listeners and raws a new card when new deck is obtained
     useEffect(() => {
         function handleKeyDown(e) {
-
             if (e.keyCode === 13 && currentCardAceRef.current && !showWorkoutTimerRef.current) { //enter
                 startTheTimer();
             } else if (e.keyCode === 32 && !(currentCardAceRef.current && currentExerciseRef.current.timerUsed && !timerStatusRef.current.finished)) { //space bar
                 setShowTheWorkoutTimer(false);
-                drawNewCard();
+                drawNewCard(false);
             }
         }
     
         document.addEventListener('keydown', handleKeyDown);
 
-        deckId && drawNewCard();
+        deckId && drawNewCard(true);
     
         // cleaning up
         return function cleanup() {
@@ -117,19 +138,25 @@ const DeckOfDeathGame = () => {
         }
     }, [currentExercise]);
 
-    const drawNewCard = async () => {
+    const drawNewCard = async (initialDraw) => {
         await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/`)
             .then((response) => {
                 const result = response.data;
 
                 if (result.success) {
                     const cardDrawn = result.cards[0];
-                    setCurrentCard(cardDrawn);
+                    const cardsRemaining = result.remaining;
+                    if (!initialDraw) {
+                        dispatch(setCardsRemaining(cardsRemaining));
+                        dispatch(setCardsFinished(51-cardsRemaining));
+                        
+                    }
+                    dispatch(setCurrentCard(cardDrawn));
                 } else {
                     setWorkoutFinished(true);
                 }
             })
-            .catch((error) => console.log('could not draw new card', error));
+            .catch((error) => console.error('could not draw new card', error));
     };
 
     const getCurrentExercise = () => {
@@ -214,11 +241,11 @@ const DeckOfDeathGame = () => {
                 startTheTimer();
             } else if (finished) {
                 //timer finished
-                drawNewCard();
+                drawNewCard(false);
                 setShowTheWorkoutTimer(false);
             }
         } else {
-            drawNewCard();
+            drawNewCard(false);
         }
     };
 
@@ -236,36 +263,40 @@ const DeckOfDeathGame = () => {
         <div className="deckOfDeathContainer">
             {currentCard && currentExercise && !workoutFinished &&
                 <>
-                    <CurrentCard currentCard={currentCard}/>
-                    <div className="workoutContainer">
-                        <div className="workoutText">
-                            <div className="workoutCard">
-                                <div className={`cardLabel ${getCardColor()}`}>
-                                    Current Exercise
+                    <div className="cardAndExerciseContainer">
+                        <CurrentCard currentCard={currentCard}/>
+                        <div className="workoutContainer">
+                            <div className="workoutText">
+                                <div className="workoutCard">
+                                    <div className={`cardLabel ${getCardColor()}`}>
+                                        Current Exercise
+                                    </div>
+                                    <div className="cardText">
+                                        {currentExercise.text}
+                                    </div>
                                 </div>
-                                <div className="cardText">
-                                    {currentExercise.text}
-                                </div>
-                            </div>
-                            <br />
+                                <br />
 
-                            <div className="timerContainer">
-                                {showCountdownAnimation && <DeterminateCountdown />}
-                                {showWorkoutTimer && <CountdownTimer timerInfo={currentExerciseRef.current} setTimerStatus={setTheTimerStatus}/>}
-                            </div>
+                                <div className="timerContainer">
+                                    {showCountdownAnimation && <DeterminateCountdown />}
+                                    {showWorkoutTimer && <CountdownTimer timerInfo={currentExerciseRef.current} setTimerStatus={setTheTimerStatus}/>}
+                                </div>
 
-                            {isMobile ? 
-                                <div>
-                                    {!timerStatus.inProgress && <Button variant="contained" onClick={handleWorkoutButtonClicked}>{getInstructions()}</Button>}
-                                </div>
-                                :
-                                <div>
-                                    {getInstructions()}
-                                </div>
-                                
-                            }
+                                {isMobile ? 
+                                    <div>
+                                        {!timerStatus.inProgress && <Button variant="contained" onClick={handleWorkoutButtonClicked}>{getInstructions()}</Button>}
+                                    </div>
+                                    :
+                                    <div>
+                                        {getInstructions()}
+                                    </div>
+                                    
+                                }
+                            </div>
                         </div>
                     </div>
+                    
+                    <MetricsBar />
                 </>
             }
             {workoutFinished && 
@@ -276,7 +307,11 @@ const DeckOfDeathGame = () => {
                     <Button
                         variant="contained"
                         onClick={() => {
-                            location.reload();
+                            dispatch(resetExercises());
+                            dispatch(resetOptions());
+                            dispatch(resetUI());
+                            dispatch(resetDeck());
+                            navigate('/');
                         }}
                     >
                         Back to start

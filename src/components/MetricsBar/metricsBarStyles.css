@@ -1,0 +1,24 @@
+.metricsBarContainer {
+    /* position: fixed; */
+    bottom: 0;
+    display: flex;
+    width: 100vw;
+    margin-top: 30px;
+}
+
+.metricItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 33vw;
+}
+
+.metricItem + .metricItem {
+    border-left: 3px solid rgb(0, 146, 247);
+}
+
+.label {
+    text-align: center;
+}
+/* squeeze a bit on mobile */

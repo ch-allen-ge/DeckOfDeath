@@ -12,13 +12,18 @@ export const UISlice = createSlice({
         },
         setShowCountdownAnimation: (state, action) => {
             state.showCountdownAnimation = action.payload;
+        },
+        resetUI: (state) => {
+            state.showError = false;
+            state.showCountdownAnimation = true;
         }
     }
 });
 
 export const {
     setShowError,
-    setShowCountdownAnimation
+    setShowCountdownAnimation,
+    resetUI
 } = UISlice.actions;
 
 export default UISlice.reducer;
