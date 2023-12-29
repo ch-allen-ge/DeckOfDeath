@@ -2,13 +2,21 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import CurrentCard from "../CurrentCard";
 import Button from '@mui/material/Button';
-import Countdown from "../Countdown";
+import DeterminateCountdown from "../DeterminateCountdown/DeterminateCountdown";
 import CountdownTimer from "../CountdownTimer";
 import { mobileWidth } from "../../constants";
+import { useSelector, useDispatch } from 'react-redux';
 
-import './deckOfDeathStyles.css'
+import './deckOfDeathGameStyles.css'
 
-const DeckOfDeathGame = ({exercisesChosen, workoutOptions}) => {
+const DeckOfDeathGame = () => {
+    const exercisesChosen = useSelector((state) => state.exercisesChosen);
+    const breakoutAces = useSelector((state) => state.workoutOptions.breakoutAces);
+    const acesExercise = useSelector((state) => state.exercisesChosen.aces.exercise);
+    const acesTimerUsed = useSelector((state) => state.exercisesChosen.aces.timerUsed);
+    const acesMinutesToDo = useSelector((state) => state.exercisesChosen.aces.minutesToDo);
+    const acesSecondsToDo = useSelector((state) => state.exercisesChosen.aces.secondsToDo);
+
     const [deckId, setDeckId] = useState(null);
     const [currentCard, setCurrentCard] = useState(null);
     const [currentExercise, setCurrentExercise] = useState(null);
@@ -68,8 +76,9 @@ const DeckOfDeathGame = ({exercisesChosen, workoutOptions}) => {
 
         //after 4 seconds, show the actual workout timer
         setTimeout(() => {
+            setShowCountdownAnimation(false);
             setShowTheWorkoutTimer(true);
-        }, 4000);
+        }, 6000);
     }
 
     //attachs listeners and raws a new card when new deck is obtained
@@ -130,11 +139,10 @@ const DeckOfDeathGame = ({exercisesChosen, workoutOptions}) => {
 
         if (cardValue === 'aces') {
             setTheCurrentCardAce(true);
-            const acesObj = exercisesChosen['aces'];
-            const exercise = acesObj.exerciseText;
-            const timerUsed = acesObj.timerUsed;
-            const minutes = acesObj.minutesToDo;
-            const seconds = acesObj.secondsToDo;
+            const exercise = acesExercise;
+            const timerUsed = acesTimerUsed;
+            const minutes = acesMinutesToDo;
+            const seconds = acesSecondsToDo;
 
             if (timerUsed) {
                 text = `${minutes && `${minutes} ${minutes === '1' ? 'minute' : 'minutes'}`} ${seconds && `${seconds} ${seconds === '1' ? 'second' : 'seconds'} of ${exercise}`}`;
@@ -144,15 +152,15 @@ const DeckOfDeathGame = ({exercisesChosen, workoutOptions}) => {
                     minutes,
                     seconds
                 }
-            } else if (workoutOptions.breakOutAces) {
+            } else if (breakoutAces) {
                 text = exercise;
             } else {
-                const standardAceExercise = exercisesChosen[suit].exerciseText;
+                const standardAceExercise = exercisesChosen[suit];
                 text ='14 ' + standardAceExercise;
             }
         } else {
             setTheCurrentCardAce(false);
-            const exercise = exercisesChosen[suit].exerciseText;
+            const exercise = exercisesChosen[suit];
             text = cardValue + ' ' + exercise;
         }
 
@@ -183,7 +191,11 @@ const DeckOfDeathGame = ({exercisesChosen, workoutOptions}) => {
                 return isMobile ? 'Start Timer' : 'Press enter to start the timer';
             } else if (inProgress) {
                 //timer in progress
-                return '';
+                if (showCountdownAnimation) {
+                    return 'Get ready...';
+                } else {
+                    return 'Timer in progress...';
+                } 
             } else {
                 //timer finished
                 return isMobile ? 'Next Card' : 'Press space bar for next card';
@@ -210,31 +222,49 @@ const DeckOfDeathGame = ({exercisesChosen, workoutOptions}) => {
         }
     };
 
+    const getCardColor = () => {
+        const currentSuit = currentCard.suit.toLowerCase();
+
+        if (currentSuit === 'spades' || currentSuit === 'clubs') {
+            return 'blackCard';
+        }
+
+        return 'redCard';
+    }
+
     return (
         <div className="deckOfDeathContainer">
             {currentCard && currentExercise && !workoutFinished &&
                 <>
                     <CurrentCard currentCard={currentCard}/>
-                    <div className="workoutText">
-                        <div>
-                            {currentExercise.text}
-                        </div>
-                        <br />
-                        {isMobile ? 
-                            <div>
-                                {!timerStatus.inProgress && <Button variant="contained" onClick={handleWorkoutButtonClicked}>{getInstructions()}</Button>}
+                    <div className="workoutContainer">
+                        <div className="workoutText">
+                            <div className="workoutCard">
+                                <div className={`cardLabel ${getCardColor()}`}>
+                                    Current Exercise
+                                </div>
+                                <div className="cardText">
+                                    {currentExercise.text}
+                                </div>
                             </div>
-                            :
-                            <div className="instructionsText">
-                                {getInstructions()}
-                            </div>
-                            
-                        }
-                    </div>
+                            <br />
 
-                    <div className="timerContainer">
-                        {showCountdownAnimation && <Countdown setShowCountdownAnimation={setShowCountdownAnimation} bottomCountdown={true}/>}
-                        {showWorkoutTimer && <CountdownTimer timerInfo={currentExerciseRef.current} setTimerStatus={setTheTimerStatus}/>}
+                            <div className="timerContainer">
+                                {showCountdownAnimation && <DeterminateCountdown />}
+                                {showWorkoutTimer && <CountdownTimer timerInfo={currentExerciseRef.current} setTimerStatus={setTheTimerStatus}/>}
+                            </div>
+
+                            {isMobile ? 
+                                <div>
+                                    {!timerStatus.inProgress && <Button variant="contained" onClick={handleWorkoutButtonClicked}>{getInstructions()}</Button>}
+                                </div>
+                                :
+                                <div>
+                                    {getInstructions()}
+                                </div>
+                                
+                            }
+                        </div>
                     </div>
                 </>
             }

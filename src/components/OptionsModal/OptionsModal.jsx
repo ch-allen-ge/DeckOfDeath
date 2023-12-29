@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from '@mui/material/Modal';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -6,30 +6,19 @@ import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
 import './optionsModalStyles.css';
 
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
+import { useSelector, useDispatch } from 'react-redux'
+import { setBreakoutAces, setOneHandedSuit, setEasyDeck } from '../../reduxSlices/workoutOptionsSlice';
 
-const OptionsModal = ({modalOpen, handleClose, options, setWorkoutOptions}) => {
-    const [breakOutAces, setBreakOutAces] = useState(options.breakOutAces);
-    const [oneHandedSuit, setOneHandedSuit] = useState({
-      set: false,
-      suit: null
-    });
-    const [easyDeck, setEasyDeck] = useState(false);
-
-    const getOptions = () => {
-        return {
-            breakOutAces,
-            oneHandedSuit,
-            easyDeck
-        };
-    };
+const OptionsModal = ({modalOpen, handleClose}) => {
+    const breakoutAces = useSelector((state) => state.workoutOptions.breakoutAces);
+    const oneHandedSuit = useSelector((state) => state.workoutOptions.oneHandedSuit);
+    const easyDeck = useSelector((state) => state.workoutOptions.easyDeck);
+    const dispatch = useDispatch();
 
     return (
         <Modal
             open={modalOpen}
             onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
         >
             <div className='modalContainer'>
             <FormGroup>
@@ -37,23 +26,40 @@ const OptionsModal = ({modalOpen, handleClose, options, setWorkoutOptions}) => {
                     <FormControlLabel
                         control={
                             <Switch
-                                checked={breakOutAces}
-                                onChange={() => setBreakOutAces(!breakOutAces)}
+                                checked={breakoutAces}
+                                onChange={() => dispatch(setBreakoutAces(!breakoutAces))}
                             />
                         }
                         label="Break out aces"
                     />
-                    <FormControlLabel control={<Switch />} disabled label="One handed suit" /> {/* show a radio button list onchange to choose suit */}
-                    <FormControlLabel control={<Switch />} disabled label="Easy deck" />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={oneHandedSuit}
+                                onChange={() => dispatch(setOneHandedSuit(!oneHandedSuit))}
+                            />
+                        }
+                        disabled
+                        label="One handed suit"
+                    /> {/* show a radio button list onchange to choose suit */}
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={easyDeck}
+                                onChange={() => dispatch(setEasyDeck(!easyDeck))}
+                            />
+                        }
+                        disabled
+                        label="Easy deck"
+                    />
                 </div>
                 <Button
                     variant="contained"
                     onClick={() => {
-                        setWorkoutOptions(getOptions());
                         handleClose();
                     }}
                 >
-                    Save
+                    Close
                 </Button>
             </FormGroup>
             </div>

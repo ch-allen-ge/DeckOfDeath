@@ -1,0 +1,70 @@
+.deckOfDeathContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 600px) {
+    .deckOfDeathContainer {
+        flex-direction: column;
+    }
+}
+
+.workoutContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.workoutText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.finishedText {
+    padding: 30px;
+}
+
+.workoutCard {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 15px;
+    background: ivory;
+    margin: 15px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .workoutCard {
+        width: 80vw;
+        margin: 0px;
+    }
+}
+
+.cardText {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px 15px;
+    font-size: x-large;
+}
+
+.cardLabel {
+    display: flex;
+    justify-content: center;
+    color: white;
+    background-color: cornflowerblue;
+    border-radius: 15px 15px 0px 0px;
+    font-size: larger;
+    padding: 20px 10px 20px 10px;
+}
+
+.redCard {
+    background-color: crimson;
+}
+
+.blackCard {
+    background-color: black;
+}

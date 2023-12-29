@@ -1,28 +1,52 @@
+.siteContainer {
+    display: flex;   
+}
+
+.deathZone {
+    width: 70%;
+}
+
+.coachZone {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    margin-right: 50px;
+}
 
 .deathRow {
     display: flex;
     flex-direction: row;
-    width: 100%;
     justify-content: space-around;
     margin: 30px 0px;
     flex-wrap: wrap;
 }
 
 @media (max-width: 1000px) {
+    .deathZone {
+        width: 100%;
+    }
     .deathRow > div {
         flex-basis: content;
+    }
+
+    .siteContainer {
+        flex-direction: column;
+    }
+
+    .coachZone {
+        width: 100%;
     }
 }
 
 .buttonRow {
     display: flex;
     justify-content: center;
+    margin-bottom: 20px;
 }
 
 .errorRow {
     display: flex;
     justify-content: center;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     color: red;
 }
-

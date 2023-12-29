@@ -1,0 +1,83 @@
+.coachModalContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 25px;
+    padding-bottom: 20px;
+}
+
+.coachModalLabel {
+    display: flex;
+    justify-content: center;
+    color: white;
+    background-color: #006494;
+    border-radius: 15px 15px 0px 0px;
+    font-size: larger;
+    padding: 10px 0px 10px 0px;
+}
+
+.coachModalGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    column-gap: 10px;
+    row-gap: 15px;
+}
+
+.coachModalSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+@media (max-width: 600px) {
+    .coachModalGrid {
+        grid-template-rows: none;
+        width: 66vw;
+    }
+    .coachModalSection {
+        border-radius: 0px;
+        padding-bottom: 0px;
+    }
+}
+
+.icon {
+    width: 50px;
+}
+
+.description {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.selectButtonContainer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.selectButton {
+    width: fit-content;
+}
+
+.wholeRow {
+    grid-column: 1 / -1;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.aceColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timeText {
+    font-size: x-large;
+}

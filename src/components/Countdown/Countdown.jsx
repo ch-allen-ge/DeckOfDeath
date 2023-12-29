@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import './countdownStyles.css';
 
-const Countdown = ({setShowCountdownAnimation, bottomCountdown}) => {
+import {useDispatch } from 'react-redux';
+
+import { setShowCountdownAnimation } from "../../reduxSlices/UISlice";
+
+const Countdown = () => {
+	const dispatch = useDispatch();
 	
 	useEffect(() => {
 		const nums = document.querySelectorAll('.nums span');
@@ -9,17 +14,6 @@ const Countdown = ({setShowCountdownAnimation, bottomCountdown}) => {
 		
 		runAnimation(nums, counter);
 	}, [])
-
-	function resetDOM() {
-		counter.classList.remove('hide');
-		finalMessage.classList.remove('show');
-		
-		nums.forEach(num => {
-			num.classList.value = '';
-		});
-	
-		nums[0].classList.add('in');
-	}
 	
 	function runAnimation(nums, counter) {
 		nums.forEach((num, idx) => {
@@ -32,14 +26,14 @@ const Countdown = ({setShowCountdownAnimation, bottomCountdown}) => {
 					num.nextElementSibling.classList.add('in');
 				} else {
 					counter.classList.add('hide');
-					setShowCountdownAnimation(false);
+					dispatch(setShowCountdownAnimation(false));
 				}
 			});
 		});
 	}
 
 	return (
-		<div className={bottomCountdown ? 'bottomCountdown' : 'counter'}>
+		<div className='counter'>
 			<div className="nums">
 				<span className="in">3</span>
 				<span>2</span>

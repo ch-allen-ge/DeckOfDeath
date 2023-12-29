@@ -2,6 +2,12 @@
     height: 300px;
 }
 
+@media (max-width: 600px) {
+    .currentCardImg {
+        height: 250px;
+    }
+}
+
 .currentCardContainer {
     display: flex;
     justify-content: center;

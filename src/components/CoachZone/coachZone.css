@@ -1,0 +1,71 @@
+/* grid parent */
+.coachZoneContainer {
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(5, 120px);
+    column-gap: 10px;
+    row-gap: 15px;
+}
+
+.coachBlock {
+    background-color: bisque;
+    border: 2px solid red;
+    padding: 20px;
+    margin: 10px;
+    display: flex;
+}
+
+.coachZoneTextContainer {
+    text-align: center;
+    color: aliceblue;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.coachZoneText {
+    background: #13293D;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.workoutTitle {
+    font-size: x-large;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* grid children */
+.coachCard {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    background: ivory;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+@media (max-width: 1000px) {
+    .coachZoneContainer {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(9, 120px);
+        place-items: center;
+        column-gap: 10px;
+        row-gap: 15px;
+    }
+
+    .coachCard {
+        width: 80%;
+        padding: 20px;
+    }
+}
+
+.coachCard:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    color:cornflowerblue;
+    cursor: pointer;
+}
