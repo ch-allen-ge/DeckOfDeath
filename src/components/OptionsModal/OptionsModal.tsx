@@ -1,19 +1,25 @@
-import { useEffect, useState } from 'react';
 import Modal from '@mui/material/Modal';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
-import './optionsModalStyles.css';
+import './optionsModalStyles.scss';
+import { FC, ReactElement } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux'
 import { setBreakoutAces, setOneHandedSuit, setEasyDeck } from '../../reduxSlices/workoutOptionsSlice';
 
-const OptionsModal = ({modalOpen, handleClose}) => {
-    const breakoutAces = useSelector((state) => state.workoutOptions.breakoutAces);
-    const oneHandedSuit = useSelector((state) => state.workoutOptions.oneHandedSuit);
-    const easyDeck = useSelector((state) => state.workoutOptions.easyDeck);
-    const dispatch = useDispatch();
+import { useAppSelector, useAppDispatch } from '../../hooks';
+
+interface OptionsModalProps {
+    modalOpen: boolean,
+    handleClose: () => void
+}
+
+const OptionsModal: FC<OptionsModalProps> = ({modalOpen, handleClose}): ReactElement => {
+    const breakoutAces = useAppSelector((state) => state.workoutOptions.breakoutAces);
+    const oneHandedSuit = useAppSelector((state) => state.workoutOptions.oneHandedSuit);
+    const easyDeck = useAppSelector((state) => state.workoutOptions.easyDeck);
+    const dispatch = useAppDispatch();
 
     return (
         <Modal

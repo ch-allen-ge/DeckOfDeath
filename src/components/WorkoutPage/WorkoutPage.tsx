@@ -1,18 +1,17 @@
 import Countdown from "../Countdown";
 import DeckOfDeathGame from "../DeckOfDeathGame";
 
-import { useEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useEffect, FC, ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from '../../hooks';
 
 import Navbar from "../Navbar";
 
-//need to get/set UI state showCountdownAnimation
-const WorkoutPage = () => {
+const WorkoutPage: FC = (): ReactElement => {
     const navigate = useNavigate();
 
-    const exercisesChosen = useSelector((state) => state.exercisesChosen);
-    const showCountdownAnimation = useSelector((state) => state.UI.showCountdownAnimation);
+    const exercisesChosen = useAppSelector((state) => state.exercisesChosen);
+    const showCountdownAnimation = useAppSelector((state) => state.UI.showCountdownAnimation);
 
     useEffect(() => {
       //if no exercises  in state, navigate back to homepage

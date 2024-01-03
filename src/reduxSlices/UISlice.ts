@@ -1,16 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+interface UIState {
+    showError: boolean,
+    showCountdownAnimation: boolean
+};
+
+const initialState: UIState = {
+    showError: false,
+    showCountdownAnimation: true
+};
 
 export const UISlice = createSlice({
     name: 'UI',
-    initialState: {
-        showError: false,
-        showCountdownAnimation: true
-    },
+    initialState,
     reducers: {
-        setShowError: (state, action) => {
+        setShowError: (state, action: PayloadAction<boolean>) => {
             state.showError = action.payload;
         },
-        setShowCountdownAnimation: (state, action) => {
+        setShowCountdownAnimation: (state, action: PayloadAction<boolean>) => {
             state.showCountdownAnimation = action.payload;
         },
         resetUI: (state) => {

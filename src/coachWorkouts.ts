@@ -1,4 +1,20 @@
-const workouts = [
+interface workout {
+    title: string,
+    equipment: string,
+    difficulty: number,
+    clubs: string,
+    diamonds: string,
+    hearts: string,
+    spades: string,
+    aces: {
+        exercise: string,
+        timerUsed: boolean,
+        minutesToDo: string | number,
+        secondsToDo: string |number
+    }
+}
+
+const workouts : workout[] = [
     // maybe have a choose for me one first, on top take sup full width, light up different workouts like choosing map in mario until landing on one at random
     {
         title: 'Dumbell Easy',
@@ -138,20 +154,3 @@ const workouts = [
 ];
 
 export default workouts;
-
-// maybe change structure to 
-// {
-//     title: 'Bodyweight Hard',
-//     equipment: 'none',
-//     difficulty: 3,
-//     exercises: {
-//         clubs: 'russian twists',
-//         diamonds: 'squat jacks',
-//         hearts: 'push ups',
-//         spades: 'burpees',
-//         aces: 'plank',
-//         timerUsed: true,
-//         minutesToDo: 1,
-//         secondsToDo: 30
-//     }
-// }

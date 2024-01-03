@@ -1,42 +1,57 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+interface exerciseChosenState {
+    clubs: string,
+    diamonds: string,
+    hearts: string,
+    spades: string,
+    aces: {
+        exercise: string,
+        timerUsed: boolean,
+        minutesToDo: string | number,
+        secondsToDo: string | number
+    }
+}
+
+const initialState: exerciseChosenState = {
+    clubs: '',
+    diamonds: '',
+    hearts: '',
+    spades: '',
+    aces: {
+        exercise: '',
+        timerUsed: false,
+        minutesToDo: '',
+        secondsToDo: ''
+    }
+};
 
 export const exercisesChosenSlice = createSlice({
     name: 'exercisesChosen',
-    initialState: {
-        clubs: '',
-        diamonds: '',
-        hearts: '',
-        spades: '',
-        aces: {
-            exercise: '',
-            timerUsed: false,
-            minutesToDo: '',
-            secondsToDo: ''
-        }
-    },
+    initialState,
     reducers: {
-        setClubsExercise: (state, action) => {
+        setClubsExercise: (state, action: PayloadAction<string>) => {
             state.clubs = action.payload;
         },
-        setDiamondsExercise: (state, action) => {
+        setDiamondsExercise: (state, action: PayloadAction<string>) => {
             state.diamonds = action.payload;
         },
-        setHeartsExercise: (state, action) => {
+        setHeartsExercise: (state, action: PayloadAction<string>) => {
             state.hearts = action.payload;
         },
-        setSpadesExercise: (state, action) => {
+        setSpadesExercise: (state, action: PayloadAction<string>) => {
             state.spades = action.payload;
         },
-        setAcesExercise: (state, action) => {
+        setAcesExercise: (state, action: PayloadAction<string>) => {
             state.aces.exercise = action.payload;
         },
-        setAcesTimerUsed: (state, action) => {
+        setAcesTimerUsed: (state, action: PayloadAction<boolean>) => {
             state.aces.timerUsed = action.payload;
         },
-        setAcesMinutesToDo: (state, action) => {
+        setAcesMinutesToDo: (state, action: PayloadAction<string | number>) => {
             state.aces.minutesToDo = action.payload;
         },
-        setAcesSecondsToDo: (state, action) => {
+        setAcesSecondsToDo: (state, action: PayloadAction<string | number>) => {
             state.aces.secondsToDo = action.payload;
         },
         resetExercises: (state) => {

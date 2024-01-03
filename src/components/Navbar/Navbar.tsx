@@ -1,17 +1,18 @@
 import { useNavigate } from "react-router-dom";
-
-import './navbarStyles.css';
+import { FC } from "react";
 
 import { resetExercises } from "../../reduxSlices/exercisesChosenSlice";
 import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
 import { resetUI } from "../../reduxSlices/UISlice";
 import { resetDeck } from "../../reduxSlices/deckSlice";
 
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from '../../hooks';
 
-const Navbar = () => {
+import './navbarStyles.scss';
+
+const Navbar: FC = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     return (
         <div className='titleSection'>

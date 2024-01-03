@@ -1,12 +1,11 @@
 import axios from "axios";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, FC, ReactElement } from "react";
 import CurrentCard from "../CurrentCard";
 import Button from '@mui/material/Button';
 import DeterminateCountdown from "../DeterminateCountdown/DeterminateCountdown";
 import CountdownTimer from "../CountdownTimer";
 import MetricsBar from "../MetricsBar/MetricsBar";
-import { mobileWidth } from "../../constants";
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -21,30 +20,43 @@ import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
 import { resetUI } from "../../reduxSlices/UISlice";
 import { resetDeck } from "../../reduxSlices/deckSlice";
 
-import './deckOfDeathGameStyles.css'
+import './deckOfDeathGameStyles.scss';
 
-const DeckOfDeathGame = () => {
-    const dispatch = useDispatch();
+interface TimerProps {
+    preStart: boolean,
+    inProgress: boolean,
+    finished: boolean
+}
+
+interface AceCardProps {
+    text: string,
+    timerUsed?: boolean,
+    minutes?: string | number,
+    seconds?: string | number
+}
+
+interface RegularCardProps {
+    text: string
+}
+
+const DeckOfDeathGame: FC = (): ReactElement => {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const exercisesChosen = useSelector((state) => state.exercisesChosen);
-    const breakoutAces = useSelector((state) => state.workoutOptions.breakoutAces);
-    const acesExercise = useSelector((state) => state.exercisesChosen.aces.exercise);
-    const acesTimerUsed = useSelector((state) => state.exercisesChosen.aces.timerUsed);
-    const acesMinutesToDo = useSelector((state) => state.exercisesChosen.aces.minutesToDo);
-    const acesSecondsToDo = useSelector((state) => state.exercisesChosen.aces.secondsToDo);
-    const deckId = useSelector((state) => state.deck.deckId);
-    const currentCard = useSelector((state) => state.deck.currentCard);
+    const exercisesChosen = useAppSelector((state) => state.exercisesChosen);
+    const breakoutAces = useAppSelector((state) => state.workoutOptions.breakoutAces);
+    const acesExercise = useAppSelector((state) => state.exercisesChosen.aces.exercise);
+    const acesTimerUsed = useAppSelector((state) => state.exercisesChosen.aces.timerUsed);
+    const acesMinutesToDo = useAppSelector((state) => state.exercisesChosen.aces.minutesToDo);
+    const acesSecondsToDo = useAppSelector((state) => state.exercisesChosen.aces.secondsToDo);
+    const deckId = useAppSelector((state) => state.deck.deckId);
+    const currentCard = useAppSelector((state) => state.deck.currentCard);
 
-    const [workoutFinished, setWorkoutFinished] = useState(false);
-
-    //useRef hack to get updated state values into pre-bound event listener
-    //is there a better way to do this?
-    //////////////////////////////////////
-    const [currentExercise, setCurrentExercise] = useState(null);
-    const [showCountdownAnimation, setShowCountdownAnimation] = useState(false);
-    const [showWorkoutTimer, setShowWorkoutTimer] = useState(false);
-    const [timerStatus, setTimerStatus] = useState({
+    const [workoutFinished, setWorkoutFinished] = useState<boolean>(false);
+    const [currentExercise, setCurrentExercise] = useState<RegularCardProps | AceCardProps | null>(null);
+    const [showCountdownAnimation, setShowCountdownAnimation] = useState<boolean>(false);
+    const [showWorkoutTimer, setShowWorkoutTimer] = useState<boolean>(false);
+    const [timerStatus, setTimerStatus] = useState<TimerProps>({
         preStart: false,
         inProgress: false,
         finished: false
@@ -55,27 +67,26 @@ const DeckOfDeathGame = () => {
     const currentCardAceRef = useRef(false);
     const timerStatusRef = useRef({});
 
-    const setTheCurrentExercise = (data) => {
+    const setTheCurrentExercise = (data: RegularCardProps | AceCardProps | null) => {
         currentExerciseRef.current = data;
         setCurrentExercise(data);
     }
 
-    const setShowTheWorkoutTimer = (data) => {
+    const setShowTheWorkoutTimer = (data: boolean) => {
         showWorkoutTimerRef.current = data;
         setShowWorkoutTimer(data);
     }
 
-    const setTheCurrentCardAce = (data) => {
+    const setTheCurrentCardAce = (data: boolean) => {
         currentCardAceRef.current = data;
     }
 
-    const setTheTimerStatus = (data) => {
+    const setTheTimerStatus = (data: TimerProps) => {
         timerStatusRef.current = data;
         setTimerStatus(data);
     }
-    //////////////////////////////////////////
 
-    const isMobile = window.innerWidth < mobileWidth;
+    const isMobile = window.innerWidth < 600;
 
     //get the new deck
     useEffect(() => {
@@ -105,10 +116,11 @@ const DeckOfDeathGame = () => {
 
     //attachs listeners and raws a new card when new deck is obtained
     useEffect(() => {
-        function handleKeyDown(e) {
-            if (e.keyCode === 13 && currentCardAceRef.current && !showWorkoutTimerRef.current) { //enter
+        function handleKeyDown(e: KeyboardEvent) {
+            if (e.code === 'Enter' && currentCardAceRef.current && !showWorkoutTimerRef.current) { //enter
                 startTheTimer();
-            } else if (e.keyCode === 32 && !(currentCardAceRef.current && currentExerciseRef.current.timerUsed && !timerStatusRef.current.finished)) { //space bar
+            // @ts-ignore
+            } else if (e.code === 'Space' && !(currentCardAceRef.current && currentExerciseRef?.current?.timerUsed && !timerStatusRef.current.finished)) { //space bar
                 setShowTheWorkoutTimer(false);
                 drawNewCard(false);
             }
@@ -129,6 +141,7 @@ const DeckOfDeathGame = () => {
     }, [currentCard]);
 
     useEffect(() => {
+        // @ts-ignore
         if (currentExercise?.timerUsed) {
             setTheTimerStatus({
                 preStart: true,
@@ -138,7 +151,7 @@ const DeckOfDeathGame = () => {
         }
     }, [currentExercise]);
 
-    const drawNewCard = async (initialDraw) => {
+    const drawNewCard = async (initialDraw: boolean) => {
         await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/`)
             .then((response) => {
                 const result = response.data;
@@ -182,19 +195,19 @@ const DeckOfDeathGame = () => {
             } else if (breakoutAces) {
                 text = exercise;
             } else {
-                const standardAceExercise = exercisesChosen[suit];
+                const standardAceExercise = exercisesChosen[suit as keyof typeof exercisesChosen];
                 text ='14 ' + standardAceExercise;
             }
         } else {
             setTheCurrentCardAce(false);
-            const exercise = exercisesChosen[suit];
+            const exercise = exercisesChosen[suit as keyof typeof exercisesChosen];
             text = cardValue + ' ' + exercise;
         }
 
         return {text};
     }
 
-    const getCardNumber = (cardValue) => {
+    const getCardNumber = (cardValue: string) => {
         switch (cardValue) {
             case 'JACK':
                 return '11';
@@ -212,6 +225,7 @@ const DeckOfDeathGame = () => {
     const getInstructions = () => {
         const {preStart, inProgress} = timerStatus;
 
+        // @ts-ignore
         if (currentExercise.timerUsed) {
             if (preStart) {
                 //timer not started yet
@@ -236,6 +250,7 @@ const DeckOfDeathGame = () => {
     const handleWorkoutButtonClicked = () => {
         const {preStart, finished} = timerStatus;
 
+        // @ts-ignore
         if (currentExercise.timerUsed) {
             if (preStart) {
                 startTheTimer();

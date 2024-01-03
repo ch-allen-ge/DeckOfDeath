@@ -1,8 +1,7 @@
-import './coachModal.css';
+import './coachModal.scss';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import { useDispatch } from 'react-redux'
-
+import { useAppDispatch } from '../../hooks';
 import {
     setClubsExercise,
     setDiamondsExercise,
@@ -15,9 +14,30 @@ import {
   } from "../../reduxSlices/exercisesChosenSlice";
 
 import { setBreakoutAces } from '../../reduxSlices/workoutOptionsSlice';
+import { FC, ReactElement } from 'react';
 
-const CoachModal = ({workout, modalOpen, handleClose}) => {
-    const dispatch = useDispatch();
+interface CoachModalProps {
+    workout: {
+        title: string,
+        equipment: string,
+        difficulty: number,
+        clubs: string,
+        diamonds: string,
+        hearts: string,
+        spades: string,
+        aces: {
+            exercise: string,
+            timerUsed: boolean,
+            minutesToDo: string | number,
+            secondsToDo: string | number
+        }
+    },
+    modalOpen: boolean,
+    handleClose: () => void
+}
+
+const CoachModal: FC<CoachModalProps> = ({workout, modalOpen, handleClose}): ReactElement => {
+    const dispatch = useAppDispatch();
 
     return (
         <Modal

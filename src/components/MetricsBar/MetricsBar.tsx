@@ -1,24 +1,25 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector } from '../../hooks';
 import { useState, useEffect, useRef } from 'react';
+import { FC, ReactElement } from 'react';
 
-import './metricsBarStyles.css';
+import './metricsBarStyles.scss';
 
-const MetricsBar = () => {
-    const dispatch = useDispatch();
-    const cardsFinished = useSelector((state) => state.deck.cardsFinished);
-    const cardsRemaining = useSelector((state) => state.deck.cardsRemaining);
+const MetricsBar: FC = (): ReactElement => {
+    const cardsFinished = useAppSelector((state) => state.deck.cardsFinished);
+    const cardsRemaining = useAppSelector((state) => state.deck.cardsRemaining);
 
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
 
     const minutesRef = useRef(minutes);
     const secondsRef = useRef(seconds);
-    const setTheMinutes = (data) => {
+
+    const setTheMinutes = (data: number) => {
         minutesRef.current = data;
         setMinutes(data);
     }
 
-    const setTheSeconds = (data) => {
+    const setTheSeconds = (data: number) => {
         secondsRef.current = data;
         setSeconds(data);
     }
@@ -30,13 +31,13 @@ const MetricsBar = () => {
         if (minutes < 10) {
             minWithZero = '0' + minutes;
         } else {
-            minWithZero = minutes;
+            minWithZero = '' + minutes;
         }
 
         if (seconds < 10) {
             secondsWithZero = '0' + seconds;
         } else {
-            secondsWithZero = seconds;
+            secondsWithZero = '' + seconds;
         }
 
         return `${minWithZero}:${secondsWithZero}`;

@@ -1,21 +1,20 @@
-import { useEffect } from "react";
-import './countdownStyles.css';
-
-import {useDispatch } from 'react-redux';
-
+import { useEffect, FC, ReactElement } from "react";
+import { useAppDispatch } from '../../hooks';
 import { setShowCountdownAnimation } from "../../reduxSlices/UISlice";
 
-const Countdown = () => {
-	const dispatch = useDispatch();
+import './countdownStyles.scss';
+
+const Countdown: FC = () : ReactElement => {
+	const dispatch = useAppDispatch();
 	
 	useEffect(() => {
-		const nums = document.querySelectorAll('.nums span');
-		const counter = document.querySelector('.counter');
+		const nums = document.querySelectorAll('.nums span') as unknown as HTMLElement[];
+		const counter = document.querySelector('.counter') as HTMLDivElement;
 		
 		runAnimation(nums, counter);
 	}, [])
 	
-	function runAnimation(nums, counter) {
+	function runAnimation(nums: HTMLElement[], counter: HTMLDivElement) {
 		nums.forEach((num, idx) => {
 			const lastNumber = nums.length - 1;
 			num.addEventListener('animationend', (e) => {

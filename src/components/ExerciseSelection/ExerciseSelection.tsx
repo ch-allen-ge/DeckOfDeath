@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
 import TimerOffIcon from '@mui/icons-material/TimerOff';
 import TimerIcon from '@mui/icons-material/Timer';
-import { useSelector, useDispatch } from 'react-redux'
 
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { FC, ReactElement } from 'react';
 import {
     setAcesExercise,
     setAcesTimerUsed,
@@ -12,33 +12,26 @@ import {
     setAcesSecondsToDo,
 } from "../../reduxSlices/exercisesChosenSlice";
 
-import './exerciseSelection.css';
+import './exerciseSelection.scss';
 
-const ExerciseSelection = ({suit, exercise, setExercise}) => {
-    const dispatch = useDispatch();
+interface ExerciseSelectionProps {
+    suit: string,
+    exercise: string,
+    setExercise: React.Dispatch<React.SetStateAction<string>>
+}
 
-    const breakoutAces = useSelector((state) => state.workoutOptions.breakoutAces);
-    const exercisesChosen = useSelector((state) => state.exercisesChosen);
-    const showError = useSelector((state) => state.UI.showError);
-    // useEffect(() => {
-    //     if (suit === 'aces') {
-    //         setExercise('aces', {
-    //             suit,
-    //             exerciseText,
-    //             timerUsed,
-    //             minutesToDo,
-    //             secondsToDo
-    //         })
-    //     } else {
-    //         setExercise(suit, exerciseText);
-    //     }
-    // }, [exerciseText, timerUsed, minutesToDo, secondsToDo]);
+const ExerciseSelection: FC<ExerciseSelectionProps> = ({suit, exercise, setExercise}): ReactElement => {
+    const dispatch = useAppDispatch();
+
+    const breakoutAces = useAppSelector((state) => state.workoutOptions.breakoutAces);
+    const exercisesChosen = useAppSelector((state) => state.exercisesChosen);
+    const showError = useAppSelector((state) => state.UI.showError);
 
     if (suit === 'aces') {
-        const acesExercise = useSelector((state) => state.exercisesChosen.aces.exercise);
-        const acesTimerUsed = useSelector((state) => state.exercisesChosen.aces.timerUsed);
-        const acesMinutesToDo = useSelector((state) => state.exercisesChosen.aces.minutesToDo);
-        const acesSecondsToDo = useSelector((state) => state.exercisesChosen.aces.secondsToDo);
+        const acesExercise = useAppSelector((state) => state.exercisesChosen.aces.exercise);
+        const acesTimerUsed = useAppSelector((state) => state.exercisesChosen.aces.timerUsed);
+        const acesMinutesToDo = useAppSelector((state) => state.exercisesChosen.aces.minutesToDo);
+        const acesSecondsToDo = useAppSelector((state) => state.exercisesChosen.aces.secondsToDo);
 
         return (
             <div className="card">
@@ -80,6 +73,7 @@ const ExerciseSelection = ({suit, exercise, setExercise}) => {
                                     autoComplete='off'
                                     onChange={(e) => {
                                         const minutes = e.target.value;
+                                        // @ts-ignore
                                         if (minutes > 0 || minutes === '') {
                                             dispatch(setAcesMinutesToDo(minutes));
                                         }
@@ -95,6 +89,7 @@ const ExerciseSelection = ({suit, exercise, setExercise}) => {
                                     autoComplete='off'
                                     onChange={(e) => {
                                         const seconds = e.target.value;
+                                        // @ts-ignore
                                         if (seconds > 0 || seconds === '') {
                                             dispatch(setAcesSecondsToDo(seconds));
                                         }
@@ -122,9 +117,10 @@ const ExerciseSelection = ({suit, exercise, setExercise}) => {
                         autoComplete='off'
                         className="suitExercise"
                         onChange={(e) => {
+                            // @ts-ignore
                             dispatch(setExercise(e.target.value));
                         }}
-                        error={showError && exercisesChosen[suit] === ''}
+                        error={showError && exercisesChosen[suit as keyof typeof exercisesChosen] === ''}
                     />
                 </div>
             </div>

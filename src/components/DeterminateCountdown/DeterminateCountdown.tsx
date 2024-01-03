@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, FC, ReactElement } from "react";
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 
-import './determinateCountdownStyles.css';
+import './determinateCountdownStyles.scss';
 
-const DeterminateCountdown = () => {
+const DeterminateCountdown: FC = (): ReactElement => {
     const [progress, setProgress] = useState(100);
     const [currentSecond, setCurrentSecond] = useState(0);
     const totalSeconds = 5;

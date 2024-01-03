@@ -1,19 +1,48 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+    useEffect,
+    useRef,
+    useState,
+    FC,
+    ReactElement
+} from 'react';
 
-import './countdownTimerStyles.css';
+import './countdownTimerStyles.scss';
 
-const CountdownTimer = ({timerInfo, setTimerStatus}) => {
-    const [minutes, setMinutes] = useState(timerInfo.minutes || 0);
-    const [seconds, setSeconds] = useState(timerInfo.seconds || 0);
+interface AceCardProps {
+    text: string,
+    timerUsed?: boolean,
+    minutes?: string | number,
+    seconds?: string | number
+}
+
+interface RegularCardProps {
+    text: string
+}
+
+interface CountdownTimerProps {
+    timerInfo: AceCardProps | RegularCardProps | null,
+    setTimerStatus: (params: {
+        preStart: boolean,
+        inProgress: boolean,
+        finished: boolean
+    }) => void
+};
+
+const CountdownTimer: FC<CountdownTimerProps> = ({timerInfo, setTimerStatus}): ReactElement => {
+    // @ts-ignore
+    const [minutes, setMinutes] = useState<number>(timerInfo.minutes || 0);
+    // @ts-ignore
+    const [seconds, setSeconds] = useState<number>(timerInfo.seconds || 0);
 
     const minutesRef = useRef(minutes);
     const secondsRef = useRef(seconds);
-    const setTheMinutes = (data) => {
+
+    const setTheMinutes = (data: number) => {
         minutesRef.current = data;
         setMinutes(data);
     }
 
-    const setTheSeconds = (data) => {
+    const setTheSeconds = (data: number) => {
         secondsRef.current = data;
         setSeconds(data);
     }
@@ -25,13 +54,13 @@ const CountdownTimer = ({timerInfo, setTimerStatus}) => {
         if (minutes < 10) {
             minWithZero = '0' + minutes;
         } else {
-            minWithZero = minutes;
+            minWithZero = '' + minutes;
         }
 
         if (seconds < 10) {
             secondsWithZero = '0' + seconds;
         } else {
-            secondsWithZero = seconds;
+            secondsWithZero = '' + seconds;
         }
 
         return `${minWithZero}:${secondsWithZero}`;

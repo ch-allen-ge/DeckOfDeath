@@ -1,10 +1,26 @@
-import { useState } from 'react';
+import { useState, FC } from 'react';
 import CoachModal from '../CoachModal';
 import workouts from '../../coachWorkouts';
-import './coachZone.css';
+import './coachZone.scss';
 
-const CoachZone = () => {
-    const workoutBlock = (workout, id) => {
+interface workoutInterface {
+    title: string,
+    equipment: string,
+    difficulty: number,
+    clubs: string,
+    diamonds: string,
+    hearts: string,
+    spades: string,
+    aces: {
+        exercise: string,
+        timerUsed: boolean,
+        minutesToDo: string | number,
+        secondsToDo: string |number
+    }
+}
+
+const CoachZone: FC = () => {
+    const workoutBlock = (workout: workoutInterface, id: number) => {
         const [modalOpen, setModalOpen] = useState(false);
     
         const handleClick = () => {
@@ -31,7 +47,7 @@ const CoachZone = () => {
                 <h1 className='coachZoneText'>Coach Zone</h1>
             </div>
             <div className='coachZoneContainer'>
-                {workouts.map((workout, id) => {
+                {workouts.map((workout: workoutInterface, id: number) => {
                     return (
                         workoutBlock(workout, id)
                     );
@@ -42,15 +58,3 @@ const CoachZone = () => {
 }
 
 export default CoachZone;
-
-// {
-//     title: 'Dumbell Easy',
-//     background: '',
-//     equipment: '2 light dumbells',
-//     difficulty: 1,
-//     duration: '???',
-//     clubs: 'dumbell alternating presses each side',
-//     diamonds: 'dumbell rows each side',
-//     hearts: 'jump squats',
-//     spades: 'dumbell lunges each side'
-// }

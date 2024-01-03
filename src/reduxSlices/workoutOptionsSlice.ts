@@ -1,20 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+interface OptionsState {
+    breakoutAces: boolean,
+    oneHandedSuit: boolean,
+    easyDeck: boolean
+};
+
+const initialState: OptionsState = {
+    breakoutAces: false,
+    oneHandedSuit: false,
+    easyDeck: false
+};
 
 export const workoutOptionsSlice = createSlice({
     name: 'workoutOptions',
-    initialState: {
-        breakoutAces: false,
-        oneHandedSuit: false,
-        easyDeck: false
-    },
+    initialState,
     reducers: {
-        setBreakoutAces: (state, action) => {
+        setBreakoutAces: (state, action: PayloadAction<boolean>) => {
             state.breakoutAces = action.payload;
         },
-        setOneHandedSuit: (state, action) => {
+        setOneHandedSuit: (state, action: PayloadAction<boolean>) => {
             state.oneHandedSuit = action.payload;
         },
-        setEasyDeck: (state, action) => {
+        setEasyDeck: (state, action: PayloadAction<boolean>) => {
             state.easyDeck = action.payload;
         },
         resetOptions: (state) => {

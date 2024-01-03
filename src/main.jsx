@@ -1,11 +1,11 @@
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
-import store from './store.js';
+import { store } from './store.ts';
 import { Provider } from 'react-redux';
-import ErrorPage from './components/ErrorPage/ErrorPage.jsx';
-import WorkoutPage from './components/WorkoutPage/WorkoutPage.jsx';
+import ErrorPage from './components/ErrorPage/ErrorPage.tsx';
+import WorkoutPage from './components/WorkoutPage/WorkoutPage.tsx';
 
-import './index.css';
+import './index.scss';
 
 import {
     createBrowserRouter,
