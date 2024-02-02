@@ -1,13 +1,13 @@
 import ReactDOM from 'react-dom/client';
 import { store } from './store.ts';
 import { Provider } from 'react-redux';
-import HomePage from './Pages/HomePage/index.tsx'
-import ErrorPage from './Pages/ErrorPage/ErrorPage.tsx';
-import WorkoutPage from './Pages/WorkoutPage/WorkoutPage.tsx';
-import RegisterPage from './Pages/RegisterPage/index.tsx';
-import LoginPage from './Pages/LoginPage/index.tsx';
-import ProfilePage from './Pages/ProfilePage/index.tsx';
-import CoachPage from './Pages/CoachPage/index.tsx';
+import HomePage from './Pages/HomePage'
+import ErrorPage from './Pages/ErrorPage';
+import WorkoutPage from './Pages/WorkoutPage';
+import RegisterPage from './Pages/RegisterPage';
+import LoginPage from './Pages/LoginPage';
+import ProfilePage from './Pages/ProfilePage';
+import CoachPage from './Pages/CoachPage';
 import SavedWorkoutsPage from './Pages/SavedWorkoutsPage';
 import './index.scss';
 
