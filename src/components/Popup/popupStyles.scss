@@ -1,0 +1,17 @@
+.show {
+    visibility: visible;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+.popupContainer {
+    background-color: aliceblue;
+    border: 2px solid cornflowerblue;
+    padding: 0.5rem 1rem;
+    position: absolute;
+    border-radius: 1rem;
+    width: max-content;
+    margin-top:10rem;
+}

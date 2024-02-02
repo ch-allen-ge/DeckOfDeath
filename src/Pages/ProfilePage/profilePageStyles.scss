@@ -1,0 +1,202 @@
+@import "../../mixins.scss";
+
+.profilePageContainer {
+    display: flex;
+}
+
+.contentContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.topSection {
+    padding: 3rem 0rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.topSectionFlexContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.awardsStatsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: 5rem;
+}
+
+.awardsContainer {
+    width: 30rem;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+}
+
+.proPic {
+    border-radius: 50%;
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    transform: translate3d(0px, 0px, 0.1px);
+    border: 2px solid aliceblue;
+    position: absolute;
+}
+
+.previewProPic {
+    border-radius: 50%;
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    transform: translate3d(0px, 0px, 0.1px);
+    border: 2px solid aliceblue;
+    z-index: 999;
+    position: absolute;
+}
+
+.proPic:active {
+    transform: scale(0.98);
+}
+
+.proPic:hover {
+    cursor: pointer;
+}
+
+.proPicContainer {
+    width: 10rem;
+    height: 10rem;
+    margin: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.cardProfileContainer {
+    height: 20rem;
+    width: 15rem;
+    border: 2px solid black;
+    border-radius: 2%;
+    background-color: white;
+    position: relative;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-image: url(/images/allSuitsWallpaper.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.profileCardText {
+    position: absolute;
+    writing-mode: tb-rl;
+    font-size: 1rem;
+    color: white;
+    padding: .5rem;
+    background-color: rgba(0, 0, 0, 0.39);
+    border-radius: 0px 0px .5rem 0px;
+
+    &.topName {
+        top: 0;
+        text-orientation: upright;
+    }
+
+    &.bottomName {
+        transform: rotate(180deg);
+        bottom: 0;
+        right: 0;
+        text-orientation: upright;
+    }
+}
+
+.profileCardText:hover {
+    cursor: default;
+}
+
+.completedWorkoutsContainer {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 25rem;
+}
+
+.popupRow {
+    display: flex;
+    align-items: center;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin: 5px 0;
+}
+
+.popupRow:hover {
+    cursor: pointer;
+    background-color: lightgrey;
+}
+
+.popupRow:active {
+    transform: scale(0.98);
+}
+
+.popupRowText {
+    margin-left: 5px;
+}
+
+.changeProPicInput {
+    position: absolute;
+    padding-top: 4rem;
+    height: 3rem;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.changeProPicInput:hover {
+    cursor: pointer;
+}
+
+.saveCancelProPic {
+    width: 30%;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 2rem;
+}
+
+@include mobile {
+    .profilePageContainer {
+        flex-direction: column;
+    }
+
+    .topSectionFlexContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .awardsStatsContainer {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+    }
+
+    .awardsContainer {
+        width: auto;
+    }
+
+    .cardProfileContainer {
+        height: 15rem;
+        width: 10rem;
+    }
+
+    .proPicContainer {
+        width: 6rem;
+        height: 6rem;
+    }
+
+    .profileCardText {
+        font-size: 0.8rem;
+        padding: .2rem;
+        border-radius: 0px 0px .5rem 0px;
+    }
+
+    .completedWorkoutsContainer {
+        margin: 0;
+    }
+}

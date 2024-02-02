@@ -1,20 +1,21 @@
-import Countdown from "../Countdown";
-import DeckOfDeathGame from "../DeckOfDeathGame";
+import Countdown from "../../components/Countdown";
+import DeckOfDeathGame from "../../components/DeckOfDeathGame";
 
-import { useEffect, FC, ReactElement } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from '../../hooks';
 
-import Navbar from "../Navbar";
+import Navbar from "../../components/Navbar";
 
-const WorkoutPage: FC = (): ReactElement => {
+import './workoutPageStyles.scss';
+
+const WorkoutPage = () => {
     const navigate = useNavigate();
 
     const exercisesChosen = useAppSelector((state) => state.exercisesChosen);
     const showCountdownAnimation = useAppSelector((state) => state.UI.showCountdownAnimation);
 
     useEffect(() => {
-      //if no exercises  in state, navigate back to homepage
       if (
           exercisesChosen.clubs === '' &&
           exercisesChosen.diamonds === '' &&
@@ -26,13 +27,13 @@ const WorkoutPage: FC = (): ReactElement => {
   }, []);
 
     return (
-        <>
+        <div className='workoutPageContainer'>
           <Navbar />
           <Countdown />
           {!showCountdownAnimation && 
             <DeckOfDeathGame />
           }
-        </>
+        </div>
     )
 }
 

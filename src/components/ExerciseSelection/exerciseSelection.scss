@@ -43,9 +43,13 @@
     border-radius: 15px;
     background: ivory;
     margin: 15px;
-    width: 35%;
+    grid-column: span 2;
 }
 
 .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.acesCard {
+    grid-column: 2 / span 2;
 }

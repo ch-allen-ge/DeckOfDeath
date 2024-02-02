@@ -1,0 +1,11 @@
+@import "../../mixins.scss";
+
+.homePageContainer {
+    display: flex;
+}
+
+@include mobile {
+    .homePageContainer {
+        flex-direction: column;
+    }
+}

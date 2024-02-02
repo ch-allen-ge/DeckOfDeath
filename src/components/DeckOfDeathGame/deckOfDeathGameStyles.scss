@@ -1,15 +1,12 @@
+@import "../../mixins.scss";
+
 .deckOfDeathContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-@media (max-width: 600px) {
-    .deckOfDeathContainer {
-        flex-direction: column;
-        padding-bottom: 30px;
-    }
+    width: 100dvw;
+    height: 100dvh;
 }
 
 .workoutContainer {
@@ -26,7 +23,7 @@
 }
 
 .finishedText {
-    padding: 30px;
+    padding-bottom: 30px;
 }
 
 .workoutCard {
@@ -34,15 +31,7 @@
     transition: 0.3s;
     border-radius: 15px;
     background: ivory;
-    margin: 15px;
     text-align: center;
-}
-
-@media (max-width: 600px) {
-    .workoutCard {
-        width: 80vw;
-        margin: 0px;
-    }
 }
 
 .cardText {
@@ -75,8 +64,32 @@
     display: flex;
 }
 
-@media (max-width: 600px) {
+@include mobile {
+    .workoutCard {
+        width: 80vw;
+        margin: 0px;
+    }
+
+    .deckOfDeathContainer {
+        width: 100%;
+        height: 100%;
+    }
+
     .cardAndExerciseContainer {
         flex-direction: column
+    }
+}
+
+@include tablet {
+    .deckOfDeathContainer {
+        width: 100%;
+        height: auto;
+    }
+}
+
+@include landscape_tablet {
+    .deckOfDeathContainer {
+        width: 100%;
+        height: auto;
     }
 }

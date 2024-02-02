@@ -1,10 +1,10 @@
-import { useEffect, FC, ReactElement } from "react";
+import { useEffect } from "react";
 import { useAppDispatch } from '../../hooks';
 import { setShowCountdownAnimation } from "../../reduxSlices/UISlice";
 
 import './countdownStyles.scss';
 
-const Countdown: FC = () : ReactElement => {
+const Countdown = () => {
 	const dispatch = useAppDispatch();
 	
 	useEffect(() => {
@@ -15,10 +15,10 @@ const Countdown: FC = () : ReactElement => {
 	}, [])
 	
 	function runAnimation(nums: HTMLElement[], counter: HTMLDivElement) {
-		nums.forEach((num, idx) => {
+		nums.forEach((num, index) => {
 			const lastNumber = nums.length - 1;
 			num.addEventListener('animationend', (e) => {
-				if(e.animationName === 'goIn' && idx !== lastNumber){
+				if(e.animationName === 'goIn' && index !== lastNumber){
 					num.classList.remove('in');
 					num.classList.add('out');
 				} else if (e.animationName === 'goOut' && num.nextElementSibling){

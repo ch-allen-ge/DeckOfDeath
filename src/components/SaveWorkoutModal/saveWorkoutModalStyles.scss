@@ -1,0 +1,36 @@
+.saveWorkoutContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 25px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 300px;
+}
+
+.saveWorkoutModalLabel {
+    display: flex;
+    justify-content: center;
+    color: white;
+    background-color: cornflowerblue;
+    border-radius: 15px 15px 0px 0px;
+    font-size: larger;
+    padding: 10px 0px 10px 0px;
+    padding: 1rem;
+}
+
+.contents {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
+
+.saveButton {
+    margin-top: 1rem !important;
+}

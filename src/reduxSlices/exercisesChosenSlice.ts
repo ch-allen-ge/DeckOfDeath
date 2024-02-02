@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface exerciseChosenState {
-    clubs: string,
-    diamonds: string,
-    hearts: string,
-    spades: string,
+    clubs: string;
+    diamonds: string;
+    hearts: string;
+    spades: string;
     aces: {
-        exercise: string,
-        timerUsed: boolean,
-        minutesToDo: string | number,
-        secondsToDo: string | number
+        exercise: string;
+        timerUsed: boolean;
+        minutesToDo: number;
+        secondsToDo: number;
     }
 }
 
@@ -21,8 +21,8 @@ const initialState: exerciseChosenState = {
     aces: {
         exercise: '',
         timerUsed: false,
-        minutesToDo: '',
-        secondsToDo: ''
+        minutesToDo: 0,
+        secondsToDo: 0
     }
 };
 
@@ -48,10 +48,10 @@ export const exercisesChosenSlice = createSlice({
         setAcesTimerUsed: (state, action: PayloadAction<boolean>) => {
             state.aces.timerUsed = action.payload;
         },
-        setAcesMinutesToDo: (state, action: PayloadAction<string | number>) => {
+        setAcesMinutesToDo: (state, action: PayloadAction<number>) => {
             state.aces.minutesToDo = action.payload;
         },
-        setAcesSecondsToDo: (state, action: PayloadAction<string | number>) => {
+        setAcesSecondsToDo: (state, action: PayloadAction<number>) => {
             state.aces.secondsToDo = action.payload;
         },
         resetExercises: (state) => {
@@ -62,8 +62,8 @@ export const exercisesChosenSlice = createSlice({
             state.aces = {
                 exercise: '',
                 timerUsed: false,
-                minutesToDo: '',
-                secondsToDo: ''
+                minutesToDo: 0,
+                secondsToDo: 0
             }
         }
     }

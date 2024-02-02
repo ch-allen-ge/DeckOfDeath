@@ -1,16 +1,24 @@
-import { FC, ReactElement } from 'react';
-
 import './currentCardStyles.scss';
 
+//external API call response
 interface CurrentCardProps {
-    currentCard: any
+    currentCard: {
+        code: string;
+        image: string;
+        images: {
+            svg: string;
+            png: string;
+        },
+        value: string;
+        suit: string;
+    }
 }
 
-const CurrentCard: FC<CurrentCardProps> = ({currentCard}): ReactElement => {
-    const cardCode = currentCard.code;
+const CurrentCard = ({currentCard} : CurrentCardProps) => {
+    const code = currentCard.code;
     return (
         <div className='currentCardContainer'>
-            <img src={`/images/cards/${cardCode}.png`} className='currentCardImg' alt={currentCard.code}></img>
+            <img src={`/images/cards/${code}.png`} className='currentCardImg' alt={code}></img>
         </div>
     );
 }

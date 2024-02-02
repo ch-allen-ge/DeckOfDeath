@@ -1,4 +1,4 @@
-import './coachModal.scss';
+import './workoutModalStyles.scss';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { useAppDispatch } from '../../hooks';
@@ -14,90 +14,88 @@ import {
   } from "../../reduxSlices/exercisesChosenSlice";
 
 import { setBreakoutAces } from '../../reduxSlices/workoutOptionsSlice';
-import { FC, ReactElement } from 'react';
 
-interface CoachModalProps {
+interface WorkoutModalProps {
     workout: {
-        title: string,
-        equipment: string,
-        difficulty: number,
-        clubs: string,
-        diamonds: string,
-        hearts: string,
-        spades: string,
-        aces: {
-            exercise: string,
-            timerUsed: boolean,
-            minutesToDo: string | number,
-            secondsToDo: string | number
-        }
+        name: string,
+        equipment?: string,
+        difficulty?: number,
+        clubs_exercise: string,
+        diamonds_exercise: string,
+        hearts_exercise: string,
+        spades_exercise: string,
+        aces_exercise: string,
+        breakout_aces: boolean,
+        timer_used: boolean,
+        aces_minutes_to_do: number,
+        aces_seconds_to_do: number,
     },
-    modalOpen: boolean,
-    handleClose: () => void
+    modalOpen: boolean;
+    handleClose: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CoachModal: FC<CoachModalProps> = ({workout, modalOpen, handleClose}): ReactElement => {
+const WorkoutModal = ({workout, modalOpen, handleClose} : WorkoutModalProps) => {
     const dispatch = useAppDispatch();
-
+    
     return (
         <Modal
             open={modalOpen}
             onClose={handleClose}
         >
-            <div className='coachModalContainer'>
-                <div className="coachModalLabel">
-                    {workout.title}
+            <div className='workoutModalContainer'>
+                <div className="workoutModalLabel">
+                    {workout.name}
                 </div>
-                <div className='coachModalGrid'>
-                    <div className='coachModalSection'>
+                <div className='workoutModalGrid'>
+                    <div className='workoutModalSection'>
                         <u>Equipment</u>
                         <div className='description'>
                             {workout.equipment}
                         </div>
                     </div>
-                    <div className='coachModalSection'>
+                    <div className='workoutModalSection'>
                         <u>Difficulty</u>
                         <div className='description'>
                             {`${workout.difficulty} star`}
                         </div>
                     </div>
-                    <div className='coachModalSection'>
+                    <div className='workoutModalSection'>
                         <img src='/images/suits/clubs.svg' className='icon'/>
                         <div className='description'>
-                            {workout.clubs}
+                            {workout.clubs_exercise}
                         </div>
                     </div>
-                    <div className='coachModalSection'>
+                    <div className='workoutModalSection'>
                         <img src='/images/suits/diamonds.svg' className='icon'/>
                         <div className='description'>
-                            {workout.diamonds}
+                            {workout.diamonds_exercise}
                         </div>
                     </div>
-                    <div className='coachModalSection'>
+                    <div className='workoutModalSection'>
                         <img src='/images/suits/hearts.svg' className='icon'/>
                         <div className='description'>
-                            {workout.hearts}
+                            {workout.hearts_exercise}
                         </div>
                     </div>
-                    <div className='coachModalSection'>
+                    <div className='workoutModalSection'>
                         <img src='/images/suits/spades.svg' className='icon'/>
                         <div className='description'>
-                            {workout.spades}
+                            {workout.spades_exercise}
                         </div>
                     </div>
-                    {workout.aces.exercise && (
-                        <div className='coachModalSection wholeRow'>
+                    {workout.aces_exercise && (
+                        <div className='workoutModalSection wholeRowModal'>
                             <div className='aceColumn'>
                                 <img src='/images/suits/aces.svg' className='icon'/>
                                 <div className='description'>
-                                    {workout.aces.exercise}
+                                    {workout.aces_exercise}
                                 </div>
                             </div>
                             <div className='aceColumn'>
                                 <span className='timeText'>Time</span>
                                 <div className='description'>
-                                    {workout.aces.timerUsed ? 
-                                        <div>{`${workout.aces.minutesToDo} minute(s) ${workout.aces.secondsToDo} second(s)`}</div>
+                                    {workout.timer_used ? 
+                                        <div>{`${workout.aces_minutes_to_do} minute(s) ${workout.aces_seconds_to_do} second(s)`}</div>
                                     :
                                         <div>No timer set</div>
                                     }
@@ -111,21 +109,15 @@ const CoachModal: FC<CoachModalProps> = ({workout, modalOpen, handleClose}): Rea
                         variant="contained"
                         className='selectButton'
                         onClick={() => {
-                            dispatch(setClubsExercise(workout.clubs));
-                            dispatch(setDiamondsExercise(workout.diamonds));
-                            dispatch(setHeartsExercise(workout.hearts));
-                            dispatch(setSpadesExercise(workout.spades));
-                            dispatch(setAcesExercise(workout.aces.exercise));
-                            dispatch(setAcesTimerUsed(workout.aces.timerUsed));
-                            dispatch(setAcesMinutesToDo(workout.aces.minutesToDo));
-                            dispatch(setAcesSecondsToDo(workout.aces.secondsToDo));
-
-                            if (workout.aces.exercise) {
-                                dispatch(setBreakoutAces(true));
-                            } else {
-                                dispatch(setBreakoutAces(false));
-                            }
-
+                            dispatch(setClubsExercise(workout.clubs_exercise));
+                            dispatch(setDiamondsExercise(workout.diamonds_exercise));
+                            dispatch(setHeartsExercise(workout.hearts_exercise));
+                            dispatch(setSpadesExercise(workout.spades_exercise));
+                            dispatch(setAcesExercise(workout.aces_exercise));
+                            dispatch(setBreakoutAces(workout.breakout_aces));
+                            dispatch(setAcesTimerUsed(workout.timer_used));
+                            dispatch(setAcesMinutesToDo(workout.aces_minutes_to_do));
+                            dispatch(setAcesSecondsToDo(workout.aces_seconds_to_do));
                         }}
                     >
                         Select
@@ -137,4 +129,4 @@ const CoachModal: FC<CoachModalProps> = ({workout, modalOpen, handleClose}): Rea
 
 }
 
-export default CoachModal;
+export default WorkoutModal;

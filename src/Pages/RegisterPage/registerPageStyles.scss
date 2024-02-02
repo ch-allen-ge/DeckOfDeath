@@ -1,0 +1,45 @@
+.registerPageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 20%;
+    padding-bottom: 2rem;
+}
+
+.registerInputFields {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem 0rem;
+}
+
+.profilePicInput {
+    padding-top: 4rem;
+    height: 3rem;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png') center center no-repeat #e4e4e4;
+    border-radius: 20px;
+    background-size: 3rem 3rem;
+}
+
+.profilePicInput:hover {
+    cursor: pointer;
+}
+
+.registerProPicContainer {
+    width: 8rem;
+    height: 8rem;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.cancelIcon {
+    position: absolute;
+    margin-left: 90%;
+}
+
+.cancelIcon:hover {
+    cursor: pointer;
+}

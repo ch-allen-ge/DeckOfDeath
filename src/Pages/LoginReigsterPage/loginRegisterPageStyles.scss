@@ -1,0 +1,26 @@
+@import "../../mixins.scss";
+
+.loginRegisterPageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%,-50%);
+
+    text-align: center;
+}
+
+.loginRegisterButtons {
+    display: flex;
+    justify-content: space-around;
+    width: 75%;
+}
+
+@include mobile {
+    .loginRegisterButtons {
+        width: 100%;
+    }
+}

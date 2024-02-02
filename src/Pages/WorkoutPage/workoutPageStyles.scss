@@ -1,0 +1,11 @@
+@import "../../mixins.scss";
+
+.workoutPageContainer {
+    display: flex;
+}
+
+@include mobile {
+    .workoutPageContainer {
+        flex-direction: column;
+    }
+}

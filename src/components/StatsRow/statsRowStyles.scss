@@ -1,0 +1,46 @@
+@import "../../mixins.scss";
+
+.statsRowContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    margin: 0px 25rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+}
+
+.statsRowTitleText {
+    text-align: center;
+}
+
+.statsContainer {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.statContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 0rem;
+}
+
+.statsRowTitleText {
+    font-size: x-large;
+    color: cornflowerblue;
+    padding: 1rem 0rem;
+}
+
+.statLabelText {
+    font-size: large;
+    text-align: center;
+}
+
+@include mobile {
+    .statsRowContainer {
+        margin: 0rem 1rem;
+    }
+}

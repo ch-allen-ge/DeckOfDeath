@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface DeckState {
-    deckId: string,
-    currentCard: any,
-    cardsFinished: number,
-    cardsRemaining: number
+    deckId: string;
+    currentCard: any;
+    cardsFinished: number;
+    cardsRemaining: number;
 }
 
 const initialState: DeckState = {

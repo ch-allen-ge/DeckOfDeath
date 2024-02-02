@@ -1,31 +1,22 @@
-import {useEffect, useState } from "react";
+import { useState } from "react";
 import ExerciseSelection from "../ExerciseSelection";
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import OptionsModal from "../OptionsModal";
-import CoachZone from "../CoachZone/CoachZone";
-import './startingScreenStyles.scss';
 import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from '../../hooks';
-
-import {
-  setClubsExercise,
-  setDiamondsExercise,
-  setHeartsExercise,
-  setSpadesExercise,
-  setAcesExercise,
-  resetExercises
-} from "../../reduxSlices/exercisesChosenSlice";
-
+import {resetExercises} from "../../reduxSlices/exercisesChosenSlice";
 import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
 import { resetUI } from "../../reduxSlices/UISlice";
-import { resetDeck } from "../../reduxSlices/deckSlice";
 import { setShowError } from "../../reduxSlices/UISlice";
+import './startingScreenStyles.scss';
+import SaveWorkoutModal from "../SaveWorkoutModal";
 
 const StartingScreen = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    const isLoggedIn = useAppSelector((state) => state.UI.loggedIn);
     const clubsExercise = useAppSelector((state) => state.exercisesChosen.clubs);
     const diamondsExercise = useAppSelector((state) => state.exercisesChosen.diamonds);
     const heartsExercise = useAppSelector((state) => state.exercisesChosen.hearts);
@@ -37,21 +28,16 @@ const StartingScreen = () => {
     const acesSecondsToDo = useAppSelector((state) => state.exercisesChosen.aces.secondsToDo);
     const showError = useAppSelector((state) => state.UI.showError);
 
-    const [modalOpen, setModalOpen] = useState(false);
-
-    useEffect(() => {
-      dispatch(resetExercises());
-      dispatch(resetOptions());
-      dispatch(resetUI());
-      dispatch(resetDeck());
-    }, []);
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [saveModalOpen, setSaveModalOpen] = useState<boolean>(false);
+    const [showSaveError, setShowSaveError] = useState<boolean>(false);
 
     const allFilledIn = () => {
       const exerciseArray = [clubsExercise, diamondsExercise, heartsExercise, spadesExercise];
 
       for (const card of exerciseArray) {
         if (card === '' ||
-          (breakoutAces && (acesExercise === '' || (acesTimerUsed && acesMinutesToDo === '' && acesSecondsToDo == '')))) 
+          (breakoutAces && (acesExercise === '' || (acesTimerUsed && acesMinutesToDo === 0 && acesSecondsToDo == 0)))) 
         {
           return false;
         }
@@ -60,17 +46,17 @@ const StartingScreen = () => {
       return true;
     }
 
+
     return (
       <>
         <div className="siteContainer">
           <div className="deathZone">
             <div className='deathRow'>
-              <ExerciseSelection key='clubs' suit='clubs' exercise={clubsExercise} setExercise={() => setClubsExercise}/>
-              <ExerciseSelection key='diamonds' suit='diamonds' exercise={diamondsExercise} setExercise={() => setDiamondsExercise}/>
-              <ExerciseSelection key='hearts' suit='hearts' exercise={heartsExercise} setExercise={() => setHeartsExercise}/>
-              <ExerciseSelection key='spades' suit='spades' exercise={spadesExercise} setExercise={() => setSpadesExercise}/>
               {
-                (breakoutAces || acesExercise) && <ExerciseSelection key='aces' suit='aces' exercise={acesExercise} setExercise={() => setAcesExercise}/>
+                ['clubs', 'diamonds', 'hearts', 'spades'].map((suit) => <ExerciseSelection key={suit} suit={suit} />)
+              }
+              {
+                (breakoutAces || acesExercise) && <ExerciseSelection suit='aces'/>
               }
             </div>
             {showError &&
@@ -80,6 +66,21 @@ const StartingScreen = () => {
             }
             <div className="buttonRow">
               <ButtonGroup variant="text">
+                {isLoggedIn && 
+                  <Button
+                    variant="text"
+                    onClick={() => {
+                      setShowSaveError(false);
+                      if (allFilledIn()) {
+                        setSaveModalOpen(true);
+                      } else {
+                        setShowSaveError(true);
+                      }
+                    }}
+                  >
+                    Save
+                  </Button>
+                }
                 <Button
                   variant="text"
                   onClick={() => {
@@ -88,7 +89,7 @@ const StartingScreen = () => {
                     dispatch(resetUI());
                   }}
                 >
-                  Reset
+                  Clear
                 </Button>
                 <Button
                   variant="text"
@@ -112,16 +113,25 @@ const StartingScreen = () => {
                 </Button>
               </ButtonGroup>
             </div>
+
+            {showSaveError &&
+              <div className="saveWorkoutError errorText">
+                Failed to save workout, fields incorrect
+              </div>
+            }
           </div>
 
-          <div className="coachZone">
-            <CoachZone />
-          </div>
-          
           <OptionsModal
             modalOpen={modalOpen}
             handleClose={() => {setModalOpen(false)}}
           />
+
+          {allFilledIn() && 
+            <SaveWorkoutModal
+              modalOpen={saveModalOpen}
+              handleClose={() => {setSaveModalOpen(false)}}
+            />
+          }
         </div>
       </>
     )

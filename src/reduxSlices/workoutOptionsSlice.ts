@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface OptionsState {
-    breakoutAces: boolean,
-    oneHandedSuit: boolean,
-    easyDeck: boolean
+    breakoutAces: boolean;
+    oneHandedSuit: boolean;
+    easyDeck: boolean;
 };
 
 const initialState: OptionsState = {

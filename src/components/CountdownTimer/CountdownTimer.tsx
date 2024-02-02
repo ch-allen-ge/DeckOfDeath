@@ -1,50 +1,38 @@
-import {
-    useEffect,
-    useRef,
-    useState,
-    FC,
-    ReactElement
-} from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import './countdownTimerStyles.scss';
 
 interface AceCardProps {
-    text: string,
-    timerUsed?: boolean,
-    minutes?: string | number,
-    seconds?: string | number
-}
-
-interface RegularCardProps {
-    text: string
+    text: string;
+    timerUsed: boolean;
+    minutes: number;
+    seconds: number;
 }
 
 interface CountdownTimerProps {
-    timerInfo: AceCardProps | RegularCardProps | null,
+    timerInfo: AceCardProps | null;
     setTimerStatus: (params: {
-        preStart: boolean,
-        inProgress: boolean,
-        finished: boolean
+        preStart: boolean;
+        inProgress: boolean;
+        finished: boolean;
     }) => void
 };
 
-const CountdownTimer: FC<CountdownTimerProps> = ({timerInfo, setTimerStatus}): ReactElement => {
-    // @ts-ignore
-    const [minutes, setMinutes] = useState<number>(timerInfo.minutes || 0);
-    // @ts-ignore
-    const [seconds, setSeconds] = useState<number>(timerInfo.seconds || 0);
+const CountdownTimer = ({timerInfo, setTimerStatus} : CountdownTimerProps) => {
+    const [minutes, setMinutes] = useState<number>(timerInfo ? timerInfo.minutes : 0);
+    const [seconds, setSeconds] = useState<number>(timerInfo ? timerInfo.seconds : 0);
 
     const minutesRef = useRef(minutes);
     const secondsRef = useRef(seconds);
 
-    const setTheMinutes = (data: number) => {
-        minutesRef.current = data;
-        setMinutes(data);
+    const setTheMinutes = (theMinutes: number) => {
+        minutesRef.current = theMinutes;
+        setMinutes(theMinutes);
     }
 
-    const setTheSeconds = (data: number) => {
-        secondsRef.current = data;
-        setSeconds(data);
+    const setTheSeconds = (theSeconds: number) => {
+        secondsRef.current = theSeconds;
+        setSeconds(theSeconds);
     }
 
     const getTimerString = () => {
@@ -93,7 +81,7 @@ const CountdownTimer: FC<CountdownTimerProps> = ({timerInfo, setTimerStatus}): R
 
     return (
         <div className='timerContainer'>
-            <h1>
+            <h1 id='timerString'>
                 {getTimerString()}
             </h1>
             {/* maybe add fireworks animation here if finished  */}

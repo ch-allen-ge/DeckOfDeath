@@ -1,15 +1,33 @@
+@import "../../mixins.scss";
+
 .currentCardImg {
     height: 300px;
-}
-
-@media (max-width: 600px) {
-    .currentCardImg {
-        height: 250px;
-    }
 }
 
 .currentCardContainer {
     display: flex;
     justify-content: center;
     padding: 30px;
+}
+
+@include mobile {
+    .currentCardImg {
+        height: 15rem;
+    }
+
+    .currentCardContainer {
+        padding: 1rem;
+    }
+}
+
+@include tablet {
+    .currentCardImg {
+        height: 12rem;
+    }
+}
+
+@include landscape_tablet {
+    .currentCardImg {
+        height: 10rem;
+    }
 }

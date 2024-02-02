@@ -1,0 +1,56 @@
+@import "../../mixins.scss";
+
+.rowContainer {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+    border-radius: 1rem;
+    margin: 1rem 0rem;
+    background: white;
+}
+
+.iconWorkoutSection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    column-gap: 10px;
+    row-gap: 15px;
+}
+
+.element {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+}
+
+.img {
+    width: 2rem;
+}
+
+.bigText {
+    font-size: larger;
+}
+
+.acesWorkoutSection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    column-gap: 10px;
+    row-gap: 15px;
+}
+
+.wholeRowDisplay {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+@include mobile {
+    .rowContainer {
+        margin: 1rem 1rem;
+    }
+}

@@ -1,4 +1,4 @@
-.coachModalContainer {
+.workoutModalContainer {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -8,7 +8,7 @@
     padding-bottom: 20px;
 }
 
-.coachModalLabel {
+.workoutModalLabel {
     display: flex;
     justify-content: center;
     color: white;
@@ -18,7 +18,7 @@
     padding: 10px 0px 10px 0px;
 }
 
-.coachModalGrid {
+.workoutModalGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(3, 1fr);
@@ -26,7 +26,7 @@
     row-gap: 15px;
 }
 
-.coachModalSection {
+.workoutModalSection {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -35,11 +35,11 @@
 }
 
 @media (max-width: 600px) {
-    .coachModalGrid {
+    .workoutModalGrid {
         grid-template-rows: none;
         width: 66vw;
     }
-    .coachModalSection {
+    .workoutModalSection {
         border-radius: 0px;
         padding-bottom: 0px;
     }
@@ -64,7 +64,7 @@
     width: fit-content;
 }
 
-.wholeRow {
+.wholeRowModal {
     grid-column: 1 / -1;
     border: 2px solid black;
     display: flex;

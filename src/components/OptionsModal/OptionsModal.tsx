@@ -27,52 +27,48 @@ const OptionsModal: FC<OptionsModalProps> = ({modalOpen, handleClose}): ReactEle
             onClose={handleClose}
         >
             <div className='modalContainer'>
-            <FormGroup>
-                <div className='switchGroupContainer'>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={breakoutAces}
-                                onChange={() => dispatch(setBreakoutAces(!breakoutAces))}
-                            />
-                        }
-                        label="Break out aces"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={oneHandedSuit}
-                                onChange={() => dispatch(setOneHandedSuit(!oneHandedSuit))}
-                            />
-                        }
-                        disabled
-                        label="One handed suit"
-                    /> {/* show a radio button list onchange to choose suit */}
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={easyDeck}
-                                onChange={() => dispatch(setEasyDeck(!easyDeck))}
-                            />
-                        }
-                        disabled
-                        label="Easy deck"
-                    />
-                </div>
-                <Button
-                    variant="contained"
-                    onClick={() => {
-                        handleClose();
-                    }}
-                >
-                    Close
-                </Button>
-            </FormGroup>
+                <FormGroup>
+                    <div className='switchGroupContainer'>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={breakoutAces}
+                                    onChange={() => dispatch(setBreakoutAces(!breakoutAces))}
+                                />
+                            }
+                            label="Break out aces"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={oneHandedSuit}
+                                    onChange={() => dispatch(setOneHandedSuit(!oneHandedSuit))}
+                                />
+                            }
+                            disabled
+                            label="One handed suit"
+                        /> {/* show a radio button list onchange to choose suit */}
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={easyDeck}
+                                    onChange={() => dispatch(setEasyDeck(!easyDeck))}
+                                />
+                            }
+                            disabled
+                            label="Easy deck"
+                        />
+                    </div>
+                    <Button
+                        variant="contained"
+                        onClick={handleClose}
+                    >
+                        Close
+                    </Button>
+                </FormGroup>
             </div>
         </Modal>
     );
 }
 
 export default OptionsModal;
-
-//save options to session or cookie or something

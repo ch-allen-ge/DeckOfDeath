@@ -19,27 +19,28 @@ import { resetExercises } from "../../reduxSlices/exercisesChosenSlice";
 import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
 import { resetUI } from "../../reduxSlices/UISlice";
 import { resetDeck } from "../../reduxSlices/deckSlice";
+import { dodPost, dodPatch } from "../../axios-config";
 
 import './deckOfDeathGameStyles.scss';
 
 interface TimerProps {
-    preStart: boolean,
-    inProgress: boolean,
-    finished: boolean
+    preStart: boolean;
+    inProgress: boolean;
+    finished: boolean;
 }
 
 interface AceCardProps {
-    text: string,
-    timerUsed?: boolean,
-    minutes?: string | number,
-    seconds?: string | number
+    text: string;
+    timerUsed: boolean;
+    minutes: number;
+    seconds: number;
 }
 
 interface RegularCardProps {
-    text: string
+    text: string;
 }
 
-const DeckOfDeathGame: FC = (): ReactElement => {
+const DeckOfDeathGame = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -51,6 +52,7 @@ const DeckOfDeathGame: FC = (): ReactElement => {
     const acesSecondsToDo = useAppSelector((state) => state.exercisesChosen.aces.secondsToDo);
     const deckId = useAppSelector((state) => state.deck.deckId);
     const currentCard = useAppSelector((state) => state.deck.currentCard);
+    const isLoggedIn = useAppSelector(state => state.UI.loggedIn);
 
     const [workoutFinished, setWorkoutFinished] = useState<boolean>(false);
     const [currentExercise, setCurrentExercise] = useState<RegularCardProps | AceCardProps | null>(null);
@@ -61,11 +63,13 @@ const DeckOfDeathGame: FC = (): ReactElement => {
         inProgress: false,
         finished: false
     });
+    const [totalTimeSpent, setTotalTimeSpent] = useState<string>('');
     
     const currentExerciseRef = useRef(currentExercise);
     const showWorkoutTimerRef = useRef(false);
     const currentCardAceRef = useRef(false);
     const timerStatusRef = useRef({});
+
 
     const setTheCurrentExercise = (data: RegularCardProps | AceCardProps | null) => {
         currentExerciseRef.current = data;
@@ -96,6 +100,36 @@ const DeckOfDeathGame: FC = (): ReactElement => {
             })
             .catch((error) => console.error('could not get new deck', error));
     }, []);
+
+    //workout finished, update database, maybe promise.all these
+    useEffect(() => {
+        if (isLoggedIn && workoutFinished) {
+            try {
+                const updateTotalTimeSpent = dodPatch('/profile/updateTotalTimeSpent', {
+                    timeSpent: totalTimeSpent
+                });
+
+                const updateNumberWorkoutsCompleted = dodPatch('/profile/updateNumberWorkoutsCompleted');
+
+                const addWorkoutCompleted = dodPost('/workouts/saveCompletedWorkout', {
+                    time_spent: totalTimeSpent,
+                    clubs_exercise: exercisesChosen.clubs,
+                    diamonds_exercise: exercisesChosen.diamonds,
+                    hearts_exercise: exercisesChosen.hearts,
+                    spades_exercise: exercisesChosen.spades,
+                    aces_exercise: acesExercise,
+                    breakout_aces: breakoutAces,
+                    timer_used: acesTimerUsed,
+                    aces_minutes_to_do: acesMinutesToDo,
+                    aces_seconds_to_do: acesSecondsToDo
+                });
+
+                Promise.all([updateTotalTimeSpent, updateNumberWorkoutsCompleted, addWorkoutCompleted]);
+            } catch (e) {
+                throw e;
+            }
+        }
+    }, [workoutFinished]);
 
     const startTheTimer = () => {
         setTheTimerStatus({
@@ -152,24 +186,37 @@ const DeckOfDeathGame: FC = (): ReactElement => {
     }, [currentExercise]);
 
     const drawNewCard = async (initialDraw: boolean) => {
-        await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/`)
-            .then((response) => {
-                const result = response.data;
+        try {
+            const response = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/`);
+            const result = response.data;
 
-                if (result.success) {
-                    const cardDrawn = result.cards[0];
-                    const cardsRemaining = result.remaining;
-                    if (!initialDraw) {
-                        dispatch(setCardsRemaining(cardsRemaining));
-                        dispatch(setCardsFinished(51-cardsRemaining));
-                        
-                    }
-                    dispatch(setCurrentCard(cardDrawn));
-                } else {
-                    setWorkoutFinished(true);
+            if (result.success) {
+                const cardDrawn = result.cards[0];
+                const cardsRemaining = result.remaining;
+                if (!initialDraw) {
+                    dispatch(setCardsRemaining(cardsRemaining));
+                    dispatch(setCardsFinished(51-cardsRemaining));
+                    
                 }
-            })
-            .catch((error) => console.error('could not draw new card', error));
+                dispatch(setCurrentCard(cardDrawn));
+            } else {
+                const timeString = document.getElementById('timerString')?.textContent as string;
+
+                const transformTimeString = () => {
+                    const timeArray = [0, 0, 0];
+                    timeString.split(':').reverse().map((timePiece, index) => timeArray[2-index] = Number(timePiece));
+                    return `${timeArray[0]}h ${timeArray[1]}m ${timeArray[2]}s`;
+                }
+
+                if (timeString) {
+                    setTotalTimeSpent(transformTimeString());
+                }
+                    
+                setWorkoutFinished(true);
+            }
+        } catch (e) {
+            throw e;
+        }
     };
 
     const getCurrentExercise = () => {
@@ -184,8 +231,9 @@ const DeckOfDeathGame: FC = (): ReactElement => {
             const minutes = acesMinutesToDo;
             const seconds = acesSecondsToDo;
 
+            //fucked up if minutes or seconds = 0
             if (timerUsed) {
-                text = `${minutes && `${minutes} ${minutes === '1' ? 'minute' : 'minutes'}`} ${seconds && `${seconds} ${seconds === '1' ? 'second' : 'seconds'} of ${exercise}`}`;
+                text = `${minutes > 0 ? `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}` : ''} ${seconds > 0 ? `${seconds} ${seconds === 1 ? 'second' : 'seconds'}` : ''} of ${exercise}`;
                 return {
                     text,
                     timerUsed,
@@ -294,7 +342,7 @@ const DeckOfDeathGame: FC = (): ReactElement => {
 
                                 <div className="timerContainer">
                                     {showCountdownAnimation && <DeterminateCountdown />}
-                                    {showWorkoutTimer && <CountdownTimer timerInfo={currentExerciseRef.current} setTimerStatus={setTheTimerStatus}/>}
+                                    {showWorkoutTimer && <CountdownTimer timerInfo={currentExerciseRef.current as AceCardProps ?? null} setTimerStatus={setTheTimerStatus}/>}
                                 </div>
 
                                 {isMobile ? 
@@ -314,6 +362,7 @@ const DeckOfDeathGame: FC = (): ReactElement => {
                     <MetricsBar />
                 </>
             }
+            
             {workoutFinished && 
                 <>
                     <div className="finishedText">
