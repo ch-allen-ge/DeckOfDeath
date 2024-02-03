@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const client = axios.create({
-    baseURL: 'https://tyche-84788637e4fc.herokuapp.com',
+    baseURL: 'https://api.deckofdeathworkout.com',
     withCredentials: true
 });
 
