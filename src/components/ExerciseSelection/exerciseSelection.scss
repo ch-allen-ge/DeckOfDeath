@@ -1,55 +1,61 @@
-.suitImg {
-    width: 100px;
-    margin: 15px 0px 30px 0px;
-}
-
-.suitColumn {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 15px 15px;
-}
-
-.suitLabel {
-    display: flex;
-    justify-content: center;
-    color: white;
-    background-color: cornflowerblue;
-    border-radius: 15px 15px 0px 0px;
-    font-size: larger;
-    padding: 10px 0px 10px 0px;
-}
-
-.timerRow {
-    display: flex;
-}
-
-.timerToggleButton {
-    margin-right: 10px !important;
-}
-
-.suitExercise {
-    margin-bottom: 20px !important;
-}
-
-.numInput {
-    width: 100px;
-    margin-right: 10px !important;
-}
-
-.card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    border-radius: 15px;
+.exercise-selection {
+    box-shadow: 0 .4rem .8rem 0 rgba(black,0.2);
+    border-radius: 1.5rem;
     background: ivory;
-    margin: 15px;
-    grid-column: span 2;
+    margin: 1.5rem;
+    min-width: 20%;
+
+    &__suit-label {
+        display: flex;
+        justify-content: center;
+        color: white;
+        background-color: cornflowerblue;
+        border-radius: 1.5rem 1.5rem 0 0;
+        font-size: 2rem;
+        padding: 1rem 0;
+    }
+
+    &__suit-contents {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 2rem;
+
+        & > div {
+            & > label {
+                font-size: 1.6rem;
+            }
+
+            & > div > input {
+                font-size: 1.6rem;
+            }
+        }
+
+
+        &__suit-img {
+            width: 10rem;
+            margin: 1.5rem 0 3rem 0;
+        }
+    }
 }
 
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
+.timer-row {
+    display: flex;
+    padding: 1rem;
 
-.acesCard {
-    grid-column: 2 / span 2;
+    & > button > svg {
+        font-size: x-large;
+    }
+
+    & > div > label {
+        font-size: 1.6rem;
+    }
+
+    & > div > div > input {
+        font-size: 1.6rem;
+    }
+
+    &__num-input {
+        margin-left: 10px !important;
+    }
 }

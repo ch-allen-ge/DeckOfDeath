@@ -27,6 +27,10 @@ const ExerciseSelection = ({suit} : ExerciseSelectionProps) => {
     const breakoutAces = useAppSelector((state) => state.workoutOptions.breakoutAces);
     const exercisesChosen = useAppSelector((state) => state.exercisesChosen);
     const showError = useAppSelector((state) => state.UI.showError);
+    const acesExercise = useAppSelector((state) => state.exercisesChosen.aces.exercise);
+    const acesTimerUsed = useAppSelector((state) => state.exercisesChosen.aces.timerUsed);
+    const acesMinutesToDo = useAppSelector((state) => state.exercisesChosen.aces.minutesToDo);
+    const acesSecondsToDo = useAppSelector((state) => state.exercisesChosen.aces.secondsToDo);
     const exercise = useAppSelector((state) => {
         switch (suit) {
             case 'clubs':
@@ -62,35 +66,24 @@ const ExerciseSelection = ({suit} : ExerciseSelectionProps) => {
         }
     }
 
-    if (suit === 'aces') {
-        const acesExercise = useAppSelector((state) => state.exercisesChosen.aces.exercise);
-        const acesTimerUsed = useAppSelector((state) => state.exercisesChosen.aces.timerUsed);
-        const acesMinutesToDo = useAppSelector((state) => state.exercisesChosen.aces.minutesToDo);
-        const acesSecondsToDo = useAppSelector((state) => state.exercisesChosen.aces.secondsToDo);
-
-        return (
-            <div className={`card ${suit === 'aces' ? 'acesCard' : ''}`}>
-                <div className="suitLabel">
-                    {suit}
-                </div>
-                <div className="suitColumn">
-                    <img className='suitImg' src={`/images/suits/${suit}.svg`}/>
+    const getInputFields = () => {
+        if (suit === 'aces') {
+            return (
+                <>
                     <TextField
                         label={`${suit} exercise*`}
                         variant="outlined"
                         value={acesExercise}
                         autoComplete='off'
-                        className="suitExercise"
                         onChange={(e) => {
                             setExerciseState(e.target.value);
                         }}
                         error={showError && breakoutAces && !acesExercise}
                     />
 
-                        <div className="timerRow">
+                    <div className="timer-row">
                         <ToggleButton
                             selected={acesTimerUsed}
-                            className="timerToggleButton"
                             value="left"
                             aria-label="left aligned"
                             onClick={() => {dispatch(setAcesTimerUsed(!acesTimerUsed))}}
@@ -100,7 +93,7 @@ const ExerciseSelection = ({suit} : ExerciseSelectionProps) => {
                         {acesTimerUsed && (
                             <>
                                 <TextField
-                                    className="numInput"
+                                    className="timer-row__num-input"
                                     type='number'
                                     label='minutes'
                                     variant="outlined"
@@ -114,7 +107,7 @@ const ExerciseSelection = ({suit} : ExerciseSelectionProps) => {
                                     error={showError && acesTimerUsed && (acesMinutesToDo === 0 && acesSecondsToDo === 0)}
                                 />
                                 <TextField
-                                    className="numInput"
+                                    className="timer-row__num-input"
                                     type='number'
                                     label='seconds'
                                     variant="outlined"
@@ -130,32 +123,39 @@ const ExerciseSelection = ({suit} : ExerciseSelectionProps) => {
                             </>
                         )}
                     </div>
-                </div>
-            </div>
-        )
-    } else {
-        return (
-            <div className="card">
-                <div className="suitLabel">
-                    {suit}
-                </div>
-                <div className="suitColumn">
-                    <img className='suitImg' src={`/images/suits/${suit}.svg`}/>
-                    <TextField
-                        label={`${suit} exercise*`}
-                        variant="outlined"
-                        value={exercise}
-                        autoComplete='off'
-                        className="suitExercise"
-                        onChange={(e) => {
-                            setExerciseState(e.target.value);
-                        }}
-                        error={showError && exercisesChosen[suit as keyof typeof exercisesChosen] === ''}
-                    />
-                </div>
-            </div>
-        );
+                </>
+            );
+        } else {
+            return (
+                <TextField
+                    label={`${suit} exercise*`}
+                    variant="outlined"
+                    value={exercise}
+                    autoComplete='off'
+                    onChange={(e) => {
+                        setExerciseState(e.target.value);
+                    }}
+                    error={showError && exercisesChosen[suit as keyof typeof exercisesChosen] === ''}
+                />
+            );
+        }
     }
+
+    return (
+        <div className="exercise-selection">
+            <div className="exercise-selection__suit-label">
+                {suit}
+            </div>
+            <div className="exercise-selection__suit-contents">
+                <img 
+                    className='exercise-selection__suit-contents__suit-img'
+                    src={`/images/suits/${suit}.svg`}
+                />
+                {getInputFields()}
+            </div>
+        </div>
+    );
+    
 }
 
 export default ExerciseSelection;

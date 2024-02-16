@@ -1,6 +1,6 @@
 import './workoutDisplayStyles.scss';
 import TimerIcon from '@mui/icons-material/Timer';
-import { timeToString } from '../../utils/utils';
+
 //workout time is optional because a coach workout doesnt have one, but a completed workout does
 interface WorkoutDisplayProps {
     children?: React.ReactNode,

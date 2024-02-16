@@ -9,47 +9,28 @@ import LoginPage from './Pages/LoginPage';
 import ProfilePage from './Pages/ProfilePage';
 import CoachPage from './Pages/CoachPage';
 import SavedWorkoutsPage from './Pages/SavedWorkoutsPage';
-import './index.scss';
-
+import Navbar from './components/Navbar/Navbar.tsx';
 import {
-    createBrowserRouter,
-    RouterProvider,
-  } from "react-router-dom";
-
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <HomePage />,
-        errorElement: <ErrorPage />
-    },
-    {
-        path: "/workout",
-        element: <WorkoutPage />
-    },
-    {
-        path: "/register",
-        element: <RegisterPage />
-    },
-    {
-        path: "/login",
-        element: <LoginPage />
-    },
-    {
-        path: "/profile",
-        element: <ProfilePage />
-    },
-    {
-        path: "/coach",
-        element: <CoachPage />
-    },
-    {
-        path: '/savedWorkouts',
-        element: <SavedWorkoutsPage />
-    }
-]);
+    BrowserRouter,
+    Routes,
+    Route
+} from "react-router-dom";
+import './index.scss';
 
 ReactDOM.createRoot(document.getElementById('root') as Element).render(
     <Provider store={store}>
-        <RouterProvider router={router} />
+        <BrowserRouter>
+            <Navbar/>
+            <Routes>
+                <Route path="/" element={<HomePage /> } />
+                <Route path="/workout" element={<WorkoutPage />} />                         
+                <Route path="/register" element={<RegisterPage /> } />
+                <Route path="/login" element={<LoginPage /> } />
+                <Route path="/profile" element={<ProfilePage /> } />
+                <Route path="/coach" element={ <CoachPage />} />
+                <Route path="/savedWorkouts" element={<SavedWorkoutsPage /> } />
+                <Route element={<ErrorPage /> } />
+            </Routes>
+        </BrowserRouter>
     </Provider>
-)
+);

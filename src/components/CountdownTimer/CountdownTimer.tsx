@@ -51,7 +51,7 @@ const CountdownTimer = ({timerInfo, setTimerStatus} : CountdownTimerProps) => {
             secondsWithZero = '' + seconds;
         }
 
-        return `${minWithZero}:${secondsWithZero}`;
+        return `${minWithZero}:${secondsWithZero} remaining`;
     }
 
     useEffect(() => {
@@ -80,10 +80,8 @@ const CountdownTimer = ({timerInfo, setTimerStatus} : CountdownTimerProps) => {
     }, []);
 
     return (
-        <div className='timerContainer'>
-            <h1 id='timerString'>
-                {getTimerString()}
-            </h1>
+        <div className='timer-container'>
+            {getTimerString()}
             {/* maybe add fireworks animation here if finished  */}
         </div>
     )

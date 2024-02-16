@@ -2,6 +2,8 @@
 
 .profilePageContainer {
     display: flex;
+    width: 100%;
+    font-size: 1.6rem;
 }
 
 .contentContainer {
@@ -39,8 +41,8 @@
 
 .proPic {
     border-radius: 50%;
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     transform: translate3d(0px, 0px, 0.1px);
     border: 2px solid aliceblue;
@@ -67,8 +69,8 @@
 }
 
 .proPicContainer {
-    width: 10rem;
-    height: 10rem;
+    width: 16rem;
+    height: 16rem;
     margin: auto;
     position: relative;
     top: 50%;
@@ -76,8 +78,8 @@
 }
 
 .cardProfileContainer {
-    height: 20rem;
-    width: 15rem;
+    height: 32rem;
+    width: 24rem;
     border: 2px solid black;
     border-radius: 2%;
     background-color: white;

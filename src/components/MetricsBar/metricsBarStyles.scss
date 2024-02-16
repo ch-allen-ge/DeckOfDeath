@@ -2,9 +2,17 @@
 
 .metricsBarContainer {
     display: flex;
-    margin-top: 30px;
-    width: 50%;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    position: absolute;
+
+    font-size: 2rem;
+
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 15%;
+    border-top: 3px solid cornflowerblue;
+    background: linear-gradient(to bottom, #dae3eb, transparent);
 }
 
 .metricItem {
@@ -24,21 +32,38 @@
 }
 
 @include mobile {
+    .label {
+        font-size: medium;
+        word-wrap: break-word;
+        width: 6rem;
+    }
+
     .metricsBarContainer {
-        width: 100%;
+        height: 12%;
+        padding: 0;
     }
 }
 
 @include tablet {
+    .label {
+        font-size: medium;
+    }
+
     .metricsBarContainer {
         margin-top: 0;
-        width: 100%;
+        height: 10%;
+        width: 90%;
     }
 }
 
 @include landscape_tablet {
+    .label {
+        font-size: larger;
+    }
+
     .metricsBarContainer {
         margin-top: 0;
-        width: 100%;
+        height: 10%;
+        width: 95%;
     }
 }

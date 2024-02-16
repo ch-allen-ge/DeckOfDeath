@@ -4,6 +4,9 @@
     align-items: center;
     margin: 0 20%;
     padding-bottom: 2rem;
+    width: 100%;
+    font-size: 2rem;
+    margin-top: 2rem;
 }
 
 .registerInputFields {
@@ -13,14 +16,14 @@
 }
 
 .profilePicInput {
-    padding-top: 4rem;
-    height: 3rem;
+    padding-top: 6rem;
+    height: 5rem;
     overflow: hidden;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     background: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png') center center no-repeat #e4e4e4;
-    border-radius: 20px;
+    border-radius: 2rem;
     background-size: 3rem 3rem;
 }
 
@@ -29,9 +32,9 @@
 }
 
 .registerProPicContainer {
-    width: 8rem;
-    height: 8rem;
-    margin: 2rem 0;
+    width: 13rem;
+    height: 13rem;
+    margin: 3rem 0;
     position: relative;
 }
 

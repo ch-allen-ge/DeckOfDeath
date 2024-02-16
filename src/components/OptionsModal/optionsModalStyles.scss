@@ -1,10 +1,4 @@
-.switchGroupContainer {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-}
-
-.modalContainer {
+.options-modal {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -13,10 +7,24 @@
     border-radius: 25px;
     box-shadow: 24px;
     padding: 20px;
+
+    &__settings {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+
+        & > label > :nth-child(2) {
+            font-size: 1.6rem;
+        }
+
+        & + button {
+            font-size: 1.6rem;
+        }
+    }
 }
 
 @media (max-width: 768px) {
-    .modalContainer {
+    .options-modal {
         width: 66vw;
     }
 }

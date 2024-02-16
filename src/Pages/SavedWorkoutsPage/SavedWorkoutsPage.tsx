@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import { dodGet } from "../../axios-config";
 import { setSavedWorkouts } from "../../reduxSlices/profileSlice";
-import Navbar from "../../components/Navbar";
 import WorkoutDisplay from "../../components/WorkoutDisplay";
 import './savedWorkoutsPageStyles.scss';
 import { Button } from "@mui/material";
@@ -59,12 +58,11 @@ const SavedWorkoutPage = () => {
         dispatch(setAcesTimerUsed(selectedWorkout.timer_used));
         dispatch(setAcesMinutesToDo(selectedWorkout.aces_minutes_to_do));
         dispatch(setAcesSecondsToDo(selectedWorkout.aces_seconds_to_do));
-        navigate('/');
+        navigate('/workout');
     }
 
     return (
         <div className="savedWorkoutsPageContainer">
-            <Navbar />
             {isLoggedIn ? 
                 <div className='savedWorkoutsContainer'>
                     <div className='savedWorkoutsTextContainer'>
@@ -77,7 +75,7 @@ const SavedWorkoutPage = () => {
                                 <div>{workout.name}</div>
                                 <WorkoutDisplay workout={workout} index={index} />
                                 <Button onClick={() => handleClick(workout)}>
-                                    Select
+                                    Start
                                 </Button>
                             </div>
                         )}

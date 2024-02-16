@@ -1,107 +1,77 @@
 @import "../../mixins.scss";
 
-.navBar {
-    display: flex;
+.navbar__button-container > svg {
+    font-size: 3rem !important;
+}
+
+.navbar {
+    display: inline-flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+    box-shadow: 0 1rem 3rem 0 rgba(0,0,0,.2);
     background: white;
-    width: 10%;
     height: 100vh;
-}
+    padding: 0 1rem;
 
-.titleText {
-    color: cornflowerblue;
-    cursor: pointer;
-    font-size: xx-large;
-    padding: 10px 0px;
-    text-align: center;
-}
+    &__home-button {
+        color: cornflowerblue;
+        cursor: pointer;
+        font-size: 2.5rem;
+        padding: 1rem 0;
+        text-align: center;
+    }
 
-.navBarButtonContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    &__button-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
-    text-align: center;
-    font-size: large;
-}
+        text-align: center;
+        font-size: 1.5rem;
+        transition: transform .2s;
+        cursor: pointer;
 
-.navBarButtonContainer:hover {
-    cursor: pointer;
-}
+        padding: 1rem;
+        border-radius: 1.5rem;
+        color: cornflowerblue;
 
-.icon {
-    padding: 1rem;
-    border-radius: 1.5rem;
-}
+        &:hover,
+        &:focus {
+            transform: translateY(-.6rem);
+        }
+        
+        &:active {
+            transform: translateY(-.3rem);
+        }
+    }
 
-.iconNormal {
-    color: cornflowerblue;
-    background: #F8F8F8;
-}
-
-.iconExpanded {
-    color: white;
-    background: cornflowerblue;
+    &__button-label {
+        display: block;
+    }
 }
 
 @include mobile {
-    .titleText {
-        font-size: small;
-    }
-
-    .navBar {
+    .navbar {
         flex-direction: row;
-        height: 15%;
-        width: 100vw;
-    }
+        height: auto;
+        width: 100%;
 
-    .navBarButtonContainer { 
-        margin: 0rem;
-        font-size: small;
-    }
+        svg {
+            font-size: 2rem !important;
+        }
 
-    .icon {
-        padding: .2rem;
-        border-radius: .5rem;
-    }
-}
+        &__home-button {
+            font-size: 1.2rem;
+        }
 
-@include tablet {
-    .titleText {
-        font-size: medium;
-    }
-
-    .navBar {
-        width: 13%;
-    }
-
-    .navBarButtonContainer { 
-        margin: 0rem;
-        font-size: small;
-    }
-
-    .icon {
-        padding: .2rem;
-        border-radius: .5rem;
-    }
-}
-
-@include landscape_tablet {
-    .titleText {
-        font-size: medium;
-    }
-
-    .navBarButtonContainer { 
-        margin: 0rem;
-        font-size: medium;
-    }
-
-    .icon {
-        padding: .2rem;
-        border-radius: .5rem;
+        &__button-container {
+            margin: 0;
+            font-size: small;
+            display: inline-block;
+            padding: 0.8rem;
+            font-size: 1.2rem;
+        }
     }
 }

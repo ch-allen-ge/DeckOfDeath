@@ -26,9 +26,9 @@ const OptionsModal: FC<OptionsModalProps> = ({modalOpen, handleClose}): ReactEle
             open={modalOpen}
             onClose={handleClose}
         >
-            <div className='modalContainer'>
+            <div className='options-modal'>
                 <FormGroup>
-                    <div className='switchGroupContainer'>
+                    <div className='options-modal__settings'>
                         <FormControlLabel
                             control={
                                 <Switch

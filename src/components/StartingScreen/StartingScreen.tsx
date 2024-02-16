@@ -1,7 +1,6 @@
 import { useState } from "react";
 import ExerciseSelection from "../ExerciseSelection";
 import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import OptionsModal from "../OptionsModal";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from '../../hooks';
@@ -16,7 +15,6 @@ const StartingScreen = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const isLoggedIn = useAppSelector((state) => state.UI.loggedIn);
     const clubsExercise = useAppSelector((state) => state.exercisesChosen.clubs);
     const diamondsExercise = useAppSelector((state) => state.exercisesChosen.diamonds);
     const heartsExercise = useAppSelector((state) => state.exercisesChosen.hearts);
@@ -29,8 +27,6 @@ const StartingScreen = () => {
     const showError = useAppSelector((state) => state.UI.showError);
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
-    const [saveModalOpen, setSaveModalOpen] = useState<boolean>(false);
-    const [showSaveError, setShowSaveError] = useState<boolean>(false);
 
     const allFilledIn = () => {
       const exerciseArray = [clubsExercise, diamondsExercise, heartsExercise, spadesExercise];
@@ -48,92 +44,74 @@ const StartingScreen = () => {
 
 
     return (
-      <>
-        <div className="siteContainer">
-          <div className="deathZone">
-            <div className='deathRow'>
-              {
-                ['clubs', 'diamonds', 'hearts', 'spades'].map((suit) => <ExerciseSelection key={suit} suit={suit} />)
-              }
-              {
-                (breakoutAces || acesExercise) && <ExerciseSelection suit='aces'/>
-              }
-            </div>
-            {showError &&
-              <div className="errorRow">
-                *Please fill in all exercises*
-              </div>
-            }
-            <div className="buttonRow">
-              <ButtonGroup variant="text">
-                {isLoggedIn && 
-                  <Button
-                    variant="text"
-                    onClick={() => {
-                      setShowSaveError(false);
-                      if (allFilledIn()) {
-                        setSaveModalOpen(true);
-                      } else {
-                        setShowSaveError(true);
-                      }
-                    }}
-                  >
-                    Save
-                  </Button>
-                }
-                <Button
-                  variant="text"
-                  onClick={() => {
-                    dispatch(resetExercises());
-                    dispatch(resetOptions());
-                    dispatch(resetUI());
-                  }}
-                >
-                  Clear
-                </Button>
-                <Button
-                  variant="text"
-                  onClick={() => {setModalOpen(true)}}
-                >
-                  Options
-                </Button>
-                <Button
-                  variant="text"
-                  size="large"
-                  onClick={() => {
-                    if (allFilledIn()) {
-                      dispatch(setShowError(false));
-                      navigate('/workout');
-                    } else {
-                      dispatch(setShowError(true));
-                    }
-                  }}
-                  >
-                  Start
-                </Button>
-              </ButtonGroup>
-            </div>
-
-            {showSaveError &&
-              <div className="saveWorkoutError errorText">
-                Failed to save workout, fields incorrect
-              </div>
-            }
+      <div className="startingscreen">
+        <div className="startingscreen__descriptiontext">
+          <div className="startingscreen__descriptiontext__title">
+            Customize Your Workout
           </div>
-
-          <OptionsModal
-            modalOpen={modalOpen}
-            handleClose={() => {setModalOpen(false)}}
-          />
-
-          {allFilledIn() && 
-            <SaveWorkoutModal
-              modalOpen={saveModalOpen}
-              handleClose={() => {setSaveModalOpen(false)}}
-            />
+          <div className="startingscreen__descriptiontext__description">
+            Each card in a deck will represent the number of reps you have to do of your chosen exercise.
+            For example, if you set clubs to push ups, drawing a 10 of clubs means you have to do 10 push ups.
+            This is a very challenging workout with many reps, so choose wisely and have fun!
+          </div>
+        </div>
+        
+        <div className='startingscreen__deathrow'>
+          {
+            ['clubs', 'diamonds', 'hearts', 'spades'].map((suit) => <ExerciseSelection key={suit} suit={suit} />)
+          }
+          {
+            (breakoutAces || acesExercise) && <ExerciseSelection suit='aces'/>
           }
         </div>
-      </>
+        {showError &&
+          <div className="errorRow">
+            *Please fill in all exercises*
+          </div>
+        }
+        <div className="startingscreen__buttonrow">
+            <div className="startingscreen__buttonrow__spear-button">
+              <Button
+                variant="contained"
+                onClick={() => {
+                  dispatch(resetExercises());
+                  dispatch(resetOptions());
+                  dispatch(resetUI());
+                }}
+                style={{backgroundColor: "black"}}
+              >
+                Clear
+              </Button>
+            </div>
+            <div
+              className="startingscreen__buttonrow__start-button"
+              onClick={() => {
+                if (allFilledIn()) {
+                  dispatch(setShowError(false));
+                  navigate('/workout');
+                } else {
+                  dispatch(setShowError(true));
+                }
+              }}
+            />
+
+            <div className="startingscreen__buttonrow__spear-button">
+              <Button
+                variant="contained"
+                onClick={() => {setModalOpen(true)}}
+                style={{backgroundColor: "black"}}
+              >
+                Options
+              </Button>
+            </div>
+            
+        </div>
+
+        <OptionsModal
+          modalOpen={modalOpen}
+          handleClose={() => {setModalOpen(false)}}
+        />
+      </div>
     )
 }
 

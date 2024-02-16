@@ -1,120 +1,289 @@
 @import "../../mixins.scss";
 
-.coachZoneContainer {
+.coachzone {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
+    transition: all 2s;
+
+    &__title {
+        text-align: center;
+        color: aliceblue;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        background: #13293D;
+        font-size: 2rem;
+        height: 5rem;
+    }
+
+    &__workout-container {
+        display: flex;
+        width: 100%;
+        height: calc(100% - 5rem);
+
+        //zeus
+        & > :nth-child(1) {
+            background-image: linear-gradient(0deg, #f8f6f0 0%, #FBDA61 100%);
+        }
+
+        //poseidon
+        & > :nth-child(2) {
+            background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+        }
+
+        //hades
+        & > :nth-child(3) {
+            background-image: linear-gradient(19deg, #b721ff 0%, #21D4FD 100%);
+        }
+
+        //ares
+        & > :nth-child(4) {
+            background-image: linear-gradient(147deg, #FFE53B 0%, #FF2525 74%);
+        }
+
+        //apollo
+        & > :nth-child(5) {
+            background-image: linear-gradient(0deg, #FEE140 0%, #FA709A 100%);
+        }
+
+        //aphrodite
+        & > :nth-child(6) {
+            background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
+        }
+
+        //hermes
+        & > :nth-child(7) {
+            background-image: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%);
+        }
+
+        //thor
+        & > :nth-child(8) {
+            background-image: linear-gradient(180deg, #FFFFFF 0%, #6284FF 50%, #FF0000 100%);
+        }
+
+        //hercules
+        & > :nth-child(9) {
+            background-image: linear-gradient(180deg, #52ACFF 25%, #FFE32C 100%);
+        }
+
+        //athena
+        & > :nth-child(10) {
+            background-image: linear-gradient(0deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%);
+        }
+    }
 }
 
-.coachZoneTextContainer {
-    text-align: center;
-    color: aliceblue;
-    padding: 10px;
+@keyframes showSlowly {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.coachcard {
+    position: relative;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+    height: 100%;
+    transition: all 1s;
+    width: 10%;
+    background-color: rgba(white, .2);
+    border: 1px solid black;
+
+    &__workoutname {
+        opacity: 0;
+        font-size: 2rem;
+        display: flex;
+        justify-content: center;
+        flex-grow: 1;
+        margin-top: 3rem;
+    }
+
+    &__icons {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        & * {
+            height: 4rem;
+            font-size: 3rem !important;
+            position: absolute;
+        }
+    }
+
+    &__workout {
+        opacity: 0;
+        display: none;
+        
+    }
+
+    &__confirmbutton {
+        margin: 2rem 0rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        opacity: 0;
+
+        & > button {
+            font-size: 2rem;
+            width: 80%;
+            background: white;
+            border-radius: 5rem;
+        }
+    }
+    
+    &:hover {
+        cursor: pointer;
+        width: 50rem;
+        transition: all 1s;
+
+        .coachcard__workout {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 5;
+            animation-name: showSlowly;
+            animation-duration: 1.5s;
+            animation-fill-mode: forwards;
+        }
+
+        .coachcard__workoutname {
+            transition: all 1s;
+            opacity: 1;
+        }
+
+        .coachcard__icons {
+            transition: all 1s;
+
+            & > :nth-child(1) {
+                font-size: 3rem !important;
+                transition: all 1s;
+                transform: translate(-9rem, -39rem) scale(1.3);    
+            }
+            
+            & > :nth-child(2) {
+                font-size: 3rem !important;
+                transition: all 1s;
+                transform: translate(9rem, -39rem) scale(1.3);    
+            }
+        }
+
+        .coachcard__confirmbutton {
+            opacity: 1;
+            transition: all 1s;
+            transition-delay: 0.6s;
+
+            & > button:hover {
+                transition: all .5s;
+                transform: translateY(-.8rem);
+                background: aliceblue;
+                box-shadow: 0 .3rem 5rem 0 rgba(0,0,0,.2);
+            }
+        }
+    }
 }
 
-.coachZoneText {
-    background: #13293D;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.coachCard:hover {
-    cursor: pointer;
-}
-
-.coachWorkoutCards {
+.coachworkout {
     display: flex;
-    width: 50%;
-    justify-content: space-around;
-    margin: 2rem 0rem;
     flex-wrap: wrap;
-}
-
-.coachCard {
-    display: flex;
-    padding: 1rem;
-    margin: 1rem;
-    border-radius: 1rem;;
-    flex-direction: column;
     align-items: center;
-    background-color: white;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
-}
+    justify-content: center;
 
-.selectAWorkout {
+    height: 100%;
     width: 100%;
 
-    display: flex;
-    justify-content: center;
-    margin-top: 5rem;
-}
+    &__column {
+        width: 80%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
 
-.confirmButton {
-    width: fit-content;
-}
+        background: rgba(white, .4);
+        border-radius: 2rem;
 
-.workoutDisplayWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        &__exercise {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            align-items: center;
+            font-size: 2rem;
 
-.coachZoneModalContainer {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border-radius: 25px;
-    padding: 20px;
+            &__suit {
+                height: 5rem;
+                padding: 1rem;
+            }
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+            &__row {
+                flex-direction: row;
 
-@include tablet {
-    .coachWorkoutCards {
-        width: 75%;
-        margin: 0;
-    }
-
-    .coachCard {
-        padding: .4rem;
-        margin: .4rem;
-        border-radius: 1rem;;
-    }
-}
-
-@include landscape_tablet {
-    .coachWorkoutCards {
-        width: 85%;
-        margin: 0;
-    }
-
-    .coachCard {
-        padding: .3rem;
-        margin: .3rem;
-        border-radius: 1rem;;
+                & > svg {
+                    font-size: 5rem;
+                    padding: 1rem;
+                }
+            }
+        }
     }
 }
 
 @include mobile {
-    .selectAWorkout {
-        margin: 1rem 0rem;
+    .coachzone__workout-container {
+        flex-direction: column;
+        height: 100%;
     }
-
-    .coachWorkoutCards {
+  
+    .coachcard {
+        font-size: 1rem;
         width: 100%;
-        margin: 0;
+        height: calc((100% - 5rem) / 10);
+
+        &:hover,
+        &:active {
+            width: auto;
+            height: 30rem;
+        }
+    }
+}
+
+@include tablet {
+    .coachzone__workout-container {
+        flex-direction: column;
     }
 
-    .coachCard {
-        padding: .3rem;
-        margin: .3rem;
-        border-radius: 1rem;;
+    .coachcard {
+        width: 100%;
+        height: calc((100% - 5rem) / 10);
+
+        &:hover,
+        &:active {
+            width: auto;
+            height: 50rem;
+        }
     }
+}
+
+@include landscape_tablet {
+   .coachzone__workout-container {
+      flex-direction: column;
+   }
+
+   .coachcard {
+      width: 100%;
+      height: calc((100% - 5rem) / 10);
+
+      &:hover,
+      &:active {
+        width: auto;
+        height: 50rem;
+      }
+   }
 }

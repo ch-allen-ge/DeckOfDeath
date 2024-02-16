@@ -1,11 +1,5 @@
 @import "../../mixins.scss";
 
-.coachPageContainer {
-    display: flex;
-}
-
-@include mobile {
-    .coachPageContainer {
-        flex-direction: column;
-    }
+.coachpage {
+    flex-grow: 1;
 }

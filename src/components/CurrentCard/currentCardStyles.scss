@@ -1,7 +1,7 @@
 @import "../../mixins.scss";
 
 .currentCardImg {
-    height: 300px;
+    height: 25rem;
 }
 
 .currentCardContainer {
@@ -14,20 +14,10 @@
     .currentCardImg {
         height: 15rem;
     }
-
-    .currentCardContainer {
-        padding: 1rem;
-    }
 }
 
 @include tablet {
     .currentCardImg {
-        height: 12rem;
-    }
-}
-
-@include landscape_tablet {
-    .currentCardImg {
-        height: 10rem;
+        height: 15rem;
     }
 }

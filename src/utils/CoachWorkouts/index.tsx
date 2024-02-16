@@ -11,11 +11,12 @@ interface Workout {
     timer_used: boolean,
     aces_minutes_to_do: number,
     aces_seconds_to_do: number
+    icon: React.ReactNode
 };
 
 const workouts : Workout[] = [
     {
-        name: 'Mike\'s Workout',
+        name: 'Zeus',
         equipment: '2 light dumbells',
         difficulty: 1,
         clubs_exercise: 'dumbell alternating presses each side',
@@ -26,11 +27,11 @@ const workouts : Workout[] = [
         aces_exercise: '',
         timer_used: false,
         aces_minutes_to_do: 0,
-        aces_seconds_to_do: 0
-        
+        aces_seconds_to_do: 0,
+        icon: <img src="/images/godIcons/zeus.png" />
     },
     {
-        name: 'Jessica\'s Workout',
+        name: 'Poseidon',
         equipment: '2 medium dumbells',
         difficulty: 2,
         clubs_exercise: 'dumbell presses',
@@ -41,11 +42,11 @@ const workouts : Workout[] = [
         aces_exercise: 'burpees',
         timer_used: false,
         aces_minutes_to_do: 0,
-        aces_seconds_to_do: 0
-        
+        aces_seconds_to_do: 0,
+        icon: <img src="/images/godIcons/poseidon.png" />
     },
     {
-        name: 'Jeff\'s Workout',
+        name: 'Hades',
         equipment: '2 heavy dumbells',
         difficulty: 3,
         clubs_exercise: 'dumbell curls',
@@ -56,11 +57,11 @@ const workouts : Workout[] = [
         aces_exercise: 'burpees',
         timer_used: true,
         aces_minutes_to_do: 1,
-        aces_seconds_to_do: 30
-        
+        aces_seconds_to_do: 30,
+        icon: <img src="/images/godIcons/hades.png" />
     },
     {
-        name: 'Jim\'s Workout',
+        name: 'Ares',
         equipment: '1 light kettlebell',
         difficulty: 1,
         clubs_exercise: 'kettlebell cleans',
@@ -71,11 +72,11 @@ const workouts : Workout[] = [
         aces_exercise: '',
         timer_used: false,
         aces_minutes_to_do: 0,
-        aces_seconds_to_do: 0
-        
+        aces_seconds_to_do: 0,
+        icon: <img src="/images/godIcons/ares.png" />
     },
     {
-        name: 'Paul\'s Workout',
+        name: 'Apollo',
         equipment: '2 medium kettlebells',
         difficulty: 2,
         clubs_exercise: 'kettlebell military presses',
@@ -86,11 +87,11 @@ const workouts : Workout[] = [
         aces_exercise: 'kettlebell alternating one handed swings each side',
         timer_used: false,
         aces_minutes_to_do: 0,
-        aces_seconds_to_do: 0
-        
+        aces_seconds_to_do: 0,
+        icon: <img src="/images/godIcons/apollo.png" />
     },
     {
-        name: 'Steph\'s Workout',
+        name: 'Aphrodite',
         equipment: '2 medium kettlebells, 1 heavy kettlebell',
         difficulty: 3,
         clubs_exercise: 'kettlebell military presses each side',
@@ -101,11 +102,11 @@ const workouts : Workout[] = [
         aces_exercise: '2 kettlebell long cycle',
         timer_used: true,
         aces_minutes_to_do: 1,
-        aces_seconds_to_do: 30
-        
+        aces_seconds_to_do: 30,
+        icon: <img src="/images/godIcons/aphrodite.png" />
     },
     {
-        name: 'John\'s Workout',
+        name: 'Hermes',
         equipment: 'none',
         difficulty: 1,
         clubs_exercise: 'jumping jacks',
@@ -116,11 +117,11 @@ const workouts : Workout[] = [
         aces_exercise: '',
         timer_used: false,
         aces_minutes_to_do: 0,
-        aces_seconds_to_do: 0
-        
+        aces_seconds_to_do: 0,
+        icon: <img src="/images/godIcons/hermes.png" />
     },
     {
-        name: 'Sarah\'s Workout',
+        name: 'Thor',
         equipment: 'none',
         difficulty: 2,
         clubs_exercise: 'lunge',
@@ -131,11 +132,11 @@ const workouts : Workout[] = [
         aces_exercise: 'high jumps',
         timer_used: false,
         aces_minutes_to_do: 0,
-        aces_seconds_to_do: 0
-        
+        aces_seconds_to_do: 0,
+        icon: <img src="/images/godIcons/thor.png" />
     },
     {
-        name: 'William\'s Workout',
+        name: 'Hercules',
         equipment: 'none',
         difficulty: 3,
         clubs_exercise: 'russian twists',
@@ -146,8 +147,23 @@ const workouts : Workout[] = [
         aces_exercise: 'plank',
         timer_used: true,
         aces_minutes_to_do: 1,
-        aces_seconds_to_do: 30
-        
+        aces_seconds_to_do: 30,
+        icon: <img src="/images/godIcons/hercules.png" />
+    },
+    {
+        name: 'Athena',
+        equipment: 'none',
+        difficulty: 3,
+        clubs_exercise: 'russian twists',
+        diamonds_exercise: 'squat jacks',
+        hearts_exercise: 'push ups',
+        spades_exercise: 'burpees',
+        breakout_aces: true,
+        aces_exercise: 'plank',
+        timer_used: true,
+        aces_minutes_to_do: 1,
+        aces_seconds_to_do: 30,
+        icon: <img src="/images/godIcons/athena.png" />
     }
 ];
 

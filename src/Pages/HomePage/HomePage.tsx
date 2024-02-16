@@ -41,8 +41,7 @@ const HomePage = () => {
     }, []);
 
     return (
-        <div className='homePageContainer'>
-            <Navbar />
+        <div className='homepage'>
             <StartingScreen />
         </div>
     );

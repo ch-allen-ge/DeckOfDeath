@@ -1,95 +1,56 @@
 @import "../../mixins.scss";
 
-.deckOfDeathContainer {
+.deckofdeathgame {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100dvw;
-    height: 100dvh;
+
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    box-sizing: border-box;
+
+    &__playing-field {
+        display: flex;
+
+        &__exercise {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            &__text {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                font-size: 2rem;
+            }
+        }
+    }
 }
 
-.workoutContainer {
+.finished-workout {
+    font-size: 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
 
-.workoutText {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    &__text {
+        margin: 2rem;
+    }
 
-.finishedText {
-    padding-bottom: 30px;
-}
-
-.workoutCard {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    border-radius: 15px;
-    background: ivory;
-    text-align: center;
-}
-
-.cardText {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 15px 15px;
-    font-size: x-large;
-}
-
-.cardLabel {
-    display: flex;
-    justify-content: center;
-    color: white;
-    background-color: cornflowerblue;
-    border-radius: 15px 15px 0px 0px;
-    font-size: larger;
-    padding: 20px 10px 20px 10px;
-}
-
-.redCard {
-    background-color: crimson;
-}
-
-.blackCard {
-    background-color: black;
-}
-
-.cardAndExerciseContainer {
-    display: flex;
+    & > button {
+        font-size: 1.6rem;
+    }
 }
 
 @include mobile {
-    .workoutCard {
-        width: 80vw;
-        margin: 0px;
-    }
+    .deckofdeathgame {
+        justify-content: start;
 
-    .deckOfDeathContainer {
-        width: 100%;
-        height: 100%;
-    }
-
-    .cardAndExerciseContainer {
-        flex-direction: column
-    }
-}
-
-@include tablet {
-    .deckOfDeathContainer {
-        width: 100%;
-        height: auto;
-    }
-}
-
-@include landscape_tablet {
-    .deckOfDeathContainer {
-        width: 100%;
-        height: auto;
+        &__playing-field {
+            flex-direction: column;
+            margin-top: 6rem;
+        }
     }
 }

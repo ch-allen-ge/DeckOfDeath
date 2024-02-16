@@ -28,7 +28,6 @@ const WorkoutPage = () => {
 
     return (
         <div className='workoutPageContainer'>
-          <Navbar />
           <Countdown />
           {!showCountdownAnimation && 
             <DeckOfDeathGame />

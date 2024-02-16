@@ -15,13 +15,11 @@ import DirectionsRunOutlinedIcon from '@mui/icons-material/DirectionsRunOutlined
 import AirlineSeatIndividualSuiteOutlinedIcon from '@mui/icons-material/AirlineSeatIndividualSuiteOutlined';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
-import { setSelectedTab } from "../../reduxSlices/UISlice";
 import '../../mixins.scss';
 
 interface iconButtonProps {
   children: React.ReactNode,
   onClick: () => void,
-  isSelected: boolean,
   icon: React.ReactNode
 }
 
@@ -29,7 +27,6 @@ const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const isLoggedIn = useAppSelector(state => state.UI.loggedIn);
-    const selectedTab = useAppSelector(state => state.UI.selectedTab);
 
     const logOut = async () => {
       const response = await dodPost('/logout');
@@ -45,17 +42,17 @@ const Navbar = () => {
     const IconButton = ({
       children,
       onClick,
-      isSelected,
       icon
     }: iconButtonProps) => {
 
       return (
         <div
-          className={`navBarButtonContainer icon ${isSelected ? 'iconExpanded' : 'iconNormal'}`}
+          className={'navbar__button-container'}
           onClick={onClick}
         >
           {icon}
-          <span className="labelText">{children}</span>
+          
+          <span className="navbar__button-label">{children}</span>
         </div>
       );
     }
@@ -68,7 +65,6 @@ const Navbar = () => {
               dispatch(resetUI());
               navigate('/');
             }}
-            isSelected = {false}
             icon = {<AirlineSeatIndividualSuiteOutlinedIcon />}
           >
             Logout
@@ -81,10 +77,8 @@ const Navbar = () => {
         <>
           <IconButton
             onClick={() => {
-              dispatch(setSelectedTab('login'));
               navigate('/login');
             }}
-            isSelected = {selectedTab === 'login'}
             icon = {<LoginOutlinedIcon /> }
           >
             Login
@@ -92,10 +86,8 @@ const Navbar = () => {
 
           <IconButton
             onClick={() => {
-              dispatch(setSelectedTab('register'));
               navigate('/register');
             }}
-            isSelected = {selectedTab === 'register'}
             icon = {<CreateOutlinedIcon /> }
           >
             Register
@@ -105,13 +97,12 @@ const Navbar = () => {
     };
 
     return (
-          <div className='navBar'>
-            <div className='titleText' onClick={() => {
+          <div className='navbar'>
+            <div className='navbar__home-button' onClick={() => {
               dispatch(resetExercises());
               dispatch(resetOptions());
               dispatch(resetUI());
               dispatch(resetDeck());
-              dispatch(setSelectedTab('home'));
               navigate('/');
             }}>
               Deck
@@ -123,34 +114,26 @@ const Navbar = () => {
 
             <IconButton
               onClick={() => {
-                dispatch(setSelectedTab('profile'));
                 navigate(`/profile`);
               }}
-              isSelected = {selectedTab === 'profile'}
-              icon = {<Person2OutlinedIcon /> }
+              icon = {<Person2OutlinedIcon />}
             >
               Profile
             </IconButton>
 
             <IconButton
               onClick={() => {
-                dispatch(setSelectedTab('savedWorkouts'));
                 navigate(`/savedWorkouts`);
               }}
-              isSelected = {selectedTab === 'savedWorkouts'}
               icon = {<BookmarkBorderOutlinedIcon /> }
             >
               Saved
-              <br />
-              Workouts
             </IconButton>
 
             <IconButton
               onClick={() => {
-                dispatch(setSelectedTab('coach'));
                 navigate('/coach');
               }}
-              isSelected = {selectedTab === 'coach'}
               icon = {<DirectionsRunOutlinedIcon />}
             >
               Coach

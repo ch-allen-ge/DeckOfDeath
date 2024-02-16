@@ -283,7 +283,7 @@ const DeckOfDeathGame = () => {
                 if (showCountdownAnimation) {
                     return 'Get ready...';
                 } else {
-                    return 'Timer in progress...';
+                    return '';
                 } 
             } else {
                 //timer finished
@@ -312,37 +312,25 @@ const DeckOfDeathGame = () => {
         }
     };
 
-    const getCardColor = () => {
-        const currentSuit = currentCard.suit.toLowerCase();
 
-        if (currentSuit === 'spades' || currentSuit === 'clubs') {
-            return 'blackCard';
-        }
-
-        return 'redCard';
-    }
 
     return (
-        <div className="deckOfDeathContainer">
+        <div className="deckofdeathgame">
             {currentCard && currentExercise && !workoutFinished &&
                 <>
-                    <div className="cardAndExerciseContainer">
+                    <div className="deckofdeathgame__playing-field">
                         <CurrentCard currentCard={currentCard}/>
-                        <div className="workoutContainer">
-                            <div className="workoutText">
-                                <div className="workoutCard">
-                                    <div className={`cardLabel ${getCardColor()}`}>
-                                        Current Exercise
-                                    </div>
-                                    <div className="cardText">
-                                        {currentExercise.text}
-                                    </div>
+                        <div className="deckofdeathgame__playing-field__exercise">
+                            <div className="deckofdeathgame__playing-field__exercise__text">
+                                <div>
+                                    {currentExercise.text}
                                 </div>
+
                                 <br />
 
-                                <div className="timerContainer">
+                                <div>
                                     {showCountdownAnimation && <DeterminateCountdown />}
-                                    {showWorkoutTimer && <CountdownTimer timerInfo={currentExerciseRef.current as AceCardProps ?? null} setTimerStatus={setTheTimerStatus}/>}
+                                    {showWorkoutTimer && !timerStatus.finished && <CountdownTimer timerInfo={currentExerciseRef.current as AceCardProps ?? null} setTimerStatus={setTheTimerStatus}/>}
                                 </div>
 
                                 {isMobile ? 
@@ -353,7 +341,6 @@ const DeckOfDeathGame = () => {
                                     <div>
                                         {getInstructions()}
                                     </div>
-                                    
                                 }
                             </div>
                         </div>
@@ -364,8 +351,8 @@ const DeckOfDeathGame = () => {
             }
             
             {workoutFinished && 
-                <>
-                    <div className="finishedText">
+                <div className="finished-workout">
+                    <div className="finished-workout__text">
                         You finished! Great work!
                     </div>
                     <Button
@@ -380,7 +367,7 @@ const DeckOfDeathGame = () => {
                     >
                         Back to start
                     </Button>
-                </>
+                </div>
             }
         </div>
     );

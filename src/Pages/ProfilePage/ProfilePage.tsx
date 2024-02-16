@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { dodGet, dodDelete, dodPost } from '../../axios-config';
 import './profilePageStyles.scss';
-import Navbar from '../../components/Navbar';
 import WorkoutDisplay from '../../components/WorkoutDisplay';
 import StatsRow from '../../components/StatsRow';
 import { setLoggedIn } from '../../reduxSlices/UISlice';
@@ -158,7 +157,6 @@ const ProfilePage = () => {
         <>
             <Suspense fallback={<CircularProgress />}>
                 <div className='profilePageContainer'>
-                    <Navbar />
                     {isLoggedIn ?
                         <div className='contentContainer'>
                             <div className='topSection'>

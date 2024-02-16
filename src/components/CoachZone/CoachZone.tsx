@@ -1,8 +1,5 @@
 import workouts from '../../utils/CoachWorkouts';
 import './coachZone.scss';
-import WorkoutDisplay from '../WorkoutDisplay/WorkoutDisplay.tsx';
-import { useState } from 'react';
-import Person4RoundedIcon from '@mui/icons-material/Person4Rounded';
 import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from '../../hooks.ts';
@@ -17,7 +14,7 @@ import {
     setAcesSecondsToDo
 } from '../../reduxSlices/exercisesChosenSlice';
 import { setBreakoutAces } from '../../reduxSlices/workoutOptionsSlice';
-import Modal from '@mui/material/Modal';
+import TimerIcon from '@mui/icons-material/Timer';
 
 interface CoachWorkout {
     name: string,
@@ -31,113 +28,113 @@ interface CoachWorkout {
     breakout_aces: boolean,
     timer_used: boolean,
     aces_minutes_to_do: number,
-    aces_seconds_to_do: number
+    aces_seconds_to_do: number,
+    icon: React.ReactNode
 }
 
 const CoachZone = () => {
     const isMobile = window.innerWidth < 600;
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const [selectedWorkout, setSelectedWorkout] = useState<CoachWorkout>();
-    const [modalOpen, setModalOpen] = useState(false);
+
+    const handleClick = (selectedWorkout : CoachWorkout) => {
+        dispatch(setClubsExercise(selectedWorkout.clubs_exercise));
+        dispatch(setDiamondsExercise(selectedWorkout.diamonds_exercise));
+        dispatch(setHeartsExercise(selectedWorkout.hearts_exercise));
+        dispatch(setSpadesExercise(selectedWorkout.spades_exercise));
+        dispatch(setAcesExercise(selectedWorkout.aces_exercise));
+        dispatch(setBreakoutAces(selectedWorkout.breakout_aces));
+        dispatch(setAcesTimerUsed(selectedWorkout.timer_used));
+        dispatch(setAcesMinutesToDo(selectedWorkout.aces_minutes_to_do));
+        dispatch(setAcesSecondsToDo(selectedWorkout.aces_seconds_to_do));
+        navigate('/workout');
+    }
+
+    const getWorkoutContent = (workout: CoachWorkout) => {
+        return (
+            <div className='coachworkout'>
+                <div className='coachworkout__column'>
+                    <div className='coachworkout__column__exercise'>
+                        <img className='coachworkout__column__exercise__suit' src={`/images/suits/clubs.svg`}/>
+                        {workout.clubs_exercise}
+                    </div>
+                    <div className='coachworkout__column__exercise'>
+                        <img className='coachworkout__column__exercise__suit' src={`/images/suits/diamonds.svg`}/>
+                        {workout.diamonds_exercise}
+                    </div>
+                    <div className='coachworkout__column__exercise'>
+                        <img className='coachworkout__column__exercise__suit' src={`/images/suits/hearts.svg`}/>
+                        {workout.hearts_exercise}
+                    </div>
+                    <div className='coachworkout__column__exercise'>
+                        <img className='coachworkout__column__exercise__suit' src={`/images/suits/spades.svg`}/>
+                        {workout.spades_exercise}
+                    </div>
+                    {workout.breakout_aces && (
+                        <>
+                            <div className='coachworkout__column__exercise'>
+                                <img className='coachworkout__column__exercise__suit' src={`/images/suits/aces.svg`}/>
+                                {workout.aces_exercise}
+                                
+                            </div>
+                            {workout.timer_used && (
+                                <div className='coachworkout__column__exercise'>
+                                    <div className='coachworkout__column__exercise__row'>
+                                        <img className='coachworkout__column__exercise__suit' src={`/images/suits/aces.svg`}/>
+                                        <TimerIcon />
+                                    </div>
+                                    <div>
+                                        {workout.aces_minutes_to_do}:{workout.aces_seconds_to_do}
+                                    </div>
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
+            </div>
+        );
+    }
 
     const CoachCard = ({workout} : {workout: CoachWorkout}) => {
         return (
-            <div
-                className='coachCard'
-                onClick={() => {
-                    setSelectedWorkout(workout);
-
-                    if (isMobile) {
-                        setModalOpen(true);
-                    }
-                }}>
-                <Person4RoundedIcon />
-                {workout.name}
+            <div className='coachcard'>
+                    <div className='coachcard__workoutname'>
+                        {workout.name}
+                    </div>
+                    <div className='coachcard__icons'>
+                        {workout.icon}
+                        {workout.icon}
+                    </div>
+                    <div className='coachcard__workout'>
+                        {getWorkoutContent(workout)}
+                    </div>
+                    <div className='coachcard__confirmbutton'>
+                        <Button className='big-button' onClick={() => {
+                            handleClick(workout);
+                        }}>
+                            Start
+                        </Button>
+                    </div>
+                    
             </div>
         )
     }
 
-    const handleClick = () => {
-        if (selectedWorkout) {
-            dispatch(setClubsExercise(selectedWorkout.clubs_exercise));
-            dispatch(setDiamondsExercise(selectedWorkout.diamonds_exercise));
-            dispatch(setHeartsExercise(selectedWorkout.hearts_exercise));
-            dispatch(setSpadesExercise(selectedWorkout.spades_exercise));
-            dispatch(setAcesExercise(selectedWorkout.aces_exercise));
-            dispatch(setBreakoutAces(selectedWorkout.breakout_aces));
-            dispatch(setAcesTimerUsed(selectedWorkout.timer_used));
-            dispatch(setAcesMinutesToDo(selectedWorkout.aces_minutes_to_do));
-            dispatch(setAcesSecondsToDo(selectedWorkout.aces_seconds_to_do));
-            navigate('/');
-        }
-    }
-
-    const content = () => {
-        if (selectedWorkout) {
-            if (isMobile) {
-                return (
-                    <Modal
-                        open={modalOpen}
-                        onClose={() => {
-                            setModalOpen(false);
-                            setSelectedWorkout(undefined);
-                        }}
-                    >
-                        {selectedWorkout ?
-                            <div className='coachZoneModalContainer'>
-                                <div>{selectedWorkout.name}</div>
-                                <WorkoutDisplay workout={selectedWorkout} />
-                                <div className='confirmButton'>
-                                    <Button onClick={handleClick}>
-                                        Select
-                                    </Button>
-                                </div>
-                            </div>
-                        : <div></div>
-                        }
-                    </Modal>
-                );
-            } else {
-                return (
-                    <div className='workoutDisplayWrapper'>
-                        <WorkoutDisplay workout={selectedWorkout} />
-                        <div className='confirmButton'>
-                            <Button onClick={handleClick}>
-                                Select
-                            </Button>
-                        </div>
-                    </div>
-                );
-            }
-        } else {
-            return (
-                <div className='selectAWorkout'>
-                    Select a workout!
-                </div>
-            )
-        }
-    }
-
     return (
-        <>
-            <div className='coachZoneContainer'>
-                <div className='coachZoneTextContainer'>
-                    <h1 className='coachZoneText'>Coach Zone</h1>
-                </div>
-
-                <div className='coachWorkoutCards'>
-                    {workouts.map((workout, index) =>
-                        <CoachCard
-                            workout={workout}
-                            key={index}
-                        />
-                    )}
-                </div>
-
-                {content()}
+        <div className='coachzone'>
+            <div className='coachzone__title'>
+                Coach Zone
             </div>
-        </>
+
+            <div className='coachzone__workout-container'>
+                {workouts.map((workout, index) =>
+                    <CoachCard
+                        workout={workout}
+                        key={index}
+                    />
+                )}
+            </div>
+        </div>
     )
 }
 
