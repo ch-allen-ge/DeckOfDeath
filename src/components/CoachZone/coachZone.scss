@@ -6,70 +6,219 @@
     flex-direction: column;
     transition: all 2s;
 
-    &__title {
-        text-align: center;
-        color: aliceblue;
-        padding: 10px;
-        display: flex;
-        justify-content: center;
-        background: #13293D;
-        font-size: 2rem;
-        height: 5rem;
-    }
-
     &__workout-container {
         display: flex;
         width: 100%;
-        height: calc(100% - 5rem);
+        height: 100%;
 
         //zeus
         & > :nth-child(1) {
-            background-image: linear-gradient(0deg, #f8f6f0 0%, #FBDA61 100%);
+            & > .godBackground {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-image: url(/images/godBackgrounds/zeus.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                transform: scale(1.1);
+                filter: blur(.5rem);
+            }
+
+            & > .coachcard__icons > .coachcard__icons__wrapper {
+                background: #FFBF00;
+                padding: .5rem;
+                border-radius: 50%;
+                border: 1px solid white;
+            }
         }
 
         //poseidon
         & > :nth-child(2) {
-            background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+            & > .godBackground {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-image: url(/images/godBackgrounds/poseidon.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                transform: scale(1.1);
+                filter: blur(.5rem);
+            }
+
+            & > .coachcard__icons > .coachcard__icons__wrapper {
+                background: blue;
+                padding: .5rem;
+                border-radius: 50%;
+                border: 1px solid white;
+            }
         }
 
         //hades
         & > :nth-child(3) {
-            background-image: linear-gradient(19deg, #b721ff 0%, #21D4FD 100%);
+            & > .godBackground {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-image: url(/images/godBackgrounds/hades.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                transform: scale(1.1);
+                filter: blur(.5rem);
+            }
+
+            & > .coachcard__icons > .coachcard__icons__wrapper {
+                background: purple;
+                padding: .5rem;
+                border-radius: 50%;
+                border: 1px solid white;
+            }
         }
 
         //ares
         & > :nth-child(4) {
-            background-image: linear-gradient(147deg, #FFE53B 0%, #FF2525 74%);
+            & > .godBackground {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-image: url(/images/godBackgrounds/ares.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                transform: scale(1.1);
+                filter: blur(.5rem);
+            }
+
+            & > .coachcard__icons > .coachcard__icons__wrapper {
+                background: orangered;
+                padding: .5rem;
+                border-radius: 50%;
+                border: 1px solid white;
+            }
         }
 
         //apollo
         & > :nth-child(5) {
-            background-image: linear-gradient(0deg, #FEE140 0%, #FA709A 100%);
+            & > .godBackground {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-image: url(/images/godBackgrounds/apollo.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                transform: scale(1.1);
+                filter: blur(.5rem);
+            }
+
+            & > .coachcard__icons > .coachcard__icons__wrapper {
+                background: #FFDB58	;
+                padding: .5rem;
+                border-radius: 50%;
+                border: 1px solid white;
+            }
         }
 
         //aphrodite
         & > :nth-child(6) {
-            background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
+            & > .godBackground {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-image: url(/images/godBackgrounds/aphrodite.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                transform: scale(1.1);
+                filter: blur(.5rem);
+            }
+
+            & > .coachcard__icons > .coachcard__icons__wrapper {
+                background: pink;
+                padding: .5rem;
+                border-radius: 50%;
+                border: 1px solid white;
+            }
         }
 
         //hermes
         & > :nth-child(7) {
-            background-image: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%);
+            & > .godBackground {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-image: url(/images/godBackgrounds/hermes.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                transform: scale(1.1);
+                filter: blur(.5rem);
+            }
+
+            & > .coachcard__icons > .coachcard__icons__wrapper {
+                background: green;
+                padding: .5rem;
+                border-radius: 50%;
+                border: 1px solid white;
+            }
         }
 
-        //thor
+        //hera
         & > :nth-child(8) {
-            background-image: linear-gradient(180deg, #FFFFFF 0%, #6284FF 50%, #FF0000 100%);
+            & > .godBackground {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-image: url(/images/godBackgrounds/hera.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                transform: scale(1.1);
+                filter: blur(.5rem);
+            }
+
+            & > .coachcard__icons > .coachcard__icons__wrapper {
+                background: red;
+                padding: .5rem;
+                border-radius: 50%;
+                border: 1px solid white;
+            }
         }
 
         //hercules
         & > :nth-child(9) {
-            background-image: linear-gradient(180deg, #52ACFF 25%, #FFE32C 100%);
+            & > .godBackground {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-image: url(/images/godBackgrounds/hercules.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                transform: scale(1.1);
+                filter: blur(.5rem);
+            }
+
+            & > .coachcard__icons > .coachcard__icons__wrapper {
+                background: black;
+                padding: .5rem;
+                border-radius: 50%;
+                border: 1px solid white;
+            }
         }
 
         //athena
         & > :nth-child(10) {
-            background-image: linear-gradient(0deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%);
+            & > .godBackground {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-image: url(/images/godBackgrounds/athena.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                transform: scale(1.1);
+                filter: blur(.5rem);
+            }
+
+            & > .coachcard__icons > .coachcard__icons__wrapper {
+                background: royalblue;
+                padding: .5rem;
+                border-radius: 50%;
+                border: 1px solid white;
+            }
         }
     }
 }
@@ -84,24 +233,62 @@
     }
 }
 
+
+@keyframes moveLeft {
+    to {
+        transform: translate(-9rem, -41rem) scale(1.3)
+    }
+}
+
+@keyframes moveRight {
+    to {
+        transform: translate(9rem, -41rem) scale(1.3)
+    }
+}
+
+@keyframes rotateLeft {
+    from {
+      transform: translate(-9rem, -41rem) scale(1.3) rotateY(0deg);
+    }
+    to {
+      transform: translate(-9rem, -41rem) scale(1.3) rotateY(359deg);
+    }
+}
+
+@keyframes rotateRight {
+    from {
+      transform: translate(9rem, -41rem) scale(1.3) rotateY(0deg);
+    }
+    to {
+      transform: translate(9rem, -41rem) scale(1.3) rotateY(359deg);
+    }
+}
+
 .coachcard {
     position: relative;
     display: flex;
+    flex-basis: 10%;
     flex-direction: column;
     background-color: white;
     height: 100%;
     transition: all 1s;
     width: 10%;
     background-color: rgba(white, .2);
-    border: 1px solid black;
+    //border: 1px solid black;
+    overflow: hidden;
 
     &__workoutname {
         opacity: 0;
-        font-size: 2rem;
+        font-size: 2.5rem;
         display: flex;
         justify-content: center;
-        flex-grow: 1;
-        margin-top: 3rem;
+        z-index: 999;
+        color: black;
+        padding: 0.5rem;
+        width: fit-content;
+        margin: 2.5rem auto;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 1rem;
     }
 
     &__icons {
@@ -112,10 +299,14 @@
         justify-content: center;
         align-items: center;
 
-        & * {
-            height: 4rem;
-            font-size: 3rem !important;
+        &__wrapper {
             position: absolute;
+
+            & > img {
+                height: 4rem;
+                width: 4rem;
+                font-size: 3rem !important;
+            }
         }
     }
 
@@ -142,8 +333,19 @@
     
     &:hover {
         cursor: pointer;
-        width: 50rem;
+        flex-basis: 50%;
         transition: all 1s;
+
+        & > .godBackground {
+            filter: blur(.1rem);
+            transition: all 1s;
+        }
+
+        .coachcard__icons__wrapper {
+            transition: all 1s;
+            background: transparent !important;
+            border: none !important;
+        }
 
         .coachcard__workout {
             display: flex;
@@ -156,7 +358,7 @@
         }
 
         .coachcard__workoutname {
-            transition: all 1s;
+            transition: all 2s;
             opacity: 1;
         }
 
@@ -164,15 +366,23 @@
             transition: all 1s;
 
             & > :nth-child(1) {
-                font-size: 3rem !important;
-                transition: all 1s;
-                transform: translate(-9rem, -39rem) scale(1.3);    
+                animation: moveLeft 1s;
+
+                & > img {
+                    font-size: 3rem !important;
+                    transition: all 1s;
+                    animation: rotateLeft 3s linear infinite; 
+                }
             }
             
             & > :nth-child(2) {
-                font-size: 3rem !important;
-                transition: all 1s;
-                transform: translate(9rem, -39rem) scale(1.3);    
+                animation: moveRight 1s;
+
+                & > img {
+                    font-size: 3rem !important;
+                    transition: all 1s;
+                    animation: rotateRight 3s linear infinite; 
+                }
             }
         }
 
@@ -184,7 +394,7 @@
             & > button:hover {
                 transition: all .5s;
                 transform: translateY(-.8rem);
-                background: aliceblue;
+                background: white;
                 box-shadow: 0 .3rem 5rem 0 rgba(0,0,0,.2);
             }
         }
@@ -208,7 +418,7 @@
         justify-content: space-around;
         align-items: center;
 
-        background: rgba(white, .4);
+        background: rgba(white, .8);
         border-radius: 2rem;
 
         &__exercise {
@@ -237,53 +447,306 @@
 
 @include mobile {
     .coachzone__workout-container {
-        flex-direction: column;
-        height: 100%;
-    }
-  
-    .coachcard {
-        font-size: 1rem;
-        width: 100%;
-        height: calc((100% - 5rem) / 10);
+        display: flex;
+        max-height: 100%;
+        flex-wrap: wrap;
 
-        &:hover,
-        &:active {
-            width: auto;
-            height: 30rem;
+        & > .coachcard {
+            flex-basis: 50%;
+            font-size: 1rem;
+            height: 20%;
+
+            & > .godBackground {
+                background-size: cover;
+            }
         }
+
+        & > :nth-child(1).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: 0;
+            margin-left: 0;
+        }
+
+        & > :nth-child(2).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: 0;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(3).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -20svh;;
+            margin-left: 0;
+        }
+
+        & > :nth-child(4).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -20svh;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(5).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -40svh;
+            margin-left: 0;
+        }
+
+        & > :nth-child(6).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -40svh;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(7).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -60svh;
+            margin-left: 0%;
+        }
+
+        & > :nth-child(8).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -60svh;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(9).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -80svh;
+            margin-left: 0%;
+        }
+
+        & > :nth-child(10).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -80svh;
+            margin-left: -50%;
+        }
+    }
+
+    .coachcard__workoutname {
+        margin: 1rem auto;
     }
 }
 
 @include tablet {
     .coachzone__workout-container {
-        flex-direction: column;
+        display: flex;
+        max-height: 100%;
+        flex-wrap: wrap;
+
+        & > .coachcard {
+            flex-basis: 50%;
+            font-size: 1rem;
+            height: 20%;
+
+            & > .godBackground {
+                background-size: cover;
+            }
+        }
+
+        & > :nth-child(1).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: 0;
+            margin-left: 0;
+        }
+
+        & > :nth-child(2).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: 0;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(3).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -20svh;;
+            margin-left: 0;
+        }
+
+        & > :nth-child(4).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -20svh;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(5).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -40svh;
+            margin-left: 0;
+        }
+
+        & > :nth-child(6).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -40svh;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(7).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -60svh;
+            margin-left: 0%;
+        }
+
+        & > :nth-child(8).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -60svh;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(9).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -80svh;
+            margin-left: 0%;
+        }
+
+        & > :nth-child(10).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -80svh;
+            margin-left: -50%;
+        }
     }
 
-    .coachcard {
-        width: 100%;
-        height: calc((100% - 5rem) / 10);
-
-        &:hover,
-        &:active {
-            width: auto;
-            height: 50rem;
-        }
+    .coachcard__workoutname {
+        margin: 1rem auto;
     }
 }
 
 @include landscape_tablet {
-   .coachzone__workout-container {
-      flex-direction: column;
-   }
+    .coachzone__workout-container {
+        display: flex;
+        max-height: 100%;
+        flex-wrap: wrap;
 
-   .coachcard {
-      width: 100%;
-      height: calc((100% - 5rem) / 10);
+        & > .coachcard {
+            flex-basis: 50%;
+            font-size: 1rem;
+            height: 20%;
 
-      &:hover,
-      &:active {
-        width: auto;
-        height: 50rem;
-      }
-   }
+            & > .godBackground {
+                background-size: cover;
+            }
+        }
+
+        & > :nth-child(1).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: 0;
+            margin-left: 0;
+        }
+
+        & > :nth-child(2).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: 0;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(3).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -20svh;;
+            margin-left: 0;
+        }
+
+        & > :nth-child(4).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -20svh;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(5).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -40svh;
+            margin-left: 0;
+        }
+
+        & > :nth-child(6).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -40svh;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(7).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -60svh;
+            margin-left: 0%;
+        }
+
+        & > :nth-child(8).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -60svh;
+            margin-left: -50%;
+        }
+
+        & > :nth-child(9).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -80svh;
+            margin-left: 0%;
+        }
+
+        & > :nth-child(10).selectedCoachcard {
+            flex-basis: 100%;
+            height: calc(100svh - 6rem);
+            
+            margin-top: -80svh;
+            margin-left: -50%;
+        }
+    }
+
+    .coachcard__workoutname {
+        margin: 1rem auto;
+    }
 }

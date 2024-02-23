@@ -5,8 +5,6 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from '../../hooks';
 
-import Navbar from "../../components/Navbar";
-
 import './workoutPageStyles.scss';
 
 const WorkoutPage = () => {

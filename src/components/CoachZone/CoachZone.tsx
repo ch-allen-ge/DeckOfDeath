@@ -15,6 +15,7 @@ import {
 } from '../../reduxSlices/exercisesChosenSlice';
 import { setBreakoutAces } from '../../reduxSlices/workoutOptionsSlice';
 import TimerIcon from '@mui/icons-material/Timer';
+import { useRef, useState } from 'react';
 
 interface CoachWorkout {
     name: string,
@@ -33,7 +34,7 @@ interface CoachWorkout {
 }
 
 const CoachZone = () => {
-    const isMobile = window.innerWidth < 600;
+    const isMobile = window.innerWidth < 1100;
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
@@ -53,6 +54,7 @@ const CoachZone = () => {
     const getWorkoutContent = (workout: CoachWorkout) => {
         return (
             <div className='coachworkout'>
+                <div className="godBackground" />
                 <div className='coachworkout__column'>
                     <div className='coachworkout__column__exercise'>
                         <img className='coachworkout__column__exercise__suit' src={`/images/suits/clubs.svg`}/>
@@ -96,36 +98,59 @@ const CoachZone = () => {
     }
 
     const CoachCard = ({workout} : {workout: CoachWorkout}) => {
+        const [selected, setSelected] = useState(false);
+
         return (
-            <div className='coachcard'>
-                    <div className='coachcard__workoutname'>
-                        {workout.name}
-                    </div>
-                    <div className='coachcard__icons'>
-                        {workout.icon}
-                        {workout.icon}
-                    </div>
-                    <div className='coachcard__workout'>
-                        {getWorkoutContent(workout)}
-                    </div>
-                    <div className='coachcard__confirmbutton'>
-                        <Button className='big-button' onClick={() => {
-                            handleClick(workout);
-                        }}>
-                            Start
-                        </Button>
-                    </div>
+            <>
+                <div
+                    className={`coachcard ${selected ? 'selectedCoachcard' : ''}`}
+                    onMouseEnter={() => {
+                        if (!isMobile) {
+                            setSelected(true)
+                        }
+                    }}
+                    onClick={() => {
+                        if (isMobile) {
+                            const selectedCoachCard = document.querySelector('.selectedCoachcard');
+                            selectedCoachCard?.classList.remove('selectedCoachcard');
+                            setSelected((prevState) => !prevState);
+                        }
+                    }}
+                >
+                    <div className="godBackground" />
                     
-            </div>
+                    <div className='coachcard__icons'>
+                        <div className="coachcard__icons__wrapper">
+                            {workout.icon}
+                        </div>
+                        <div className="coachcard__icons__wrapper">
+                            {workout.icon}
+                        </div>
+                    </div>
+                    {selected &&
+                        <>
+                            <div className='coachcard__workoutname'>
+                                {workout.name}
+                            </div>
+                            <div className='coachcard__workout'>
+                                {getWorkoutContent(workout)}
+                            </div>
+                            <div className='coachcard__confirmbutton'>
+                                <Button className='big-button' onClick={() => {
+                                    handleClick(workout);
+                                }}>
+                                    Start
+                                </Button>
+                            </div>
+                        </>
+                    }
+                </div>
+            </>
         )
     }
 
     return (
         <div className='coachzone'>
-            <div className='coachzone__title'>
-                Coach Zone
-            </div>
-
             <div className='coachzone__workout-container'>
                 {workouts.map((workout, index) =>
                     <CoachCard

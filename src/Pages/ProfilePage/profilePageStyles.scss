@@ -1,83 +1,55 @@
 @import "../../mixins.scss";
 
-.profilePageContainer {
+.profile-page {
     display: flex;
     width: 100%;
     font-size: 1.6rem;
-}
-
-.contentContainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.topSection {
-    padding: 3rem 0rem;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.topSectionFlexContainer {
-    display: flex;
     justify-content: center;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+
+        &__top-section {
+            padding: 3rem 0rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+
+            &__profile {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                &__edit-options {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-evenly;
+                    margin-top: 2rem;
+                }
+            }
+        }
+
+        &__completed-workouts {
+            display: flex;
+            flex-direction: column;
+
+            &__info {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                text-align: center;
+
+                font-size: 2rem;
+            }
+        }
+    }
 }
 
-.awardsStatsContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin-left: 5rem;
-}
-
-.awardsContainer {
-    width: 30rem;
-    display: flex;
-    justify-content: center;
-    background-color: white;
-}
-
-.proPic {
-    border-radius: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: translate3d(0px, 0px, 0.1px);
-    border: 2px solid aliceblue;
-    position: absolute;
-}
-
-.previewProPic {
-    border-radius: 50%;
-    width:100%;
-    height:100%;
-    object-fit: cover;
-    transform: translate3d(0px, 0px, 0.1px);
-    border: 2px solid aliceblue;
-    z-index: 999;
-    position: absolute;
-}
-
-.proPic:active {
-    transform: scale(0.98);
-}
-
-.proPic:hover {
-    cursor: pointer;
-}
-
-.proPicContainer {
-    width: 16rem;
-    height: 16rem;
-    margin: auto;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.cardProfileContainer {
+.profile-card {
     height: 32rem;
     width: 24rem;
     border: 2px solid black;
@@ -88,78 +60,89 @@
     background-image: url(/images/allSuitsWallpaper.jpg);
     background-size: cover;
     background-position: center;
-}
 
-.profileCardText {
-    position: absolute;
-    writing-mode: tb-rl;
-    font-size: 1rem;
-    color: white;
-    padding: .5rem;
-    background-color: rgba(0, 0, 0, 0.39);
-    border-radius: 0px 0px .5rem 0px;
+    &__text {
+        position: absolute;
+        writing-mode: tb-rl;
+        font-size: 1rem;
+        color: white;
+        padding: .5rem;
+        background-color: rgba(0, 0, 0, 0.39);
+        border-radius: 0px 0px .5rem 0px;
+    
+        &.top-name {
+            top: 0;
+            text-orientation: upright;
+        }
+    
+        &.bottom-name {
+            transform: rotate(180deg);
+            bottom: 0;
+            right: 0;
+            text-orientation: upright;
+        }
 
-    &.topName {
-        top: 0;
-        text-orientation: upright;
+        :hover {
+            cursor: default;
+        }
     }
 
-    &.bottomName {
-        transform: rotate(180deg);
-        bottom: 0;
-        right: 0;
-        text-orientation: upright;
+    &__picture-container {
+        width: 16rem;
+        height: 16rem;
+        margin: auto;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+
+        &__pic {
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate3d(0px, 0px, 0.1px);
+            border: 2px solid aliceblue;
+            position: absolute;
+
+            &:active {
+                transform: scale(0.98);
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        &__preview-pic {
+            border-radius: 50%;
+            width:100%;
+            height:100%;
+            object-fit: cover;
+            transform: translate3d(0px, 0px, 0.1px);
+            border: 2px solid aliceblue;
+            z-index: 999;
+            position: absolute;
+        }
     }
-}
 
-.profileCardText:hover {
-    cursor: default;
-}
+    &__edit {
+        display: flex;
+        align-items: center;
+        padding: 2px 5px;
+        border-radius: 3px;
+        margin: 5px 0;
 
-.completedWorkoutsContainer {
-    display: flex;
-    flex-direction: column;
-    margin: 0px 25rem;
-}
+        &__input {
+            position: absolute;
+            padding-top: 4rem;
+            height: 3rem;
+            overflow: hidden;
+        }
 
-.popupRow {
-    display: flex;
-    align-items: center;
-    padding: 2px 5px;
-    border-radius: 3px;
-    margin: 5px 0;
-}
-
-.popupRow:hover {
-    cursor: pointer;
-    background-color: lightgrey;
-}
-
-.popupRow:active {
-    transform: scale(0.98);
-}
-
-.popupRowText {
-    margin-left: 5px;
-}
-
-.changeProPicInput {
-    position: absolute;
-    padding-top: 4rem;
-    height: 3rem;
-    overflow: hidden;
-    box-sizing: border-box;
-}
-
-.changeProPicInput:hover {
-    cursor: pointer;
-}
-
-.saveCancelProPic {
-    width: 30%;
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 2rem;
+        &__text {
+            margin-left: 5px;
+        }
+    }
 }
 
 @include mobile {

@@ -20,8 +20,6 @@ interface WorkoutInterface {
 
 const MyZone = () => {
     const dispatch = useAppDispatch();
-    const totalTimeSpent = useAppSelector((state) => state.profile.totalTimeSpent);
-    const numberWorkoutsCompleted = useAppSelector((state) => state.profile.numberWorkoutsCompleted);
     const savedWorkoutsArray = useAppSelector((state) => state.profile.savedWorkouts);
 
     useEffect(() => {

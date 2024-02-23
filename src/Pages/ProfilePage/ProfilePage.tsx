@@ -156,77 +156,79 @@ const ProfilePage = () => {
     return (
         <>
             <Suspense fallback={<CircularProgress />}>
-                <div className='profilePageContainer'>
+                <div className='profile-page'>
                     {isLoggedIn ?
-                        <div className='contentContainer'>
-                            <div className='topSection'>
-                                <div className='topSectionFlexContainer'>
-                                    <div className='cardProfileContainer'>
-                                        <div className='profileCardText topName'>
+                        <div className='profile-page__content'>
+                            <div className='profile-page__content__top-section'>
+                                <div className='profile-page__content__top-section__profile'>
+                                    <div className='profile-card'>
+                                        <div className='profile-card__text top-name'>
                                             <b>{username.toUpperCase()}</b>
                                         </div>
 
-                                        <div className='profileCardText bottomName'>
+                                        <div className='profile-card__text bottom-name'>
                                             <b>{username.toUpperCase()}</b>
                                         </div>
 
-                                        <div className='proPicContainer'>
-                                            <img className='proPic' src={proPicUrl} onClick={() => setShowPopup((prevValue) => !prevValue)}/>
-                                            {newProPicPreview && <img className='previewProPic' src={newProPicPreview}/>}
+                                        <div className='profile-card__picture-container'>
+                                            <img className='profile-card__picture-container__pic' src={proPicUrl} onClick={() => setShowPopup((prevValue) => !prevValue)}/>
+                                            {newProPicPreview && <img className='profile-card__picture-container__preview-pic' src={newProPicPreview}/>}
                                             <Popup open={showPopup}>
-                                                <div className='popupRow'>
+                                                <div className='profile-card__edit'>
                                                     <input
                                                         type='file'
-                                                        className='changeProPicInput'
+                                                        className='profile-card__edit__input'
                                                         accept="image/png, image/jpeg"
                                                         onChange={handleFileChange}
                                                     />
                                                     <ImageOutlinedIcon />
-                                                    <span className='popupRowText'>
+                                                    <span className='profile-card__edit__text'>
                                                         Change Profile Picture
                                                     </span>
                                                 </div>
                                                 {proPicUrl !== '/images/default_pro_pic.png' && 
                                                     <div
-                                                        className='popupRow'
+                                                        className='profile-card__edit'
                                                         onClick={deleteProPic}
                                                     >
                                                         <ImageNotSupportedOutlinedIcon />
-                                                        <span className='popupRowText'>Delete Profile Picture</span>
+                                                        <span className='profile-card__edit__text'>Delete Profile Picture</span>
                                                     </div>
                                                 }
                                             </Popup>
                                         </div>
                                     </div>
+
+                                    {newProPicPreview && 
+                                        <div className='profile-page__content__top-section__profile__edit-options'>
+                                            <div onClick={changeProPic}>
+                                                <Button variant='contained'>
+                                                    <CheckCircleOutlineOutlinedIcon />
+                                                    Save
+                                                </Button>
+                                            </div>
+                                            <div onClick={cancelNewProPic}>
+                                                <Button variant='contained'>
+                                                    <CancelOutlinedIcon />
+                                                    Cancel
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
 
-                                {newProPicPreview && 
-                                    <div className='saveCancelProPic'>
-                                        <div onClick={changeProPic}>
-                                            <Button variant='contained'>
-                                                <CheckCircleOutlineOutlinedIcon />
-                                                Save
-                                            </Button>
-                                        </div>
-                                        <div onClick={cancelNewProPic}>
-                                            <Button variant='contained'>
-                                                <CancelOutlinedIcon />
-                                                Cancel
-                                            </Button>
-                                        </div>
-                                    </div>
-                                }
+                                <StatsRow totalTimeSpent={totalTimeSpent} numberWorkoutsCompleted={numberWorkoutsCompleted} />
                             </div>
 
-                            <StatsRow totalTimeSpent={totalTimeSpent} numberWorkoutsCompleted={numberWorkoutsCompleted} />
+                            
 
-                            <div className='completedWorkoutsContainer'>
+                            <div className='profile-page__content__completed-workouts'>
                                 {workoutsCompleted.reverse().map((workout, index) => 
                                     <WorkoutDisplay workout={workout} index={index} key={index}>
-                                        <div className='element bigText'>
+                                        <div className='profile-page__content__completed-workouts__info'>
                                             {new Date(workout.date_completed).toDateString()}
                                         </div>
-                                        <div className='element bigText'>
+                                        <div className='profile-page__content__completed-workouts__info'>
                                             {timeSpentToString(workout)}
                                         </div>
                                     </WorkoutDisplay>

@@ -1,6 +1,5 @@
 import './homePageStyles.scss';
 import StartingScreen from '../../components/StartingScreen';
-import Navbar from '../../components/Navbar';
 import { setLoggedIn } from '../../reduxSlices/UISlice';
 import { useAppDispatch } from '../../hooks';
 import { useEffect } from 'react';

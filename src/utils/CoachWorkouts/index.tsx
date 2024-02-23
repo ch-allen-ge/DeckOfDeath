@@ -121,7 +121,7 @@ const workouts : Workout[] = [
         icon: <img src="/images/godIcons/hermes.png" />
     },
     {
-        name: 'Thor',
+        name: 'Hera',
         equipment: 'none',
         difficulty: 2,
         clubs_exercise: 'lunge',
@@ -133,7 +133,7 @@ const workouts : Workout[] = [
         timer_used: false,
         aces_minutes_to_do: 0,
         aces_seconds_to_do: 0,
-        icon: <img src="/images/godIcons/thor.png" />
+        icon: <img src="/images/godIcons/hera.png" />
     },
     {
         name: 'Hercules',
