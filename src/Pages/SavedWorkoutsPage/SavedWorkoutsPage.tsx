@@ -64,11 +64,7 @@ const SavedWorkoutPage = () => {
     return (
         <div className="savedWorkoutsPageContainer">
             {isLoggedIn ? 
-                <div className='savedWorkoutsContainer'>
-                    <div className='savedWorkoutsTextContainer'>
-                        <h1 className='savedWorkoutsText'>Saved Workouts</h1>
-                    </div>
-
+                <div className='savedWorkoutsContainer'> 
                     <div className="rowDisplay">
                         {savedWorkoutsArray.map((workout: WorkoutInterface, index) => 
                             <div className="savedWorkoutContainer" key={index}>

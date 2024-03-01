@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { resetExercises } from "../../reduxSlices/exercisesChosenSlice";
 import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
 import { resetUI } from "../../reduxSlices/UISlice";
@@ -26,7 +26,12 @@ interface iconButtonProps {
 const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const location = useLocation();
     const isLoggedIn = useAppSelector(state => state.UI.loggedIn);
+
+    if (location.pathname === '/workout' || location.pathname === '/finished') {
+      return null;
+    }
 
     const logOut = async () => {
       const response = await dodPost('/logout');

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState, useRef, FC, ReactElement } from "react";
+import { useEffect, useState, useRef } from "react";
 import CurrentCard from "../CurrentCard";
 import Button from '@mui/material/Button';
 import DeterminateCountdown from "../DeterminateCountdown/DeterminateCountdown";
@@ -7,7 +7,8 @@ import CountdownTimer from "../CountdownTimer";
 import MetricsBar from "../MetricsBar/MetricsBar";
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { useNavigate } from "react-router-dom";
-
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import FinishedPage from "../../Pages/FinishedPage";
 import {
     setDeckId,
     setCurrentCard,
@@ -312,7 +313,13 @@ const DeckOfDeathGame = () => {
         }
     };
 
-
+    const returnHome = () => {
+        dispatch(resetExercises());
+        dispatch(resetOptions());
+        dispatch(resetUI());
+        dispatch(resetDeck());
+        navigate('/');
+    }
 
     return (
         <div className="deckofdeathgame">
@@ -344,6 +351,13 @@ const DeckOfDeathGame = () => {
                                 }
                             </div>
                         </div>
+
+                        <div
+                            className="exitButton"
+                            onClick={returnHome}
+                        >
+                            <ExitToAppIcon />
+                        </div>
                     </div>
                     
                     <MetricsBar />
@@ -351,23 +365,7 @@ const DeckOfDeathGame = () => {
             }
             
             {workoutFinished && 
-                <div className="finished-workout">
-                    <div className="finished-workout__text">
-                        You finished! Great work!
-                    </div>
-                    <Button
-                        variant="contained"
-                        onClick={() => {
-                            dispatch(resetExercises());
-                            dispatch(resetOptions());
-                            dispatch(resetUI());
-                            dispatch(resetDeck());
-                            navigate('/');
-                        }}
-                    >
-                        Back to start
-                    </Button>
-                </div>
+                <FinishedPage totalTimeSpent={totalTimeSpent}/>
             }
         </div>
     );

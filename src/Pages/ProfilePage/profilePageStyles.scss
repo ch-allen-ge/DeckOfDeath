@@ -3,7 +3,6 @@
 .profile-page {
     display: flex;
     width: 100%;
-    font-size: 1.6rem;
     justify-content: center;
     overflow-y: scroll;
 
@@ -43,16 +42,14 @@
                 align-items: center;
                 padding: 10px;
                 text-align: center;
-
-                font-size: 2rem;
             }
         }
     }
 }
 
 .profile-card {
-    height: 32rem;
-    width: 24rem;
+    height: 20rem;
+    width: 16rem;
     border: 2px solid black;
     border-radius: 2%;
     background-color: white;
@@ -65,7 +62,6 @@
     &__text {
         position: absolute;
         writing-mode: tb-rl;
-        font-size: 1rem;
         color: white;
         padding: .5rem;
         background-color: rgba(0, 0, 0, 0.39);
@@ -89,8 +85,8 @@
     }
 
     &__picture-container {
-        width: 16rem;
-        height: 16rem;
+        width: 10rem;
+        height: 10rem;
         margin: auto;
         position: relative;
         top: 50%;
@@ -177,7 +173,6 @@
     }
 
     .profileCardText {
-        font-size: 0.8rem;
         padding: .2rem;
         border-radius: 0px 0px .5rem 0px;
     }

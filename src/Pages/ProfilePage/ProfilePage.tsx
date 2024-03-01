@@ -219,9 +219,7 @@ const ProfilePage = () => {
 
                                 <StatsRow totalTimeSpent={totalTimeSpent} numberWorkoutsCompleted={numberWorkoutsCompleted} />
                             </div>
-
                             
-
                             <div className='profile-page__content__completed-workouts'>
                                 {workoutsCompleted.reverse().map((workout, index) => 
                                     <WorkoutDisplay workout={workout} index={index} key={index}>

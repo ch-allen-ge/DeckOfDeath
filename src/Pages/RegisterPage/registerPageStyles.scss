@@ -1,12 +1,12 @@
+@import "../../mixins.scss";
+
 .registerPageContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 20%;
+    margin: 2rem 5rem;
     padding-bottom: 2rem;
     width: 100%;
-    font-size: 2rem;
-    margin-top: 2rem;
 }
 
 .registerInputFields {
@@ -16,12 +16,10 @@
 }
 
 .profilePicInput {
-    padding-top: 6rem;
-    height: 5rem;
+    margin-top: 3rem;
+    padding-top: 3rem;
+    height: 3rem;
     overflow: hidden;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
     background: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png') center center no-repeat #e4e4e4;
     border-radius: 2rem;
     background-size: 3rem 3rem;
@@ -32,10 +30,15 @@
 }
 
 .registerProPicContainer {
-    width: 13rem;
-    height: 13rem;
     margin: 3rem 0;
     position: relative;
+
+    & > img {
+        height: 10rem;
+        width: 10rem;
+        object-fit: cover;
+        border-radius: 5rem;
+    }
 }
 
 .cancelIcon {
@@ -45,4 +48,26 @@
 
 .cancelIcon:hover {
     cursor: pointer;
+}
+
+@include mobile {
+    .registerPageContainer {
+        padding: 1rem;
+        margin: 0;
+        font-size: 0.8rem;
+    }
+
+    .registerProPicContainer {
+        margin: 1rem 0;
+
+        & > img {
+            height: 5rem;
+            width: 5rem;
+        }
+    }
+
+    .profilePicInput {
+        margin-top: 1rem;
+        padding-top: 3rem;
+    }
 }

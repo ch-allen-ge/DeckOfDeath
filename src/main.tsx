@@ -10,6 +10,7 @@ import ProfilePage from './Pages/ProfilePage';
 import CoachPage from './Pages/CoachPage';
 import SavedWorkoutsPage from './Pages/SavedWorkoutsPage';
 import Navbar from './components/Navbar/Navbar.tsx';
+import FinishedPage from './Pages/FinishedPage/FinishedPage.tsx';
 import {
     BrowserRouter,
     Routes,
@@ -29,7 +30,13 @@ ReactDOM.createRoot(document.getElementById('root') as Element).render(
                 <Route path="/profile" element={<ProfilePage /> } />
                 <Route path="/coach" element={ <CoachPage />} />
                 <Route path="/savedWorkouts" element={<SavedWorkoutsPage /> } />
+                
+
+                {/* test route */}
+                <Route path="/finished" element={ <FinishedPage />} />
+
                 <Route element={<ErrorPage /> } />
+
             </Routes>
         </BrowserRouter>
     </Provider>

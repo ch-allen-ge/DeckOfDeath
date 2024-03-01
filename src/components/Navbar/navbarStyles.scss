@@ -1,7 +1,7 @@
 @import "../../mixins.scss";
 
 .navbar__button-container > svg {
-    font-size: 3rem !important;
+    font-size: 2rem !important;
 }
 
 .navbar {
@@ -12,13 +12,12 @@
     box-shadow: 0 1rem 3rem 0 rgba(0,0,0,.2);
     background: white;
     height: 100vh;
-    padding: 0 1rem;
+    padding: 2rem 1rem;
 
     &__home-button {
         color: cornflowerblue;
         cursor: pointer;
-        font-size: 2.5rem;
-        padding: 1rem 0;
+        font-size: 1.5rem;
         text-align: center;
     }
 
@@ -27,13 +26,10 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
         text-align: center;
-        font-size: 1.5rem;
+        font-size: 1rem;
         transition: transform .2s;
         cursor: pointer;
-
-        padding: 1rem;
         border-radius: 1.5rem;
         color: cornflowerblue;
 
@@ -55,23 +51,23 @@
 @include mobile {
     .navbar {
         flex-direction: row;
-        height: 6rem;
+        height: 4rem;
         width: 100%;
+        padding: 1rem 0.5rem;
 
         svg {
-            font-size: 2rem !important;
+            font-size: 1rem !important;
         }
 
         &__home-button {
-            font-size: 1.2rem;
+            font-size: 0.8rem;
         }
-
+        
         &__button-container {
             margin: 0;
-            font-size: small;
             display: inline-block;
-            padding: 0.8rem;
-            font-size: 1.2rem;
+            padding: 0;
+            font-size: 0.8rem;
         }
     }
 }

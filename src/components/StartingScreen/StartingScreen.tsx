@@ -9,7 +9,6 @@ import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
 import { resetUI } from "../../reduxSlices/UISlice";
 import { setShowError } from "../../reduxSlices/UISlice";
 import './startingScreenStyles.scss';
-import SaveWorkoutModal from "../SaveWorkoutModal";
 
 const StartingScreen = () => {
     const dispatch = useAppDispatch();
