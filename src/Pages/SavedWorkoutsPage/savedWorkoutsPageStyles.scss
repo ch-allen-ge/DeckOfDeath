@@ -24,33 +24,124 @@
     background: white;
     margin: 2rem;
     border-radius: 2rem;
+}
 
-    
-
-    & > button {
-        
-    }
+.savedWorkoutsText {
+    text-align: center;
+    font-size: 3rem;
+    margin-top: 2rem;
 }
 
 .rowDisplay {
     display: flex;
-    width: 75%;
+    width: 90%;
     justify-content: space-around;
     flex-wrap: wrap;
 }
 
-@include tablet {
-    .rowDisplay {
-        width: 90%;
+.card {
+    perspective: 150rem;
+    -moz-perspective: 150rem;
+    position: relative;
+    height: 20rem;
+    flex-basis: 25%;
+    margin: 2rem;
+
+    &__side {
+        border-radius: 2rem;
+        height: 20rem;
+        transition: all .8s ease;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        backface-visibility: hidden;
+        // overflow: hidden;
+        box-shadow: 0 1.5rem 4rem rgba(black, .15);
+
+        &--front {
+            background-color: white;
+        }
+
+        &--back {
+            transform: rotateY(180deg);
+            background-color: white;
+        }
+    }
+
+    &:hover &__side--front {
+        transform: rotateY(-180deg);
+    }
+
+    &:hover &__side--back {
+        transform: rotateY(0);
+    }
+    
+    &__heading {
+        background: cornflowerblue;
+        border-radius: 2rem 2rem 0 0;
+        font-size: 1.5rem;
+        text-align: center;
+        height: 25%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 75%;
+        width: 80%;
+        margin: 0 auto;
+
+        span {
+            text-align: center;
+            padding-bottom: 1rem;
+
+            &:not(:last-child) {
+                border-bottom: 1px solid cornflowerblue;
+            }
+        }
+    }
+
+    &__cta {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
     }
 }
 
+@mixin smallerCards {
+    .rowDisplay {
+        width: 90%;
+    }
+
+    .card {
+        flex-basis: 35%;
+    }
+}
+
+@include tablet {
+    @include smallerCards;
+}
+
 @include landscape_tablet {
-    
+    @include smallerCards;
 }
 
 @include mobile {
     .savedWorkoutsPageContainer {
         flex-direction: column;
+    }
+
+    .rowDisplay {
+        width: 90%;
+    }
+
+    .card {
+        flex-basis: 100%;
     }
 }
