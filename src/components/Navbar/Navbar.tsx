@@ -3,12 +3,8 @@ import { resetExercises } from "../../reduxSlices/exercisesChosenSlice";
 import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
 import { resetUI } from "../../reduxSlices/UISlice";
 import { resetDeck } from "../../reduxSlices/deckSlice";
-import { resetProfile } from "../../reduxSlices/profileSlice";
-import { resetUser } from "../../reduxSlices/userSlice";
-import { useAppSelector, useAppDispatch } from '../../hooks';
-import { dodPost } from "../../axios-config";
+import { useAppDispatch } from '../../hooks';
 import './navbarStyles.scss';
-import { setLoggedIn } from "../../reduxSlices/UISlice";
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import DirectionsRunOutlinedIcon from '@mui/icons-material/DirectionsRunOutlined';
@@ -16,6 +12,7 @@ import AirlineSeatIndividualSuiteOutlinedIcon from '@mui/icons-material/AirlineS
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import '../../mixins.scss';
+import { useAuth } from "../../auth/AuthContext";
 
 interface iconButtonProps {
   children: React.ReactNode,
@@ -27,21 +24,10 @@ const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const location = useLocation();
-    const isLoggedIn = useAppSelector(state => state.UI.loggedIn);
+    const {isLoggedIn, logOut} = useAuth();
 
     if (location.pathname === '/workout' || location.pathname === '/finished') {
       return null;
-    }
-
-    const logOut = async () => {
-      const response = await dodPost('/logout');
-
-      if (response && response.status === 200) {
-        dispatch(setLoggedIn(false));
-        dispatch(resetProfile());
-        dispatch(resetUser());
-        navigate('/');
-      }
     }
 
     const IconButton = ({
@@ -66,7 +52,7 @@ const Navbar = () => {
       return (
         <IconButton
             onClick={() => {
-              logOut();
+              logOut.mutate();
               dispatch(resetUI());
               navigate('/');
             }}

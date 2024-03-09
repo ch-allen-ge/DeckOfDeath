@@ -1,7 +1,4 @@
-import { useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "../../hooks";
-import { dodGet } from "../../axios-config";
-import { setSavedWorkouts } from "../../reduxSlices/profileSlice";
+import { useAppDispatch } from "../../hooks";
 import './savedWorkoutsPageStyles.scss';
 import { 
     setClubsExercise,
@@ -17,8 +14,10 @@ import { setBreakoutAces } from "../../reduxSlices/workoutOptionsSlice";
 import { useNavigate } from "react-router-dom";
 import LoginRegisterPage from "../LoginReigsterPage";
 import Button from "../../components/Button";
-import { setUsername } from "../../reduxSlices/userSlice";
-import { setLoggedIn } from "../../reduxSlices/UISlice";
+import { useAuth } from "../../auth/AuthContext";
+import { getSavedWorkouts } from "../../api/getRoutes";
+import { useQuery } from "@tanstack/react-query";
+import { CircularProgress } from "@mui/material";
 
 interface WorkoutInterface {
     name: string,
@@ -36,33 +35,23 @@ interface WorkoutInterface {
 const SavedWorkoutPage = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const savedWorkoutsArray = useAppSelector((state) => state.profile.savedWorkouts);
-    const isLoggedIn = useAppSelector((state) => state.UI.loggedIn);
-
-    useEffect(() => {
-        const checkUserLoggedIn = async () => {
-            try {
-                const response = await dodGet('/authenticateToken');
+    const { isLoggedIn } = useAuth();
     
-                if (response && response.status === 200) {
-                    const getCustomWorkouts = async () => {
-                        const response = await dodGet('/workouts/getCustomWorkouts');
-                        const savedWorkouts = response.data;
-                        dispatch(setSavedWorkouts(savedWorkouts));
-                    }
-    
-                    dispatch(setLoggedIn(true));
-                    getCustomWorkouts();
-                } else {
-                    dispatch(setLoggedIn(false));
-                }
-            } catch (e) {
-            
-            }
-        };
+    const {
+        data: savedWorkouts,
+        status: savedWorkoutsStatus
+    } = useQuery({
+        queryKey: ['savedWorkouts'],
+        queryFn: getSavedWorkouts
+    });
 
-        checkUserLoggedIn();
-    }, []);
+    if (savedWorkoutsStatus === 'pending') {
+        return (<CircularProgress />);
+    };
+
+    if (!isLoggedIn) {
+        return (<LoginRegisterPage />);
+    }
 
     const handleClick = (selectedWorkout: WorkoutInterface) => {
         dispatch(setClubsExercise(selectedWorkout.clubs_exercise));
@@ -79,16 +68,19 @@ const SavedWorkoutPage = () => {
 
     return (
         <div className="savedWorkoutsPageContainer">
-            {isLoggedIn ? 
-                <div className='savedWorkoutsContainer'>
-                    <div className="savedWorkoutsText">
-                        Saved Workouts
+            <div className='savedWorkoutsContainer'>
+                <div className="savedWorkoutsText">
+                    Saved Workouts
+                </div>
+                {savedWorkouts.length === 0 ?
+                    <div className="noSavedWorkouts">
+                        Save a workout after completion to quick start it again here later!
                     </div>
+                    :
                     <div className="rowDisplay">
-                        {savedWorkoutsArray.map((workout: WorkoutInterface, index) => 
-                            <div className="card">
+                        {savedWorkouts.map((workout: WorkoutInterface, index: number) => 
+                            <div className="card" key={index}>
                                 <div className="card__side card__side--front">
-                                    {/* <div className="card__picture card__picture--1"></div> */}
                                     <span className="card__heading">
                                         <span className="card__heading-span card__heading-span--1">
                                             {workout.name}
@@ -118,10 +110,8 @@ const SavedWorkoutPage = () => {
                             </div>
                         )}
                     </div>
-                </div>
-            :
-                <LoginRegisterPage />
-            }
+                }
+            </div>
         </div>
     )
 

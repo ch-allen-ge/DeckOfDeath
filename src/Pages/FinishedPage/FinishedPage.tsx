@@ -10,18 +10,34 @@ import { resetUI } from '../../reduxSlices/UISlice';
 import { resetDeck } from '../../reduxSlices/deckSlice';
 import WorkoutDisplay from '../../components/WorkoutDisplay';
 import { useState } from 'react';
-import { dodPost } from '../../axios-config';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useAuth } from '../../auth/AuthContext';
+import { saveTheCustomWorkout } from '../../api/postRoutes';
+import { useMutation } from '@tanstack/react-query';
 
 interface FinishedPageProps {
     totalTimeSpent?: string
 }
 
+interface CompletedWorkout {
+    name?: string
+    time_spent?: string,
+    clubs_exercise: string,
+    diamonds_exercise: string,
+    hearts_exercise: string,
+    spades_exercise: string,
+    aces_exercise: string,
+    breakout_aces: boolean,
+    timer_used: boolean,
+    aces_minutes_to_do: number,
+    aces_seconds_to_do: number
+};
+
 const FinishedPage = ({totalTimeSpent} : FinishedPageProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isLoggedIn = useAppSelector(state => state.UI.loggedIn);
+  const { isLoggedIn } = useAuth();
   const clubs_exercise = useAppSelector((state) => state.exercisesChosen.clubs);
   const diamonds_exercise = useAppSelector((state) => state.exercisesChosen.diamonds);
   const hearts_exercise = useAppSelector((state) => state.exercisesChosen.hearts);
@@ -56,27 +72,32 @@ const FinishedPage = ({totalTimeSpent} : FinishedPageProps) => {
     navigate('/');
   }
 
-  const saveWorkout = async () => {
-    if(saveWorkoutName !== '') {
-        const workout = {
-            name: saveWorkoutName,
-            clubs_exercise,
-            diamonds_exercise,
-            hearts_exercise,
-            spades_exercise,
-            aces_exercise,
-            breakout_aces,
-            timer_used,
-            aces_minutes_to_do,
-            aces_seconds_to_do
-        };
-
-        dodPost('/workouts/saveCustomWorkout', workout);
+  const saveWorkout = useMutation({
+    mutationFn: async () => {
+        if(saveWorkoutName !== '') {
+            const workout: CompletedWorkout = {
+                name: saveWorkoutName,
+                clubs_exercise,
+                diamonds_exercise,
+                hearts_exercise,
+                spades_exercise,
+                aces_exercise,
+                breakout_aces,
+                timer_used,
+                aces_minutes_to_do,
+                aces_seconds_to_do
+            };
+    
+            await saveTheCustomWorkout(workout);
+        }
+    },
+    onSuccess: () => {
         setSavedWorkout(true);
-    } else {
+    },
+    onError: () => {
         setSaveWorkoutError(true);
     }
-  }
+  });
 
   return (
     <div className='finished-page'>
@@ -123,7 +144,7 @@ const FinishedPage = ({totalTimeSpent} : FinishedPageProps) => {
                                     </div>
                                     :
                                     <Button
-                                        onClick={saveWorkout}
+                                        onClick={() => saveWorkout.mutate()}
                                     >
                                         Save
                                     </Button>

@@ -22,9 +22,6 @@ export const UISlice = createSlice({
         setShowCountdownAnimation: (state, action: PayloadAction<boolean>) => {
             state.showCountdownAnimation = action.payload;
         },
-        setLoggedIn: (state, action: PayloadAction<boolean>) => {
-            state.loggedIn = action.payload;
-        },
         resetUI: (state) => {
             state.showError = false;
             state.showCountdownAnimation = true;
@@ -35,7 +32,6 @@ export const UISlice = createSlice({
 export const {
     setShowError,
     setShowCountdownAnimation,
-    setLoggedIn,
     resetUI
 } = UISlice.actions;
 

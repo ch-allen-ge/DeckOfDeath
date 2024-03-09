@@ -15,13 +15,17 @@ import {
     setCardsFinished,
     setCardsRemaining
 } from "../../reduxSlices/deckSlice";
-
 import { resetExercises } from "../../reduxSlices/exercisesChosenSlice";
 import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
 import { resetUI } from "../../reduxSlices/UISlice";
 import { resetDeck } from "../../reduxSlices/deckSlice";
-import { dodPost, dodPatch } from "../../axios-config";
-
+import { useAuth } from "../../auth/AuthContext";
+import { useMutation } from "@tanstack/react-query";
+import { addTheWorkoutCompleted } from "../../api/postRoutes";
+import { 
+    updateTheTotalTime,
+    updateTheNumberWorkoutsCompleted
+} from "../../api/patchRoutes";
 import './deckOfDeathGameStyles.scss';
 
 interface TimerProps {
@@ -41,6 +45,23 @@ interface RegularCardProps {
     text: string;
 }
 
+interface CompletedWorkout {
+    time_spent: string,
+    clubs_exercise: string,
+    diamonds_exercise: string,
+    hearts_exercise: string,
+    spades_exercise: string,
+    aces_exercise: string,
+    breakout_aces: boolean,
+    timer_used: boolean,
+    aces_minutes_to_do: number,
+    aces_seconds_to_do: number
+}
+
+interface TimeSpent {
+    timeSpent: string
+}
+
 const DeckOfDeathGame = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -53,7 +74,7 @@ const DeckOfDeathGame = () => {
     const acesSecondsToDo = useAppSelector((state) => state.exercisesChosen.aces.secondsToDo);
     const deckId = useAppSelector((state) => state.deck.deckId);
     const currentCard = useAppSelector((state) => state.deck.currentCard);
-    const isLoggedIn = useAppSelector(state => state.UI.loggedIn);
+    const { isLoggedIn } = useAuth();
 
     const [workoutFinished, setWorkoutFinished] = useState<boolean>(false);
     const [currentExercise, setCurrentExercise] = useState<RegularCardProps | AceCardProps | null>(null);
@@ -70,6 +91,7 @@ const DeckOfDeathGame = () => {
     const showWorkoutTimerRef = useRef(false);
     const currentCardAceRef = useRef(false);
     const timerStatusRef = useRef({});
+    const allowCardDrawRef = useRef(true);
 
 
     const setTheCurrentExercise = (data: RegularCardProps | AceCardProps | null) => {
@@ -91,6 +113,10 @@ const DeckOfDeathGame = () => {
         setTimerStatus(data);
     }
 
+    const setAllowCardDraw = (data: boolean) => {
+        allowCardDrawRef.current = data;
+    }
+
     const isMobile = window.innerWidth < 600;
 
     //get the new deck
@@ -102,17 +128,36 @@ const DeckOfDeathGame = () => {
             .catch((error) => console.error('could not get new deck', error));
     }, []);
 
-    //workout finished, update database, maybe promise.all these
+    const addWorkoutCompleted = useMutation({
+        mutationFn: async (completedWorkout: CompletedWorkout) => {
+            const response = await addTheWorkoutCompleted(completedWorkout);
+            return response;
+        }
+    });
+
+    const updateTotalTime = useMutation({
+        mutationFn: async (timeSpent: TimeSpent) => {
+            await updateTheTotalTime(timeSpent);
+        }
+    });
+
+    const updateNumberWorkoutsCompleted = useMutation({
+        mutationFn: async () => {
+            await updateTheNumberWorkoutsCompleted();
+        }
+    })
+
+    //workout finished
     useEffect(() => {
         if (isLoggedIn && workoutFinished) {
             try {
-                const updateTotalTimeSpent = dodPatch('/profile/updateTotalTimeSpent', {
+                const updateTotalTimeSpent = updateTotalTime.mutate({
                     timeSpent: totalTimeSpent
                 });
 
-                const updateNumberWorkoutsCompleted = dodPatch('/profile/updateNumberWorkoutsCompleted');
+                const updateWorkoutsCompleted = updateNumberWorkoutsCompleted.mutate();
 
-                const addWorkoutCompleted = dodPost('/workouts/saveCompletedWorkout', {
+                const addWorkout = addWorkoutCompleted.mutate({
                     time_spent: totalTimeSpent,
                     clubs_exercise: exercisesChosen.clubs,
                     diamonds_exercise: exercisesChosen.diamonds,
@@ -125,7 +170,7 @@ const DeckOfDeathGame = () => {
                     aces_seconds_to_do: acesSecondsToDo
                 });
 
-                Promise.all([updateTotalTimeSpent, updateNumberWorkoutsCompleted, addWorkoutCompleted]);
+                Promise.all([updateTotalTimeSpent, updateWorkoutsCompleted, addWorkout]);
             } catch (e) {
                 throw e;
             }
@@ -155,9 +200,13 @@ const DeckOfDeathGame = () => {
             if (e.code === 'Enter' && currentCardAceRef.current && !showWorkoutTimerRef.current) { //enter
                 startTheTimer();
             // @ts-ignore
-            } else if (e.code === 'Space' && !(currentCardAceRef.current && currentExerciseRef?.current?.timerUsed && !timerStatusRef.current.finished)) { //space bar
+            } else if (e.code === 'Space' && allowCardDrawRef.current && !(currentCardAceRef.current && currentExerciseRef?.current?.timerUsed && !timerStatusRef.current.finished)) { //space bar
+                setAllowCardDraw(false);
                 setShowTheWorkoutTimer(false);
                 drawNewCard(false);
+                setTimeout(() => {
+                    setAllowCardDraw(true);
+                }, 1000);
             }
         }
     

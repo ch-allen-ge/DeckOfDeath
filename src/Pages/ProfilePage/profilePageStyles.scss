@@ -3,6 +3,7 @@
 .profile-page {
     display: flex;
     width: 100%;
+    height: 100svh;
     justify-content: center;
     overflow-y: scroll;
 
@@ -142,42 +143,43 @@
     }
 }
 
+.noWorkoutsCompleted {
+    flex-grow: 1;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.proPicActionButtons {
+    background-color: aliceblue;
+    padding: .5rem;
+    border-radius: 1rem;
+}
+
+@mixin mobileStyles {
+    .profile-page__content__top-section {
+        flex-direction: column;
+
+        & .statsRowContainer {
+            width: 100%;
+            margin-top: 2rem;
+            margin-left: 0;
+    
+            & .statsContainer {
+                flex-direction: row;
+            }
+        }
+    }
+}
+
 @include mobile {
-    .profilePageContainer {
-        flex-direction: column;
-    }
+    @include mobileStyles;
+}
 
-    .topSectionFlexContainer {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .awardsStatsContainer {
-        display: flex;
-        flex-direction: row;
-        margin: 0;
-    }
-
-    .awardsContainer {
-        width: auto;
-    }
-
-    .cardProfileContainer {
-        height: 15rem;
-        width: 10rem;
-    }
-
-    .proPicContainer {
-        width: 6rem;
-        height: 6rem;
-    }
-
-    .profileCardText {
-        padding: .2rem;
-        border-radius: 0px 0px .5rem 0px;
-    }
-
-    .completedWorkoutsContainer {
-        margin: 0;
-    }
+@include tablet {
+    @include mobileStyles;
 }

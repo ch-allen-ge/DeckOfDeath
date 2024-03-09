@@ -1,21 +1,27 @@
-import { useEffect, useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../../hooks';
-import { dodGet, dodDelete, dodPost } from '../../axios-config';
+import { useState } from 'react';
 import './profilePageStyles.scss';
 import WorkoutDisplay from '../../components/WorkoutDisplay';
 import StatsRow from '../../components/StatsRow';
-import { setLoggedIn } from '../../reduxSlices/UISlice';
-import { setTotalTimeSpent, setNumberWorkoutsCompleted } from '../../reduxSlices/profileSlice';
-import { setUsername } from '../../reduxSlices/userSlice';
 import CircularProgress from '@mui/material/CircularProgress';
 import LoginRegisterPage from '../LoginReigsterPage';
-import { Suspense } from 'react';
 import Popup from '../../components/Popup';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import ImageNotSupportedOutlinedIcon from '@mui/icons-material/ImageNotSupportedOutlined';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { Button } from '@mui/material';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useAuth } from '../../auth/AuthContext';
+import { 
+    getCompletedWorkouts,
+    getProPicUrl,
+    getProfile,
+    getUsername
+} from '../../api/getRoutes';
+import { uploadAndSaveTheproPic } from '../../api/postRoutes';
+import { deleteTheProPic } from '../../api/deleteRoutes';
+import Popper from '@mui/material/Popper';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 interface CompletedWorkout {
     clubs_exercise: string,
@@ -33,85 +39,86 @@ interface CompletedWorkout {
         seconds: number
     },
     date_completed: string
-}
+};
 
 const ProfilePage = () => {
-    const dispatch = useAppDispatch();
-    const isLoggedIn = useAppSelector(state => state.UI.loggedIn);
-    const username = useAppSelector((state) => state.user.username);
-    const totalTimeSpent = useAppSelector((state) => state.profile.totalTimeSpent);
-    const numberWorkoutsCompleted = useAppSelector((state) => state.profile.numberWorkoutsCompleted);
-
-    const [workoutsCompleted, setWorkoutsCompleted] = useState<CompletedWorkout[]>([]);
-    const [proPicUrl, setProPicUrl] = useState<string>();
+    const queryClient = useQueryClient();
+    const { isLoggedIn, isLoggedInStatus } = useAuth();
     const [file, setFile] = useState<File | null>(null);
     const [showPopup, setShowPopup] = useState(false);
     const [newProPicPreview, setNewProPicPreview] = useState<string>('');
-    
-    useEffect(() => {
-            const loadUsername = async () => {
-                const response = await dodGet('/user/getCurrentUser');
-    
-                if (response && response.status === 200) {
-                    dispatch(setUsername(response.data.username));
-                }
+
+    const setProPic = useMutation({
+        mutationFn: async () => {
+            let params = new FormData();
+
+            if (file) {
+                params.append('profilePic', file);
+                const response = await uploadAndSaveTheproPic(params);
+                return response.data;
             };
-
-        const getWorkoutsCompleted = async () => {
-            const response = await dodGet(`/workouts/getCompletedWorkouts`);
-
-            if (response && response.data) {
-                setWorkoutsCompleted(response.data);
-            }
+        },
+        onSuccess: (newProPicUrl) => {
+            queryClient.setQueryData(["proPicUrl"], newProPicUrl);
+            setNewProPicPreview('');
+            setShowPopup(false);
         }
+    });
 
-        const getProPicUrlFromS3 = async () => {
-            const response = await dodGet('/profile/getProfilePicUrl');
-
-            if (response && response.data) {
-                setProPicUrl(response.data);
-            } else {
-                setProPicUrl('/images/default_pro_pic.png');
-            }
+    const deleteProPic = useMutation({
+        mutationFn: async () => {
+            await deleteTheProPic();
+        },
+        onSuccess: () => {
+            setFile(null);
+            setShowPopup(false);
+            queryClient.setQueryData(["proPicUrl"], '/images/default_pro_pic.png');
         }
+    });
 
-        const loadProfile = async () =>  {
-            const response = await dodGet('/profile/getProfile');
+    const {
+        data: completedWorkouts,
+        status: completedWorkoutsStatus
+    } = useQuery({
+        queryKey: ['workoutsCompleted'],
+        queryFn: getCompletedWorkouts
+    });
 
-            if (response && response.status === 200) {
-                const profile = response.data;
-                dispatch(setTotalTimeSpent(profile.total_time_spent));
-                dispatch(setNumberWorkoutsCompleted(profile.number_workouts_completed));
-            }
-        }
+    const {
+        data: proPicUrl,
+        status: proPicUrlStatus
+    } = useQuery({ 
+        queryKey: ['proPicUrl'],
+        queryFn: getProPicUrl
+    });
 
-        const loadInitialData = async () => {
-            try {
-                const response = await dodGet('/authenticateToken');
-        
-                if (response && response.status === 200) {
-                    dispatch(setLoggedIn(true));
-                    loadUsername();
-                    getProPicUrlFromS3();
-                    getWorkoutsCompleted();
-                    loadProfile();
-                } else {
-                    dispatch(setLoggedIn(false));
-                }
-            } catch (e) {
-            
-            }
-        }
+    const {
+        data: profile,
+        status: profileStatus
+    } = useQuery({
+        queryKey: ['profile'],
+        queryFn: getProfile
+    });
 
-        loadInitialData();
-    }, []);
+    const {
+        data: username,
+        status: usernameStatus,
+    } = useQuery({
+        queryKey: ['username'],
+        queryFn: getUsername
+    });
 
-    const deleteProPic = async () => {
-        await dodDelete('/profile/deleteProfilePicture');
-        setFile(null);
-        setProPicUrl('/images/default_pro_pic.png');
-        setShowPopup(false);
+    if (isLoggedInStatus === 'pending' || completedWorkoutsStatus === 'pending' || proPicUrlStatus == 'pending' || profileStatus === 'pending' || usernameStatus === 'pending') {
+        return (<CircularProgress />);
     };
+
+    if (completedWorkoutsStatus === 'error' || proPicUrlStatus === 'error' || profileStatus === 'error' || usernameStatus === 'error') {
+        return <h1>Error Loading Profile</h1>;
+    };
+
+    if ( !isLoggedIn ) {
+        return <LoginRegisterPage />;
+    }
   
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -121,19 +128,6 @@ const ProfilePage = () => {
             setNewProPicPreview(objectUrl);
             setShowPopup(false);
         }
-    };
-
-    const changeProPic = async () => {
-        let params = new FormData();
-
-        if (file) {
-            params.append('profilePic', file);
-            const response = await dodPost('/profile/uploadAndSaveProPic', params);
-            const newProPicUrl = response.data;
-            setProPicUrl(newProPicUrl);
-            setNewProPicPreview('');
-            setShowPopup(false);
-        };
     };
 
     const cancelNewProPic = () => {
@@ -153,95 +147,109 @@ const ProfilePage = () => {
         }
     };
 
+    const handleClickAway = () => {
+        setShowPopup(false);
+    }
+
     return (
-        <>
-            <Suspense fallback={<CircularProgress />}>
-                <div className='profile-page'>
-                    {isLoggedIn ?
-                        <div className='profile-page__content'>
-                            <div className='profile-page__content__top-section'>
-                                <div className='profile-page__content__top-section__profile'>
-                                    <div className='profile-card'>
-                                        <div className='profile-card__text top-name'>
-                                            <b>{username.toUpperCase()}</b>
-                                        </div>
-
-                                        <div className='profile-card__text bottom-name'>
-                                            <b>{username.toUpperCase()}</b>
-                                        </div>
-
-                                        <div className='profile-card__picture-container'>
-                                            <img className='profile-card__picture-container__pic' src={proPicUrl} onClick={() => setShowPopup((prevValue) => !prevValue)}/>
-                                            {newProPicPreview && <img className='profile-card__picture-container__preview-pic' src={newProPicPreview}/>}
-                                            <Popup open={showPopup}>
-                                                <div className='profile-card__edit'>
-                                                    <input
-                                                        type='file'
-                                                        className='profile-card__edit__input'
-                                                        accept="image/png, image/jpeg"
-                                                        onChange={handleFileChange}
-                                                    />
-                                                    <ImageOutlinedIcon />
-                                                    <span className='profile-card__edit__text'>
-                                                        Change Profile Picture
-                                                    </span>
-                                                </div>
-                                                {proPicUrl !== '/images/default_pro_pic.png' && 
-                                                    <div
-                                                        className='profile-card__edit'
-                                                        onClick={deleteProPic}
-                                                    >
-                                                        <ImageNotSupportedOutlinedIcon />
-                                                        <span className='profile-card__edit__text'>Delete Profile Picture</span>
-                                                    </div>
-                                                }
-                                            </Popup>
-                                        </div>
-                                    </div>
-
-                                    {newProPicPreview && 
-                                        <div className='profile-page__content__top-section__profile__edit-options'>
-                                            <div onClick={changeProPic}>
-                                                <Button variant='contained'>
-                                                    <CheckCircleOutlineOutlinedIcon />
-                                                    Save
-                                                </Button>
-                                            </div>
-                                            <div onClick={cancelNewProPic}>
-                                                <Button variant='contained'>
-                                                    <CancelOutlinedIcon />
-                                                    Cancel
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    }
+        <div className='profile-page'>
+                <div className='profile-page__content'>
+                    <div className='profile-page__content__top-section'>
+                        <div className='profile-page__content__top-section__profile'>
+                            <div className='profile-card'>
+                                <div className='profile-card__text top-name'>
+                                    <b>{username.toUpperCase()}</b>
                                 </div>
 
-                                <StatsRow totalTimeSpent={totalTimeSpent} numberWorkoutsCompleted={numberWorkoutsCompleted} />
+                                <div className='profile-card__text bottom-name'>
+                                    <b>{username.toUpperCase()}</b>
+                                </div>
+
+                                <div className='profile-card__picture-container'>
+                                    <img className='profile-card__picture-container__pic' id='proPic' src={proPicUrl} onClick={() => setShowPopup((prevValue) => !prevValue)}/>
+                                    {newProPicPreview && <img className='profile-card__picture-container__preview-pic' src={newProPicPreview}/>}
+                                    {showPopup && 
+                                        <ClickAwayListener onClickAway={() => setShowPopup(false)}>
+                                            <Popper open={showPopup} anchorEl={document.getElementById('proPic')}>
+                                                <div className='proPicActionButtons'>
+                                                    <div className='profile-card__edit'>
+                                                        <input
+                                                            type='file'
+                                                            className='profile-card__edit__input'
+                                                            accept="image/png, image/jpeg"
+                                                            onChange={handleFileChange}
+                                                        />
+                                                        <ImageOutlinedIcon />
+                                                        <span className='profile-card__edit__text'>
+                                                            Change Profile Picture
+                                                        </span>
+                                                    </div>
+                                                    {proPicUrl !== '/images/default_pro_pic.png' && 
+                                                        <div
+                                                            className='profile-card__edit'
+                                                            onClick={() => deleteProPic.mutate()}
+                                                        >
+                                                            <ImageNotSupportedOutlinedIcon />
+                                                            <span className='profile-card__edit__text'>Delete Profile Picture</span>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </Popper>
+                                        </ClickAwayListener>
+                                    }
+                                </div>
                             </div>
-                            
-                            <div className='profile-page__content__completed-workouts'>
-                                {workoutsCompleted.reverse().map((workout, index) => 
-                                    <WorkoutDisplay workout={workout} index={index} key={index}>
-                                        <div className='profile-page__content__completed-workouts__info'>
-                                            {new Date(workout.date_completed).toDateString()}
-                                        </div>
-                                        <div className='profile-page__content__completed-workouts__info'>
-                                            {timeSpentToString(workout)}
-                                        </div>
-                                    </WorkoutDisplay>
-                                )}
-                            </div>
+
+                            {newProPicPreview && 
+                                <div className='profile-page__content__top-section__profile__edit-options'>
+                                    <div onClick={() => setProPic.mutate()}>
+                                        <Button variant='contained'>
+                                            <CheckCircleOutlineOutlinedIcon />
+                                            Save
+                                        </Button>
+                                    </div>
+                                    <div onClick={cancelNewProPic}>
+                                        <Button variant='contained'>
+                                            <CancelOutlinedIcon />
+                                            Cancel
+                                        </Button>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                    :
-                        <LoginRegisterPage />
+
+                        <StatsRow totalTimeSpent={profile.total_time_spent} numberWorkoutsCompleted={profile.number_workouts_completed} />
+                    </div>
+                    
+                    {completedWorkouts.length == 0 ?
+                        <div className='noWorkoutsCompleted'>
+                            Finish a workout to see it here!
+                        </div>
+                        :
+                        <div className='profile-page__content__completed-workouts'>
+                            {completedWorkouts.sort((a: CompletedWorkout, b: CompletedWorkout) => {
+                                if (a.date_completed > b.date_completed) {
+                                    return -1;
+                                } else if (a.date_completed < b.date_completed) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            }).map((workout: CompletedWorkout, index: number) => 
+                                <WorkoutDisplay workout={workout} index={index} key={index}>
+                                    <div className='profile-page__content__completed-workouts__info'>
+                                        {new Date(workout.date_completed).toDateString()}
+                                    </div>
+                                    <div className='profile-page__content__completed-workouts__info'>
+                                        {timeSpentToString(workout)}
+                                    </div>
+                                </WorkoutDisplay>
+                            )}
+                        </div>
                     }
                 </div>
-            </Suspense>
-            
-        </>
-        
-    )
+        </div>
+    );
 }
 
 export default ProfilePage;

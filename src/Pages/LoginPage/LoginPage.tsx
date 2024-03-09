@@ -3,11 +3,10 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useAppDispatch } from '../../hooks';
 import { useNavigate } from "react-router-dom";
-import { dodPost } from '../../axios-config';
-import { setLoggedIn, resetUI } from '../../reduxSlices/UISlice';
+import { resetUI } from '../../reduxSlices/UISlice';
 import { validateLoginCredentials } from "../../utils/Validation";
 import './loginPageStyles.scss';
-
+import { useAuth } from "../../auth/AuthContext";
 //if logged in already, redirect to /
 const Login = () => {
     const [usernameInput, setUsernameInput] = useState<string>('');
@@ -17,22 +16,18 @@ const Login = () => {
     const [showValidationError, setShowValidationError] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const { logIn } = useAuth();
 
     const loginUser = async () => {
-        const response = await dodPost('/login', {
+        const response = await logIn.mutateAsync({
             username: usernameInput,
             password
-        })
-        .catch(() => {
-            setShowError(true);
         });
         
         if (response && response.status === 200) {
-            dispatch(setLoggedIn(true));
             dispatch(resetUI());
             navigate('/');
         } else {
-            dispatch(setLoggedIn(false));
             setShowError(true);
         }
     }

@@ -3,17 +3,13 @@ import workoutOptionsReducer from './reduxSlices/workoutOptionsSlice';
 import exercisesChosenReducer from './reduxSlices/exercisesChosenSlice';
 import UIReducer from './reduxSlices/UISlice';
 import deckReducer from './reduxSlices/deckSlice';
-import profileReducer from './reduxSlices/profileSlice';
-import userReducer from './reduxSlices/userSlice';
 
 export const store = configureStore({
   reducer: {
     workoutOptions: workoutOptionsReducer,
     exercisesChosen: exercisesChosenReducer,
     UI: UIReducer,
-    deck: deckReducer,
-    profile: profileReducer,
-    user: userReducer
+    deck: deckReducer
   },
 });
 

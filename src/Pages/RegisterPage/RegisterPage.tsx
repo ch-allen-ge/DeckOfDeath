@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { dodPost } from "../../axios-config";
 import { useNavigate } from "react-router-dom";
 import CancelIcon from '@mui/icons-material/Cancel';
 import './registerPageStyles.scss'
 import { useDispatch } from "react-redux";
-import { setLoggedIn, resetUI } from "../../reduxSlices/UISlice";
+import { resetUI } from "../../reduxSlices/UISlice";
 import { validateUsername, validatePassword } from "../../utils/Validation";
+import { useAuth } from "../../auth/AuthContext";
+import { registerTheUser } from "../../api/postRoutes";
+import { useMutation } from "@tanstack/react-query";
 
 const RegisterPage = () => {
     const [username, setUsername] = useState<string>(''); //todo: set minimum requirements
@@ -21,6 +23,7 @@ const RegisterPage = () => {
     const [showProPicError, setShowProPicError] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { logIn } = useAuth();
 
     useEffect(() => {
         if (!selectedFile) {
@@ -31,25 +34,38 @@ const RegisterPage = () => {
         setPreview(objectUrl);
      
         return () => URL.revokeObjectURL(objectUrl)
-     }, [selectedFile]);
+    }, [selectedFile]);
 
-    const registerUser = async () => {
-        let params = new FormData();
+    const registerUser = useMutation({
+        mutationFn: async () => {
+            let params = new FormData();
 
-        if (selectedFile) {
-            params.append('profilePic', selectedFile);
-        };
-        params.append('username', username);
-        params.append('password', password);
+            if (selectedFile) {
+                params.append('profilePic', selectedFile);
+            };
+            params.append('username', username);
+            params.append('password', password);
 
-        const response = await dodPost('/register', params).catch(() => setShowError(true));
+            const response = await registerTheUser(params);
+            return response;
+        },
+        onSuccess: async (response) => {
+            if (response && response.status === 200) {
+                const logInResponse = await logIn.mutateAsync({
+                    username,
+                    password
+                });
 
-        if (response && response.status === 200) {
-            dispatch(resetUI());
-            dispatch(setLoggedIn(true));
-            navigate('/');
-        }
-    };
+                if (logInResponse && logInResponse.status === 200) {
+                    dispatch(resetUI());
+                    navigate('/');
+                } else {
+                    
+                }
+            }
+        },
+        onError: () => setShowError(true)
+    });
 
     const handleSubmit = () => {
         setSubmitted(true);
@@ -57,7 +73,7 @@ const RegisterPage = () => {
         const validatedPassword = validatePassword(password);
 
         if (validatedUsername && validatedPassword) {
-            registerUser();
+            registerUser.mutate();
         } else {
             if (!validatedUsername && !validatedPassword) {
                 setShowUsernameValidationError(true);
