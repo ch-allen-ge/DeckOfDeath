@@ -160,6 +160,11 @@
     border-radius: 1rem;
 }
 
+.loadMoreButton {
+    margin: 0 auto;
+    padding-bottom: 2rem;
+}
+
 @mixin mobileStyles {
     .profile-page__content__top-section {
         flex-direction: column;

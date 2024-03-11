@@ -1,7 +1,8 @@
 import { dodGet } from "../axios-config";
 
-const getCompletedWorkouts = async () => {
-    const response = await dodGet(`/workouts/getCompletedWorkouts`);
+//@ts-ignore
+const getCompletedWorkouts = async ({pageParam = 0}) => {
+    const response = await dodGet(`/workouts/getCompletedWorkouts?startIndex=${pageParam}`);
     return response.data;
 }
 

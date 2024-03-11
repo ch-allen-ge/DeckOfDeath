@@ -4,13 +4,11 @@ import WorkoutDisplay from '../../components/WorkoutDisplay';
 import StatsRow from '../../components/StatsRow';
 import CircularProgress from '@mui/material/CircularProgress';
 import LoginRegisterPage from '../LoginReigsterPage';
-import Popup from '../../components/Popup';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import ImageNotSupportedOutlinedIcon from '@mui/icons-material/ImageNotSupportedOutlined';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import { Button } from '@mui/material';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import { useAuth } from '../../auth/AuthContext';
 import { 
     getCompletedWorkouts,
@@ -22,6 +20,7 @@ import { uploadAndSaveTheproPic } from '../../api/postRoutes';
 import { deleteTheProPic } from '../../api/deleteRoutes';
 import Popper from '@mui/material/Popper';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Button from '../../components/Button';
 
 interface CompletedWorkout {
     clubs_exercise: string,
@@ -78,10 +77,22 @@ const ProfilePage = () => {
 
     const {
         data: completedWorkouts,
-        status: completedWorkoutsStatus
-    } = useQuery({
+        status: completedWorkoutsStatus,
+        isFetchingNextPage,
+        hasNextPage,
+        fetchNextPage,
+    } = useInfiniteQuery({
         queryKey: ['workoutsCompleted'],
-        queryFn: getCompletedWorkouts
+        //@ts-ignore
+        queryFn: getCompletedWorkouts,
+        initialPageParam: 0,
+        getNextPageParam: (lastPage, pages) => {
+            if (lastPage.length < 10) {
+                return undefined;
+            } else {
+                return pages.length * 10;
+            }
+        }
     });
 
     const {
@@ -147,10 +158,6 @@ const ProfilePage = () => {
         }
     };
 
-    const handleClickAway = () => {
-        setShowPopup(false);
-    }
-
     return (
         <div className='profile-page'>
                 <div className='profile-page__content'>
@@ -202,14 +209,18 @@ const ProfilePage = () => {
 
                             {newProPicPreview && 
                                 <div className='profile-page__content__top-section__profile__edit-options'>
-                                    <div onClick={() => setProPic.mutate()}>
-                                        <Button variant='contained'>
+                                    <div>
+                                        <Button
+                                            onClick={() => setProPic.mutate()}
+                                        >
                                             <CheckCircleOutlineOutlinedIcon />
                                             Save
                                         </Button>
                                     </div>
-                                    <div onClick={cancelNewProPic}>
-                                        <Button variant='contained'>
+                                    <div>
+                                        <Button
+                                            onClick={cancelNewProPic}
+                                        >
                                             <CancelOutlinedIcon />
                                             Cancel
                                         </Button>
@@ -220,32 +231,44 @@ const ProfilePage = () => {
 
                         <StatsRow totalTimeSpent={profile.total_time_spent} numberWorkoutsCompleted={profile.number_workouts_completed} />
                     </div>
-                    
-                    {completedWorkouts.length == 0 ?
+
+                    {completedWorkouts.pages.length === 0 ?
                         <div className='noWorkoutsCompleted'>
                             Finish a workout to see it here!
                         </div>
                         :
-                        <div className='profile-page__content__completed-workouts'>
-                            {completedWorkouts.sort((a: CompletedWorkout, b: CompletedWorkout) => {
-                                if (a.date_completed > b.date_completed) {
-                                    return -1;
-                                } else if (a.date_completed < b.date_completed) {
-                                    return 1;
-                                } else {
-                                    return 0;
+                        <>
+                            <div className='profile-page__content__completed-workouts'>
+                                {completedWorkouts.pages.map((group, index) => (
+                                    <div key={index}>
+                                        {group.map((workout: CompletedWorkout, index: number) => 
+                                            <WorkoutDisplay workout={workout} index={index} key={index}>
+                                                <div className='profile-page__content__completed-workouts__info'>
+                                                    {new Date(workout.date_completed).toDateString()}
+                                                </div>
+                                                <div className='profile-page__content__completed-workouts__info'>
+                                                    {timeSpentToString(workout)}
+                                                </div>
+                                            </WorkoutDisplay>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className='loadMoreButton'>
+                                {hasNextPage &&
+                                    <Button
+                                        onClick={fetchNextPage}
+                                        disabled={!hasNextPage || isFetchingNextPage}
+                                        >
+                                        {isFetchingNextPage
+                                            ? 'Loading more...'
+                                            : hasNextPage
+                                            ? 'Load More'
+                                            : 'Nothing more to load'}
+                                    </Button>
                                 }
-                            }).map((workout: CompletedWorkout, index: number) => 
-                                <WorkoutDisplay workout={workout} index={index} key={index}>
-                                    <div className='profile-page__content__completed-workouts__info'>
-                                        {new Date(workout.date_completed).toDateString()}
-                                    </div>
-                                    <div className='profile-page__content__completed-workouts__info'>
-                                        {timeSpentToString(workout)}
-                                    </div>
-                                </WorkoutDisplay>
-                            )}
-                        </div>
+                            </div>
+                        </>
                     }
                 </div>
         </div>

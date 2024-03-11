@@ -12,4 +12,15 @@
         transform: translateY(-.4rem);
         box-shadow: 0 .4rem .8rem 0 rgba(black,0.2);
     }
+
+    &.disabled {
+        background: grey;
+        cursor: default;
+
+        &:hover {
+            transition: none;
+            transform: none;
+            box-shadow: none;
+        }
+    }
 }

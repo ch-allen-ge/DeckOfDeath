@@ -3,14 +3,15 @@ import './buttonStyles.scss';
 
 interface ButtonProps {
     children: ReactNode,
-    onClick?: () => any
+    disabled?: boolean,
+    onClick: () => void
 }
 
-const Button = ({children, onClick}: ButtonProps) => {
+const Button = ({children, onClick, disabled}: ButtonProps) => {
     return (
         <div
-            className="dodButton"
-            onClick={onClick}
+            className={`dodButton ${disabled ? 'disabled' : ''}`}
+            onClick={!disabled ? onClick : undefined}
         >
             {children}
         </div>
