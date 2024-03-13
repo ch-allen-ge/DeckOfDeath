@@ -55,6 +55,7 @@ const Login = () => {
                         label='username'
                         variant="outlined"
                         autoComplete='off'
+                        inputProps={{ maxLength: 50 }}
                         onChange={(e) => {
                             const text = e.target.value;
                             setUsernameInput(text);
@@ -69,6 +70,7 @@ const Login = () => {
                         type='password'
                         variant="outlined"
                         autoComplete='off'
+                        inputProps={{ maxLength: 50 }}
                         onChange={(e) => {
                             const text = e.target.value;
                             setPassword(text);

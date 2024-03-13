@@ -16,10 +16,12 @@ import LoginRegisterPage from "../LoginReigsterPage";
 import Button from "../../components/Button";
 import { useAuth } from "../../auth/AuthContext";
 import { getSavedWorkouts } from "../../api/getRoutes";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CircularProgress } from "@mui/material";
+import { deleteTheCustomWorkout } from "../../api/deleteRoutes";
 
 interface WorkoutInterface {
+    saved_custom_workout_id: number,
     name: string,
     clubs_exercise: string,
     diamonds_exercise: string,
@@ -36,6 +38,14 @@ const SavedWorkoutPage = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { isLoggedIn } = useAuth();
+    const queryClient = useQueryClient();
+
+    const deleteWorkout = useMutation({
+        mutationFn: async (saved_custom_workout_id: number) => {
+            await deleteTheCustomWorkout(saved_custom_workout_id);
+        },
+        onSuccess: () => queryClient.invalidateQueries({queryKey: ['savedWorkouts']})
+    });
     
     const {
         data: savedWorkouts,
@@ -53,7 +63,7 @@ const SavedWorkoutPage = () => {
         return (<LoginRegisterPage />);
     }
 
-    const handleClick = (selectedWorkout: WorkoutInterface) => {
+    const startWorkout = (selectedWorkout: WorkoutInterface) => {
         dispatch(setClubsExercise(selectedWorkout.clubs_exercise));
         dispatch(setDiamondsExercise(selectedWorkout.diamonds_exercise));
         dispatch(setHeartsExercise(selectedWorkout.hearts_exercise));
@@ -64,7 +74,7 @@ const SavedWorkoutPage = () => {
         dispatch(setAcesMinutesToDo(selectedWorkout.aces_minutes_to_do));
         dispatch(setAcesSecondsToDo(selectedWorkout.aces_seconds_to_do));
         navigate('/workout');
-    }
+    };
 
     return (
         <div className="savedWorkoutsPageContainer">
@@ -101,7 +111,15 @@ const SavedWorkoutPage = () => {
                                 <div className="card__side card__side--back card__side--back-1">
                                     <div className="card__cta">
                                         <Button
-                                            onClick={() => handleClick(workout)}
+                                            onClick={() => deleteWorkout.mutate(workout.saved_custom_workout_id)}
+                                            styles={{
+                                                backgroundColor: 'red'
+                                            }}
+                                        >
+                                            Delete
+                                        </Button>
+                                        <Button
+                                            onClick={() => startWorkout(workout)}
                                         >
                                             Start
                                         </Button>

@@ -86,13 +86,13 @@ const DeckOfDeathGame = () => {
         finished: false
     });
     const [totalTimeSpent, setTotalTimeSpent] = useState<string>('');
-    
+    const [showLeaveWorkoutModal, setShowLeaveWorkoutModal] = useState<boolean>(false);
     const currentExerciseRef = useRef(currentExercise);
     const showWorkoutTimerRef = useRef(false);
     const currentCardAceRef = useRef(false);
     const timerStatusRef = useRef({});
+    const timerRef = useRef<HTMLDivElement>(null);
     const allowCardDrawRef = useRef(true);
-
 
     const setTheCurrentExercise = (data: RegularCardProps | AceCardProps | null) => {
         currentExerciseRef.current = data;
@@ -119,15 +119,6 @@ const DeckOfDeathGame = () => {
 
     const isMobile = window.innerWidth < 600;
 
-    //get the new deck
-    useEffect(() => {
-        axios.get('https://deckofcardsapi.com/api/deck/new/shuffle/')
-            .then((response) => {
-                dispatch(setDeckId(response.data.deck_id));
-            })
-            .catch((error) => console.error('could not get new deck', error));
-    }, []);
-
     const addWorkoutCompleted = useMutation({
         mutationFn: async (completedWorkout: CompletedWorkout) => {
             const response = await addTheWorkoutCompleted(completedWorkout);
@@ -145,7 +136,16 @@ const DeckOfDeathGame = () => {
         mutationFn: async () => {
             await updateTheNumberWorkoutsCompleted();
         }
-    })
+    });
+
+    //get the new deck
+    useEffect(() => {
+        axios.get('https://deckofcardsapi.com/api/deck/new/shuffle/')
+            .then((response) => {
+                dispatch(setDeckId(response.data.deck_id));
+            })
+            .catch((error) => console.error('could not get new deck', error));
+    }, []);
 
     //workout finished
     useEffect(() => {
@@ -196,7 +196,7 @@ const DeckOfDeathGame = () => {
 
     //attachs listeners and raws a new card when new deck is obtained
     useEffect(() => {
-        function handleKeyDown(e: KeyboardEvent) {
+        const handleKeyDown = (e: KeyboardEvent) => {
             if (e.code === 'Enter' && currentCardAceRef.current && !showWorkoutTimerRef.current) { //enter
                 startTheTimer();
             // @ts-ignore
@@ -215,7 +215,7 @@ const DeckOfDeathGame = () => {
         deckId && drawNewCard(true);
     
         // cleaning up
-        return function cleanup() {
+        return () => {
             document.removeEventListener('keydown', handleKeyDown);
         }
     }, [deckId]);
@@ -235,6 +235,15 @@ const DeckOfDeathGame = () => {
         }
     }, [currentExercise]);
 
+    const handleConfirmNavigation = () => {
+        setShowLeaveWorkoutModal(false);
+        window.history.back();
+    };
+
+    const handleCancelNavigation = () => {
+        setShowLeaveWorkoutModal(false);
+      };
+
     const drawNewCard = async (initialDraw: boolean) => {
         try {
             const response = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/`);
@@ -250,7 +259,7 @@ const DeckOfDeathGame = () => {
                 }
                 dispatch(setCurrentCard(cardDrawn));
             } else {
-                const timeString = document.getElementById('timerString')?.textContent as string;
+                const timeString = timerRef.current?.textContent ?? '';
 
                 const transformTimeString = () => {
                     const timeArray = [0, 0, 0];
@@ -409,9 +418,19 @@ const DeckOfDeathGame = () => {
                         </div>
                     </div>
                     
-                    <MetricsBar />
+                    <MetricsBar timerRef={timerRef}/>
                 </>
             }
+
+        {showLeaveWorkoutModal && (
+            <div className="modal">
+            <div className="modal-content">
+                <p>Are you sure you want to leave this page?</p>
+                <button onClick={handleConfirmNavigation}>Leave</button>
+                <button onClick={handleCancelNavigation}>Stay</button>
+            </div>
+            </div>
+        )}
             
             {workoutFinished && 
                 <FinishedPage totalTimeSpent={totalTimeSpent}/>

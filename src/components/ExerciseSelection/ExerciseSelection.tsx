@@ -74,6 +74,7 @@ const ExerciseSelection = ({suit} : ExerciseSelectionProps) => {
                         label={`${suit} exercise*`}
                         variant="outlined"
                         value={acesExercise}
+                        inputProps={{ maxLength: 70 }}
                         autoComplete='off'
                         onChange={(e) => {
                             setExerciseState(e.target.value);
@@ -97,7 +98,7 @@ const ExerciseSelection = ({suit} : ExerciseSelectionProps) => {
                                     type='number'
                                     label='minutes'
                                     variant="outlined"
-                                    inputProps={{ maxLength: 2 }}
+                                    inputProps={{ maxLength: 3 }}
                                     value={acesMinutesToDo === 0 ? '' : acesMinutesToDo}
                                     autoComplete='off'
                                     onChange={(e) => {
@@ -131,6 +132,7 @@ const ExerciseSelection = ({suit} : ExerciseSelectionProps) => {
                     label={`${suit} exercise*`}
                     variant="outlined"
                     value={exercise}
+                    inputProps={{ maxLength: 70 }}
                     autoComplete='off'
                     onChange={(e) => {
                         setExerciseState(e.target.value);

@@ -3,13 +3,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface UIState {
     showError: boolean;
     showCountdownAnimation: boolean;
-    loggedIn: boolean;
 };
 
 const initialState: UIState = {
     showError: false,
     showCountdownAnimation: true,
-    loggedIn: false
 };
 
 export const UISlice = createSlice({

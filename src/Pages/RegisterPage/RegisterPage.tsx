@@ -109,6 +109,7 @@ const RegisterPage = () => {
                         label='username'
                         variant="outlined"
                         autoComplete='off'
+                        inputProps={{ maxLength: 50 }}
                         onChange={(e) => {
                             const text = e.target.value;
                             setUsername(text);
@@ -117,7 +118,7 @@ const RegisterPage = () => {
                         error={submitted && showUsernameValidationError}
                     />
                     <div>
-                        *username can only contain letters, numbers, @, or .
+                        *maximum 50 characters and can only contain letters, numbers, @, or .
                     </div>
                     <br />
                     <TextField
@@ -126,6 +127,7 @@ const RegisterPage = () => {
                         label='password'
                         variant="outlined"
                         autoComplete='off'
+                        inputProps={{ maxLength: 50 }}
                         onChange={(e) => {
                             const text = e.target.value;
                             setPassword(text);
@@ -134,7 +136,7 @@ const RegisterPage = () => {
                         error={submitted && showPasswordValidationError}
                     />
                     <div>
-                        *password must be minimum 8 characters and contain at least one lowercase letter and one number 
+                        *must be 8-50 characters and contain at least one lowercase letter and one number 
                     </div>
                 </div>
 

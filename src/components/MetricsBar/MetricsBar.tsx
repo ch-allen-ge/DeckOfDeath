@@ -1,8 +1,9 @@
 import { useAppSelector } from '../../hooks';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, RefObject } from 'react';
 import './metricsBarStyles.scss';
 
-const MetricsBar = () => {
+
+const MetricsBar = ({timerRef} : {timerRef: RefObject<HTMLDivElement>}) => {
     const cardsFinished = useAppSelector((state) => state.deck.cardsFinished);
     const cardsRemaining = useAppSelector((state) => state.deck.cardsRemaining);
 
@@ -85,7 +86,7 @@ const MetricsBar = () => {
                 </div>
                 <div className='metricItem'>
                     <div className='label'>Time Elapsed:</div>
-                    <div id = 'timerString' className='value'>{getTimerString()}</div>
+                    <div ref={timerRef} className='value'>{getTimerString()}</div>
                 </div>
                 <div className='metricItem'>
                     <div className='label'>Cards Remaining:</div>

@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ExerciseSelection from "../ExerciseSelection";
 import Button from '@mui/material/Button';
 import OptionsModal from "../OptionsModal";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import {resetExercises} from "../../reduxSlices/exercisesChosenSlice";
+import { resetExercises } from "../../reduxSlices/exercisesChosenSlice";
 import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
 import { resetUI } from "../../reduxSlices/UISlice";
 import { setShowError } from "../../reduxSlices/UISlice";
@@ -26,6 +26,12 @@ const StartingScreen = () => {
     const showError = useAppSelector((state) => state.UI.showError);
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+      dispatch(resetExercises());
+      dispatch(resetOptions());
+      dispatch(resetUI());
+    }, []);
 
     const allFilledIn = () => {
       const exerciseArray = [clubsExercise, diamondsExercise, heartsExercise, spadesExercise];

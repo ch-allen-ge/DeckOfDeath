@@ -15,7 +15,8 @@ import {
 } from '../../reduxSlices/exercisesChosenSlice';
 import { setBreakoutAces } from '../../reduxSlices/workoutOptionsSlice';
 import TimerIcon from '@mui/icons-material/Timer';
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { resetUI } from '../../reduxSlices/UISlice.ts';
 
 interface CoachWorkout {
     name: string,
@@ -50,6 +51,10 @@ const CoachZone = () => {
         dispatch(setAcesSecondsToDo(selectedWorkout.aces_seconds_to_do));
         navigate('/workout');
     }
+
+    useEffect(() => {
+        dispatch(resetUI());
+    }, []);
 
     const getWorkoutContent = (workout: CoachWorkout) => {
         return (
