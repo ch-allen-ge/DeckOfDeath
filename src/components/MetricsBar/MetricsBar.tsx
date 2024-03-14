@@ -2,10 +2,15 @@ import { useAppSelector } from '../../hooks';
 import { useState, useEffect, useRef, RefObject } from 'react';
 import './metricsBarStyles.scss';
 
+interface MetricsBarProps {
+    timerRef: RefObject<HTMLDivElement>,
+    cardsFinished: number,
+    cardsRemaining: number
+}
 
-const MetricsBar = ({timerRef} : {timerRef: RefObject<HTMLDivElement>}) => {
-    const cardsFinished = useAppSelector((state) => state.deck.cardsFinished);
-    const cardsRemaining = useAppSelector((state) => state.deck.cardsRemaining);
+const MetricsBar = ({timerRef, cardsFinished, cardsRemaining} : MetricsBarProps) => {
+    // const cardsFinished = useAppSelector((state) => state.deck.cardsFinished);
+    // const cardsRemaining = useAppSelector((state) => state.deck.cardsRemaining);
 
     const [hours, setHours] = useState<number>(0);
     const [minutes, setMinutes] = useState<number>(0);

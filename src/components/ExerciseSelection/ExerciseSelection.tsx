@@ -19,14 +19,14 @@ import './exerciseSelection.scss';
 
 interface ExerciseSelectionProps {
     suit: string;
+    showError: boolean
 }
 
-const ExerciseSelection = ({suit} : ExerciseSelectionProps) => {
+const ExerciseSelection = ({suit, showError} : ExerciseSelectionProps) => {
     const dispatch = useAppDispatch();
 
     const breakoutAces = useAppSelector((state) => state.workoutOptions.breakoutAces);
     const exercisesChosen = useAppSelector((state) => state.exercisesChosen);
-    const showError = useAppSelector((state) => state.UI.showError);
     const acesExercise = useAppSelector((state) => state.exercisesChosen.aces.exercise);
     const acesTimerUsed = useAppSelector((state) => state.exercisesChosen.aces.timerUsed);
     const acesMinutesToDo = useAppSelector((state) => state.exercisesChosen.aces.minutesToDo);

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import CancelIcon from '@mui/icons-material/Cancel';
 import './registerPageStyles.scss'
 import { useDispatch } from "react-redux";
-import { resetUI } from "../../reduxSlices/UISlice";
 import { validateUsername, validatePassword } from "../../utils/Validation";
 import { useAuth } from "../../auth/AuthContext";
 import { registerTheUser } from "../../api/postRoutes";
@@ -57,7 +56,6 @@ const RegisterPage = () => {
                 });
 
                 if (logInResponse && logInResponse.status === 200) {
-                    dispatch(resetUI());
                     navigate('/');
                 } else {
                     

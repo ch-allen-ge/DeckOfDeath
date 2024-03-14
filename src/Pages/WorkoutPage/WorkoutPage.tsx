@@ -1,4 +1,3 @@
-import Countdown from "../../components/Countdown";
 import DeckOfDeathGame from "../../components/DeckOfDeathGame";
 
 import { useEffect } from "react";
@@ -11,7 +10,6 @@ const WorkoutPage = () => {
     const navigate = useNavigate();
 
     const exercisesChosen = useAppSelector((state) => state.exercisesChosen);
-    const showCountdownAnimation = useAppSelector((state) => state.UI.showCountdownAnimation);
 
     useEffect(() => {
       if (
@@ -26,10 +24,7 @@ const WorkoutPage = () => {
 
     return (
         <div className='workoutPageContainer'>
-          <Countdown />
-          {!showCountdownAnimation && 
-            <DeckOfDeathGame />
-          }
+          <DeckOfDeathGame />
         </div>
     )
 }

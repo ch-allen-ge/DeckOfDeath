@@ -9,16 +9,8 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { useNavigate } from "react-router-dom";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import FinishedPage from "../../Pages/FinishedPage";
-import {
-    setDeckId,
-    setCurrentCard,
-    setCardsFinished,
-    setCardsRemaining
-} from "../../reduxSlices/deckSlice";
 import { resetExercises } from "../../reduxSlices/exercisesChosenSlice";
 import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
-import { resetUI } from "../../reduxSlices/UISlice";
-import { resetDeck } from "../../reduxSlices/deckSlice";
 import { useAuth } from "../../auth/AuthContext";
 import { useMutation } from "@tanstack/react-query";
 import { addTheWorkoutCompleted } from "../../api/postRoutes";
@@ -27,6 +19,7 @@ import {
     updateTheNumberWorkoutsCompleted
 } from "../../api/patchRoutes";
 import './deckOfDeathGameStyles.scss';
+import Countdown from "../Countdown";
 
 interface TimerProps {
     preStart: boolean;
@@ -62,6 +55,17 @@ interface TimeSpent {
     timeSpent: string
 }
 
+interface Card {
+    code: string;
+    image: string;
+    images: {
+        svg: string;
+        png: string;
+    };
+    value: string;
+    suit: string;
+}
+
 const DeckOfDeathGame = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -72,13 +76,11 @@ const DeckOfDeathGame = () => {
     const acesTimerUsed = useAppSelector((state) => state.exercisesChosen.aces.timerUsed);
     const acesMinutesToDo = useAppSelector((state) => state.exercisesChosen.aces.minutesToDo);
     const acesSecondsToDo = useAppSelector((state) => state.exercisesChosen.aces.secondsToDo);
-    const deckId = useAppSelector((state) => state.deck.deckId);
-    const currentCard = useAppSelector((state) => state.deck.currentCard);
     const { isLoggedIn } = useAuth();
 
     const [workoutFinished, setWorkoutFinished] = useState<boolean>(false);
     const [currentExercise, setCurrentExercise] = useState<RegularCardProps | AceCardProps | null>(null);
-    const [showCountdownAnimation, setShowCountdownAnimation] = useState<boolean>(false);
+    const [showAceCountdownAnimation, setShowAceCountdownAnimation] = useState<boolean>(false);
     const [showWorkoutTimer, setShowWorkoutTimer] = useState<boolean>(false);
     const [timerStatus, setTimerStatus] = useState<TimerProps>({
         preStart: false,
@@ -86,13 +88,19 @@ const DeckOfDeathGame = () => {
         finished: false
     });
     const [totalTimeSpent, setTotalTimeSpent] = useState<string>('');
-    const [showLeaveWorkoutModal, setShowLeaveWorkoutModal] = useState<boolean>(false);
     const currentExerciseRef = useRef(currentExercise);
     const showWorkoutTimerRef = useRef(false);
     const currentCardAceRef = useRef(false);
     const timerStatusRef = useRef({});
     const timerRef = useRef<HTMLDivElement>(null);
     const allowCardDrawRef = useRef(true);
+
+    const [deckId, setDeckId] = useState<string>('');
+    const [currentCard, setCurrentCard] = useState<Card>();
+    const cardsRemainingRef = useRef<number>(51);
+    const cardsFinishedRef = useRef<number>(0);
+
+    const [showWorkoutIntroCountdown, setShowWorkoutIntroCountdown] = useState<boolean>(true);
 
     const setTheCurrentExercise = (data: RegularCardProps | AceCardProps | null) => {
         currentExerciseRef.current = data;
@@ -142,7 +150,7 @@ const DeckOfDeathGame = () => {
     useEffect(() => {
         axios.get('https://deckofcardsapi.com/api/deck/new/shuffle/')
             .then((response) => {
-                dispatch(setDeckId(response.data.deck_id));
+                setDeckId(response.data.deck_id);
             })
             .catch((error) => console.error('could not get new deck', error));
     }, []);
@@ -185,11 +193,11 @@ const DeckOfDeathGame = () => {
         });
 
         //first show the countdown
-        setShowCountdownAnimation(true);
+        setShowAceCountdownAnimation(true);
 
         //after 4 seconds, show the actual workout timer
         setTimeout(() => {
-            setShowCountdownAnimation(false);
+            setShowAceCountdownAnimation(false);
             setShowTheWorkoutTimer(true);
         }, 6000);
     };
@@ -235,15 +243,6 @@ const DeckOfDeathGame = () => {
         }
     }, [currentExercise]);
 
-    const handleConfirmNavigation = () => {
-        setShowLeaveWorkoutModal(false);
-        window.history.back();
-    };
-
-    const handleCancelNavigation = () => {
-        setShowLeaveWorkoutModal(false);
-      };
-
     const drawNewCard = async (initialDraw: boolean) => {
         try {
             const response = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/`);
@@ -251,13 +250,12 @@ const DeckOfDeathGame = () => {
 
             if (result.success) {
                 const cardDrawn = result.cards[0];
-                const cardsRemaining = result.remaining;
+                const cardsRemainingInDeck = result.remaining;
                 if (!initialDraw) {
-                    dispatch(setCardsRemaining(cardsRemaining));
-                    dispatch(setCardsFinished(51-cardsRemaining));
-                    
+                    cardsRemainingRef.current = cardsRemainingInDeck;
+                    cardsFinishedRef.current = 51 - cardsRemainingInDeck;
                 }
-                dispatch(setCurrentCard(cardDrawn));
+                setCurrentCard(cardDrawn);
             } else {
                 const timeString = timerRef.current?.textContent ?? '';
 
@@ -279,6 +277,10 @@ const DeckOfDeathGame = () => {
     };
 
     const getCurrentExercise = () => {
+        if (!currentCard) {
+            return null;
+        };
+
         const cardValue = getCardNumber(currentCard.value);
         const suit = currentCard.suit.toLowerCase();
         let text = '';
@@ -332,14 +334,13 @@ const DeckOfDeathGame = () => {
     const getInstructions = () => {
         const {preStart, inProgress} = timerStatus;
 
-        // @ts-ignore
-        if (currentExercise.timerUsed) {
+        if (currentExercise && 'timerUsed' in currentExercise) {
             if (preStart) {
                 //timer not started yet
                 return isMobile ? 'Start Timer' : 'Press enter to start the timer';
             } else if (inProgress) {
                 //timer in progress
-                if (showCountdownAnimation) {
+                if (showAceCountdownAnimation) {
                     return 'Get ready...';
                 } else {
                     return '';
@@ -374,68 +375,67 @@ const DeckOfDeathGame = () => {
     const returnHome = () => {
         dispatch(resetExercises());
         dispatch(resetOptions());
-        dispatch(resetUI());
-        dispatch(resetDeck());
         navigate('/');
     }
 
     return (
-        <div className="deckofdeathgame">
-            {currentCard && currentExercise && !workoutFinished &&
-                <>
-                    <div className="deckofdeathgame__playing-field">
-                        <CurrentCard currentCard={currentCard}/>
-                        <div className="deckofdeathgame__playing-field__exercise">
-                            <div className="deckofdeathgame__playing-field__exercise__text">
-                                <div>
-                                    {currentExercise.text}
+        <>
+            {showWorkoutIntroCountdown 
+                ?
+                <Countdown setShowWorkoutIntroCountdown={setShowWorkoutIntroCountdown} />
+                :
+                <div className="deckofdeathgame">
+                    {currentCard && currentExercise && !workoutFinished &&
+                        <>
+                            <div className="deckofdeathgame__playing-field">
+                                <CurrentCard currentCard={currentCard}/>
+                                <div className="deckofdeathgame__playing-field__exercise">
+                                    <div className="deckofdeathgame__playing-field__exercise__text">
+                                        <div>
+                                            {currentExercise.text}
+                                        </div>
+
+                                        <br />
+
+                                        <div>
+                                            {showAceCountdownAnimation && <DeterminateCountdown />}
+                                            {showWorkoutTimer && !timerStatus.finished && <CountdownTimer timerInfo={currentExerciseRef.current as AceCardProps ?? null} setTimerStatus={setTheTimerStatus}/>}
+                                        </div>
+
+                                        {isMobile ? 
+                                            <div>
+                                                {!timerStatus.inProgress && <Button variant="contained" onClick={handleWorkoutButtonClicked}>{getInstructions()}</Button>}
+                                            </div>
+                                            :
+                                            <div>
+                                                {getInstructions()}
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
 
-                                <br />
-
-                                <div>
-                                    {showCountdownAnimation && <DeterminateCountdown />}
-                                    {showWorkoutTimer && !timerStatus.finished && <CountdownTimer timerInfo={currentExerciseRef.current as AceCardProps ?? null} setTimerStatus={setTheTimerStatus}/>}
+                                <div
+                                    className="exitButton"
+                                    onClick={returnHome}
+                                >
+                                    <ExitToAppIcon />
                                 </div>
-
-                                {isMobile ? 
-                                    <div>
-                                        {!timerStatus.inProgress && <Button variant="contained" onClick={handleWorkoutButtonClicked}>{getInstructions()}</Button>}
-                                    </div>
-                                    :
-                                    <div>
-                                        {getInstructions()}
-                                    </div>
-                                }
                             </div>
-                        </div>
-
-                        <div
-                            className="exitButton"
-                            onClick={returnHome}
-                        >
-                            <ExitToAppIcon />
-                        </div>
-                    </div>
+                            
+                            <MetricsBar
+                                timerRef={timerRef}
+                                cardsFinished={cardsFinishedRef.current}
+                                cardsRemaining={cardsRemainingRef.current}
+                            />
+                        </>
+                    }
                     
-                    <MetricsBar timerRef={timerRef}/>
-                </>
+                    {workoutFinished && 
+                        <FinishedPage totalTimeSpent={totalTimeSpent}/>
+                    }
+                </div>
             }
-
-        {showLeaveWorkoutModal && (
-            <div className="modal">
-            <div className="modal-content">
-                <p>Are you sure you want to leave this page?</p>
-                <button onClick={handleConfirmNavigation}>Leave</button>
-                <button onClick={handleCancelNavigation}>Stay</button>
-            </div>
-            </div>
-        )}
-            
-            {workoutFinished && 
-                <FinishedPage totalTimeSpent={totalTimeSpent}/>
-            }
-        </div>
+        </>
     );
 }
 

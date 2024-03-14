@@ -1,8 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { resetExercises } from "../../reduxSlices/exercisesChosenSlice";
 import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
-import { resetUI } from "../../reduxSlices/UISlice";
-import { resetDeck } from "../../reduxSlices/deckSlice";
 import { useAppDispatch } from '../../hooks';
 import './navbarStyles.scss';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
@@ -53,7 +51,6 @@ const Navbar = () => {
         <IconButton
             onClick={() => {
               logOut.mutate();
-              dispatch(resetUI());
               navigate('/');
             }}
             icon = {<AirlineSeatIndividualSuiteOutlinedIcon />}
@@ -92,8 +89,6 @@ const Navbar = () => {
             <div className='navbar__home-button' onClick={() => {
               dispatch(resetExercises());
               dispatch(resetOptions());
-              dispatch(resetUI());
-              dispatch(resetDeck());
               navigate('/');
             }}>
               Deck

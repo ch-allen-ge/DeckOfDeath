@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { resetExercises } from "../../reduxSlices/exercisesChosenSlice";
 import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
-import { resetUI } from "../../reduxSlices/UISlice";
-import { setShowError } from "../../reduxSlices/UISlice";
 import './startingScreenStyles.scss';
 
 const StartingScreen = () => {
@@ -23,14 +21,14 @@ const StartingScreen = () => {
     const acesTimerUsed = useAppSelector((state) => state.exercisesChosen.aces.timerUsed);
     const acesMinutesToDo = useAppSelector((state) => state.exercisesChosen.aces.minutesToDo);
     const acesSecondsToDo = useAppSelector((state) => state.exercisesChosen.aces.secondsToDo);
-    const showError = useAppSelector((state) => state.UI.showError);
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+    const [showError, setShowError] = useState<boolean>(false);
 
     useEffect(() => {
       dispatch(resetExercises());
       dispatch(resetOptions());
-      dispatch(resetUI());
     }, []);
 
     const allFilledIn = () => {
@@ -63,10 +61,10 @@ const StartingScreen = () => {
         
         <div className='startingscreen__deathrow'>
           {
-            ['clubs', 'diamonds', 'hearts', 'spades'].map((suit) => <ExerciseSelection key={suit} suit={suit} />)
+            ['clubs', 'diamonds', 'hearts', 'spades'].map((suit) => <ExerciseSelection key={suit} suit={suit} showError={showError}/>)
           }
           {
-            (breakoutAces || acesExercise) && <ExerciseSelection suit='aces'/>
+            (breakoutAces || acesExercise) && <ExerciseSelection suit='aces' showError={showError}/>
           }
         </div>
         {showError &&
@@ -81,7 +79,6 @@ const StartingScreen = () => {
                 onClick={() => {
                   dispatch(resetExercises());
                   dispatch(resetOptions());
-                  dispatch(resetUI());
                 }}
                 style={{backgroundColor: "black"}}
               >
@@ -92,10 +89,12 @@ const StartingScreen = () => {
               className="startingscreen__buttonrow__start-button"
               onClick={() => {
                 if (allFilledIn()) {
-                  dispatch(setShowError(false));
+                  if (showError) {
+                    setShowError(false);
+                  }
                   navigate('/workout');
                 } else {
-                  dispatch(setShowError(true));
+                  setShowError(true);
                 }
               }}
             />

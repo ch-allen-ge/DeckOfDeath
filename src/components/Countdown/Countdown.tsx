@@ -1,12 +1,9 @@
 import { useEffect } from "react";
-import { useAppDispatch } from '../../hooks';
-import { setShowCountdownAnimation } from "../../reduxSlices/UISlice";
 
 import './countdownStyles.scss';
 
-const Countdown = () => {
-	const dispatch = useAppDispatch();
-	
+const Countdown = ({setShowWorkoutIntroCountdown} : {setShowWorkoutIntroCountdown: any}) => {
+
 	useEffect(() => {
 		const nums = document.querySelectorAll('.nums span') as unknown as HTMLElement[];
 		const counter = document.querySelector('.counter') as HTMLDivElement;
@@ -25,7 +22,7 @@ const Countdown = () => {
 					num.nextElementSibling.classList.add('in');
 				} else {
 					counter.classList.add('hide');
-					dispatch(setShowCountdownAnimation(false));
+					setTimeout(() => setShowWorkoutIntroCountdown(false), 500);
 				}
 			});
 		});
@@ -33,13 +30,13 @@ const Countdown = () => {
 
 	return (
 		<div className='counter'>
+			<h4>Get Ready</h4>
 			<div className="nums">
 				<span className="in">3</span>
 				<span>2</span>
 				<span>1</span>
 				<span>0</span>
 			</div>
-			<h4>Get Ready</h4>
 		</div>
 	);
 }

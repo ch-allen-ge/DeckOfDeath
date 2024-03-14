@@ -3,7 +3,6 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useAppDispatch } from '../../hooks';
 import { useNavigate } from "react-router-dom";
-import { resetUI } from '../../reduxSlices/UISlice';
 import { validateLoginCredentials } from "../../utils/Validation";
 import './loginPageStyles.scss';
 import { useAuth } from "../../auth/AuthContext";
@@ -25,7 +24,6 @@ const Login = () => {
         });
         
         if (response && response.status === 200) {
-            dispatch(resetUI());
             navigate('/');
         } else {
             setShowError(true);

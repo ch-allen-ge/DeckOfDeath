@@ -6,8 +6,6 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { resetExercises } from '../../reduxSlices/exercisesChosenSlice';
 import { resetOptions } from '../../reduxSlices/workoutOptionsSlice';
-import { resetUI } from '../../reduxSlices/UISlice';
-import { resetDeck } from '../../reduxSlices/deckSlice';
 import WorkoutDisplay from '../../components/WorkoutDisplay';
 import { useState } from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -67,8 +65,6 @@ const FinishedPage = ({totalTimeSpent} : FinishedPageProps) => {
   const returnHome = () => {
     dispatch(resetExercises());
     dispatch(resetOptions());
-    dispatch(resetUI());
-    dispatch(resetDeck());
     navigate('/');
   }
 
