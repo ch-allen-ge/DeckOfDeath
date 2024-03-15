@@ -1,16 +1,10 @@
 import './currentCardStyles.scss';
 
-//external API call response
 interface CurrentCardProps {
     currentCard: {
-        code: string;
-        image: string;
-        images: {
-            svg: string;
-            png: string;
-        },
-        value: string;
-        suit: string;
+        code: string,
+        value: string,
+        suit: string
     }
 }
 

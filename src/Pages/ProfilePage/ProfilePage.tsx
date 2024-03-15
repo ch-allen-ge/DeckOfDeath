@@ -83,7 +83,6 @@ const ProfilePage = () => {
         fetchNextPage,
     } = useInfiniteQuery({
         queryKey: ['workoutsCompleted'],
-        //@ts-ignore
         queryFn: getCompletedWorkouts,
         initialPageParam: 0,
         getNextPageParam: (lastPage, pages) => {
