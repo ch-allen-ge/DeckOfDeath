@@ -15,6 +15,7 @@ import {
     QueryClientProvider,
 } from '@tanstack/react-query';
 import './index.scss';
+import { HeartRateMonitorProvider } from './devices/BluetoothContext.tsx';
 
 const HomePage = lazy(() =>  import('./Pages/HomePage'));
 const WorkoutPage = lazy(() => import('./Pages/WorkoutPage'));
@@ -26,16 +27,16 @@ const SavedWorkoutsPage = lazy(() => import('./Pages/SavedWorkoutsPage'));
 const ErrorPage = lazy(() => import('./Pages/ErrorPage'));
 const queryClient = new QueryClient();
 
+import FinishedPage from './Pages/FinishedPage/FinishedPage.tsx';
+
+
 const HideOnErrorPage = ({children} : {children : React.ReactNode}) => {
     const onHomePage = useMatch('/');
-    const onWorkoutPage = useMatch('/workout');
-    const onRegisterPage = useMatch('/register');
-    const onLoginPage = useMatch('login');
     const onProfilePage = useMatch('/profile');
     const onCoachPage = useMatch('/coach');
     const onSavedWorkoutsPage = useMatch('savedWorkouts');
 
-    if (onHomePage || onWorkoutPage || onRegisterPage || onLoginPage || onProfilePage || onCoachPage || onSavedWorkoutsPage) {
+    if (onHomePage || onProfilePage || onCoachPage || onSavedWorkoutsPage) {
         return children;
     } else {
         return null;
@@ -47,24 +48,29 @@ const App = () => {
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
                 <AuthProvider>
-                <BrowserRouter>
-                    <Suspense>
-                        <HideOnErrorPage>
-                            <Navbar />
-                        </HideOnErrorPage>
-                        
-                        <Routes>
-                            <Route index element={<HomePage /> } />
-                            <Route path="/workout" element={<WorkoutPage />} />                         
-                            <Route path="/register" element={<RegisterPage /> } />
-                            <Route path="/login" element={<LoginPage /> } />
-                            <Route path="/profile" element={<ProfilePage /> } />
-                            <Route path="/coach" element={ <CoachPage />} />
-                            <Route path="/savedWorkouts" element={<SavedWorkoutsPage /> } />
-                            <Route path='*' element={<ErrorPage /> } />
-                        </Routes>
-                    </Suspense>
-                </BrowserRouter>
+                    <HeartRateMonitorProvider>
+                        <BrowserRouter>
+                            <Suspense>
+                                <HideOnErrorPage>
+                                    <Navbar />
+                                </HideOnErrorPage>
+                                
+                                <Routes>
+                                    <Route index element={<HomePage /> } />
+                                    <Route path="/workout" element={<WorkoutPage />} />                         
+                                    <Route path="/register" element={<RegisterPage /> } />
+                                    <Route path="/login" element={<LoginPage /> } />
+                                    <Route path="/profile" element={<ProfilePage /> } />
+                                    <Route path="/coach" element={ <CoachPage />} />
+                                    <Route path="/savedWorkouts" element={<SavedWorkoutsPage /> } />
+
+                                    <Route path="/finished" element={<FinishedPage /> } />
+
+                                    <Route path='*' element={<ErrorPage /> } />
+                                </Routes>
+                            </Suspense>
+                        </BrowserRouter>
+                    </HeartRateMonitorProvider>
                 </AuthProvider>
             </QueryClientProvider>
         </Provider>

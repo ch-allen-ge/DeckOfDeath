@@ -14,9 +14,9 @@ import {
     getCompletedWorkouts,
     getProPicUrl,
     getProfile,
-    getUsername
+    getCurrentUser
 } from '../../api/getRoutes';
-import { uploadAndSaveTheproPic } from '../../api/postRoutes';
+import { uploadAndSaveTheProPic } from '../../api/postRoutes';
 import { deleteTheProPic } from '../../api/deleteRoutes';
 import Popper from '@mui/material/Popper';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -53,7 +53,7 @@ const ProfilePage = () => {
 
             if (file) {
                 params.append('profilePic', file);
-                const response = await uploadAndSaveTheproPic(params);
+                const response = await uploadAndSaveTheProPic(params);
                 return response.data;
             };
         },
@@ -74,6 +74,10 @@ const ProfilePage = () => {
             queryClient.setQueryData(["proPicUrl"], '/images/default_pro_pic.png');
         }
     });
+
+    if ( !isLoggedIn ) {
+        return <LoginRegisterPage />;
+    }
 
     const {
         data: completedWorkouts,
@@ -111,24 +115,20 @@ const ProfilePage = () => {
     });
 
     const {
-        data: username,
-        status: usernameStatus,
+        data: currentUser,
+        status: currentUserStatus,
     } = useQuery({
-        queryKey: ['username'],
-        queryFn: getUsername
+        queryKey: ['currentUser'],
+        queryFn: getCurrentUser
     });
 
-    if (isLoggedInStatus === 'pending' || completedWorkoutsStatus === 'pending' || proPicUrlStatus == 'pending' || profileStatus === 'pending' || usernameStatus === 'pending') {
+    if (isLoggedInStatus === 'pending' || completedWorkoutsStatus === 'pending' || proPicUrlStatus == 'pending' || profileStatus === 'pending' || currentUserStatus === 'pending') {
         return (<CircularProgress />);
     };
 
-    if (completedWorkoutsStatus === 'error' || proPicUrlStatus === 'error' || profileStatus === 'error' || usernameStatus === 'error') {
+    if (completedWorkoutsStatus === 'error' || proPicUrlStatus === 'error' || profileStatus === 'error' || currentUserStatus === 'error') {
         return <h1>Error Loading Profile</h1>;
     };
-
-    if ( !isLoggedIn ) {
-        return <LoginRegisterPage />;
-    }
   
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -164,11 +164,11 @@ const ProfilePage = () => {
                         <div className='profile-page__content__top-section__profile'>
                             <div className='profile-card'>
                                 <div className='profile-card__text top-name'>
-                                    <b>{username.toUpperCase()}</b>
+                                    <b>{currentUser.username.toUpperCase()}</b>
                                 </div>
 
                                 <div className='profile-card__text bottom-name'>
-                                    <b>{username.toUpperCase()}</b>
+                                    <b>{currentUser.username.toUpperCase()}</b>
                                 </div>
 
                                 <div className='profile-card__picture-container'>

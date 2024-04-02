@@ -15,9 +15,9 @@ const getProfile = async () => {
     return response.data;
 }
 
-const getUsername = async () => {
+const getCurrentUser = async () => {
     const response = await dodGet('/user/getCurrentUser');
-    return response.data.username;
+    return response.data;
 }
 
 const getSavedWorkouts = async () => {
@@ -29,6 +29,6 @@ export {
     getCompletedWorkouts,
     getProPicUrl,
     getProfile,
-    getUsername,
+    getCurrentUser,
     getSavedWorkouts
 }

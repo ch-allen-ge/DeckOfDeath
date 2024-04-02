@@ -5,7 +5,7 @@ import exercisesChosenReducer from './reduxSlices/exercisesChosenSlice';
 export const store = configureStore({
   reducer: {
     workoutOptions: workoutOptionsReducer,
-    exercisesChosen: exercisesChosenReducer,
+    exercisesChosen: exercisesChosenReducer
   },
 });
 

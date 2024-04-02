@@ -1,17 +1,12 @@
 .dodButton {
-    background: cornflowerblue;
-    border-radius: 5rem;
-    padding: 1rem;
+    border: 1px solid cornflowerblue;
+    border-radius: 1rem;
+    padding: .5rem;
     text-align: center;
-    width: fit-content;
-    color: white;
+    color: cornflowerblue;
     cursor: pointer;
-
-    &:hover {
-        transition: transform .2s;
-        transform: translateY(-.4rem);
-        box-shadow: 0 .4rem .8rem 0 rgba(black,0.2);
-    }
+    text-transform: uppercase;
+    width: fit-content;
 
     &.disabled {
         background: grey;

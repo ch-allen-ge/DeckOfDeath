@@ -24,7 +24,7 @@ const addTheWorkoutCompleted = async (completedWorkout: CompletedWorkout) => {
     return response;
 };
 
-const uploadAndSaveTheproPic = async (proPic: FormData) => {
+const uploadAndSaveTheProPic = async (proPic: FormData) => {
     const response = await dodPost('/profile/uploadAndSaveProPic', proPic);
     return response;
 };
@@ -37,6 +37,6 @@ const saveTheCustomWorkout = async (workout: CompletedWorkout) => {
 export {
     registerTheUser,
     addTheWorkoutCompleted,
-    uploadAndSaveTheproPic,
+    uploadAndSaveTheProPic,
     saveTheCustomWorkout
 };

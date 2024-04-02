@@ -8,24 +8,39 @@
     height: 100%;
     box-sizing: border-box;
 
-    &__playing-field {
+    &__field {
+        width: 100%;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 100%;
+        flex-basis: 90%;
 
-        &__exercise {
+        &-card {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+            flex-grow: 1;
 
-            &__text {
+            &__exercise {
                 display: flex;
                 flex-direction: column;
+                justify-content: center;
                 align-items: center;
-                font-size: 1.5rem;
+
+                &__text {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    font-size: 1.5rem;
+                }
             }
+        }
+        
+        &-heartRateMonitor {
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
         }
     }
 }
@@ -52,13 +67,9 @@
 }
 
 @include mobile {
-    .deckofdeathgame {
-        justify-content: start;
-
-        &__playing-field {
+    .deckofdeathgame{
+        &__field {
             flex-direction: column;
-            text-align: center;
-            width: 80%;
         }
     }
 }

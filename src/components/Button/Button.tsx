@@ -4,7 +4,7 @@ import './buttonStyles.scss';
 interface ButtonProps {
     children: ReactNode,
     disabled?: boolean,
-    onClick: () => void,
+    onClick?: () => void,
     styles?: {}
 }
 

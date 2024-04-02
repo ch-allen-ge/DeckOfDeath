@@ -24,7 +24,7 @@ const Navbar = () => {
     const location = useLocation();
     const {isLoggedIn, logOut} = useAuth();
 
-    if (location.pathname === '/workout' || location.pathname === '/finished') {
+    if (location.pathname === '/workout' || location.pathname === '/finished' || location.pathname === '/register') {
       return null;
     }
 

@@ -1,25 +1,40 @@
 import Modal from '@mui/material/Modal';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import Button from '@mui/material/Button';
 import './optionsModalStyles.scss';
-import { FC, ReactElement } from 'react';
 
-import { setBreakoutAces, setOneHandedSuit, setEasyDeck } from '../../reduxSlices/workoutOptionsSlice';
+import { setBreakoutAces, setEasyDeck } from '../../reduxSlices/workoutOptionsSlice';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
+import { useHeartRateMonitor } from '../../devices/BluetoothContext';
+import Button from '../Button';
+import { useEffect, useState } from 'react';
 
 interface OptionsModalProps {
     modalOpen: boolean,
     handleClose: () => void
 }
 
-const OptionsModal: FC<OptionsModalProps> = ({modalOpen, handleClose}): ReactElement => {
-    const breakoutAces = useAppSelector((state) => state.workoutOptions.breakoutAces);
-    const oneHandedSuit = useAppSelector((state) => state.workoutOptions.oneHandedSuit);
-    const easyDeck = useAppSelector((state) => state.workoutOptions.easyDeck);
+const OptionsModal = ({modalOpen, handleClose}: OptionsModalProps) => {
     const dispatch = useAppDispatch();
+
+    const breakoutAces = useAppSelector((state) => state.workoutOptions.breakoutAces);
+    const easyDeck = useAppSelector((state) => state.workoutOptions.easyDeck);
+    
+    const { heartRateMonitor, heartRateValue, setHeartRateMonitor, disconnectHeartRateMonitor } = useHeartRateMonitor();
+
+    const connectToHeartRateMonitor = async () => {
+        try {
+          //@ts-ignore
+          const newDevice = await navigator.bluetooth.requestDevice({
+            filters: [{ services: ['heart_rate'] }],
+          });
+          
+          if (newDevice) {
+            setHeartRateMonitor(newDevice);
+          }
+        } catch (error) {
+          console.error('Error connecting to heart rate monitor:', error);
+        }
+    }
 
     return (
         <Modal
@@ -27,45 +42,71 @@ const OptionsModal: FC<OptionsModalProps> = ({modalOpen, handleClose}): ReactEle
             onClose={handleClose}
         >
             <div className='options-modal'>
-                <FormGroup>
-                    <div className='options-modal__settings'>
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={breakoutAces}
-                                    onChange={() => dispatch(setBreakoutAces(!breakoutAces))}
-                                />
-                            }
-                            label="Break out aces"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={oneHandedSuit}
-                                    onChange={() => dispatch(setOneHandedSuit(!oneHandedSuit))}
-                                />
-                            }
-                            disabled
-                            label="One handed suit"
-                        /> {/* show a radio button list onchange to choose suit */}
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={easyDeck}
-                                    onChange={() => dispatch(setEasyDeck(!easyDeck))}
-                                />
-                            }
-                            disabled
-                            label="Easy deck"
-                        />
+                <div className="options-modal__row">
+                    <div className='options-modal__row__label'>
+                        Break Out Aces
                     </div>
-                    <Button
-                        variant="contained"
-                        onClick={handleClose}
+                    <div
+                        className={`options-modal__row__content button onButton ${breakoutAces === true ? 'selected' : ''}`}
+                        onClick={() => dispatch(setBreakoutAces(true))}
                     >
-                        Close
-                    </Button>
-                </FormGroup>
+                        ON
+                    </div>
+                    <div
+                        className={`options-modal__row__content button offButton ${breakoutAces === false ? 'selected' : ''}`}
+                        onClick={() => dispatch(setBreakoutAces(false))}
+                    >
+                        OFF
+                    </div>
+                </div>
+                <div className="options-modal__row">
+                    <div className='options-modal__row__label'>
+                        Easy Deck
+                    </div>
+                    <div className='options-modal__row__content'>
+                        COMING SOON
+                    </div>
+                    
+                </div>
+
+                {/* @ts-ignore */}
+                {navigator.bluetooth &&
+                    <div className="options-modal__row">
+                        <div className='options-modal__row__label'>
+                            Heart Rate Monitor
+                        </div>
+                        <div className='options-modal__row__content'>
+                            {heartRateMonitor ? 
+                                <div className='options-modal__row__content--heartRate'>
+                                    {heartRateValue === 0 ? (
+                                        <div>Connecting...</div>
+                                    ) : (
+                                        <>
+                                            <div>
+                                                <div>Connected</div>
+                                                <div>Heart Rate: {`${heartRateValue} bpm`}</div>
+                                            </div>
+                                            <Button 
+                                                onClick={disconnectHeartRateMonitor}
+                                            >
+                                                Disconnect
+                                            </Button>
+                                        </>
+                                    )}
+                                    
+                                </div>
+                            :
+                                <div>
+                                    <Button
+                                        onClick={connectToHeartRateMonitor}
+                                    >
+                                        Connect
+                                    </Button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
             </div>
         </Modal>
     );

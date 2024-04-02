@@ -1,0 +1,95 @@
+@import "../../mixins.scss";
+
+.leftBorder {
+    border-left: 2px solid black; /* Adjust border style as needed */
+    top: 10%; /* Adjust top position as needed */
+    bottom: 10%; /* Adjust bottom position as needed */
+    left: 0;
+    height: 80%;
+    position: absolute;
+}
+
+.heartRateDisplay {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.heartRateRing {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__innerRing {
+        width: 8rem;
+        height: 8rem;
+        border-radius: 5rem;
+        background-color: white;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 2rem;
+        text-align: center;
+    }
+}
+
+.heartRateBar {
+    display: flex;
+    width: 80%; 
+    height: 2rem;
+    position: relative;
+
+    &__section {
+        flex-grow: 1;
+
+        &--veryLight {
+            background-color: #2debd4;
+        }
+
+        &--light {
+            background-color: #2deb9b;
+        }
+
+        &--moderate {
+            background-color: #e0e322;
+        }
+
+        &--hard {
+            background-color: #e37f22;
+        }
+
+        &--max {
+            background-color: #ed4845;
+        }
+    }
+
+    &__pointer {
+        position: absolute;
+        height: 2rem;
+        width: 2rem;
+        background-color: black;
+        border-radius: 2rem;
+
+        transition: all .5s;
+    }
+}
+
+@include mobile {
+    .heartRateDisplay {
+        height: auto;
+    }
+
+    .heartRateValue {
+        font-size: 1.5rem;
+        margin-top: 1rem;
+    }
+}

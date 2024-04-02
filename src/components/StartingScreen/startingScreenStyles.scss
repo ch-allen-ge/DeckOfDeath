@@ -37,12 +37,6 @@
         width: 20%;
         margin: 1rem 0;
 
-        &__spear-button {
-            & > button {
-                border-radius: 10rem;
-            }
-        }
-
         &__start-button {
             min-width: 4rem;
             min-height: 4rem;
@@ -59,55 +53,6 @@
 
 @media (hover: hover) {
     .startingscreen__buttonrow {
-        &__spear-button {
-            &::before {
-                content: "";
-                position: absolute;
-                width: 3rem;
-                height: 3rem;
-                display: inline-block;
-                background-image: url("/images/red_sword.png");
-                background-repeat:no-repeat;
-                background-size:contain;
-                transform: translate(-3rem, -3rem) rotate(90deg) scale(2);
-                opacity: 0;
-                transition: all .5s;
-                z-index: -1;
-            }
-        
-            &::after {
-                content: "";
-                position: absolute;
-                width: 3rem;
-                height: 3rem;
-                display: inline-block;
-                background-image: url("/images/red_sword.png");
-                background-repeat:no-repeat;
-                background-size:contain;
-                transform: translate(0rem, -3rem) rotate(180deg) scale(2);
-                opacity: 0;
-                transition: all .5s;
-                z-index: -1;
-            }
-
-            &:hover {
-                & > button {
-                    overflow:visible;
-                    background-color: red !important;
-                }
-        
-                &::before {
-                    opacity: 1;
-                    transform: translateX(1rem) rotate(90deg) scale(2);
-                }
-        
-                &::after {
-                    opacity: 1;
-                    transform: translateX(-4rem) rotate(180deg) scale(2);
-                }
-            }
-        }
-
         &__start-button {
             &:hover {
                 background-image: url("/images/start_hover_button.png");

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ExerciseSelection from "../ExerciseSelection";
-import Button from '@mui/material/Button';
+import Button from "../Button";
 import OptionsModal from "../OptionsModal";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from '../../hooks';
@@ -23,9 +23,8 @@ const StartingScreen = () => {
     const acesSecondsToDo = useAppSelector((state) => state.exercisesChosen.aces.secondsToDo);
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
-
     const [showError, setShowError] = useState<boolean>(false);
-
+    
     useEffect(() => {
       dispatch(resetExercises());
       dispatch(resetOptions());
@@ -73,18 +72,15 @@ const StartingScreen = () => {
           </div>
         }
         <div className="startingscreen__buttonrow">
-            <div className="startingscreen__buttonrow__spear-button">
-              <Button
-                variant="contained"
-                onClick={() => {
-                  dispatch(resetExercises());
-                  dispatch(resetOptions());
-                }}
-                style={{backgroundColor: "black"}}
-              >
-                Clear
-              </Button>
-            </div>
+            <Button
+              onClick={() => {
+                dispatch(resetExercises());
+                dispatch(resetOptions());
+              }}
+            >
+              Clear
+            </Button>
+
             <div
               className="startingscreen__buttonrow__start-button"
               onClick={() => {
@@ -99,16 +95,11 @@ const StartingScreen = () => {
               }}
             />
 
-            <div className="startingscreen__buttonrow__spear-button">
-              <Button
-                variant="contained"
-                onClick={() => {setModalOpen(true)}}
-                style={{backgroundColor: "black"}}
-              >
-                Options
-              </Button>
-            </div>
-            
+            <Button
+              onClick={() => {setModalOpen(true)}}
+            >
+              Options
+            </Button>
         </div>
 
         <OptionsModal
@@ -116,7 +107,7 @@ const StartingScreen = () => {
           handleClose={() => {setModalOpen(false)}}
         />
       </div>
-    )
+    );
 }
 
 export default StartingScreen;

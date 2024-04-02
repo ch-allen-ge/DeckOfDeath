@@ -1,25 +1,5 @@
 @import "../../mixins.scss";
 
-@keyframes middleToTop {
-    0% {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-    }
-
-    50% {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(1);
-    }
-
-    100% {
-        top: 0;
-        left: 0;
-        margin: 3rem 0rem;
-    }
-}
-
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -32,82 +12,128 @@
 
 .finished-page {
     width: 100%;
-    position: relative;
-    right: 0;
 
-    &__finished-text {
-        font-size: 3rem;
-        text-align: center;
-        position: relative;
-        animation: 2s middleToTop  ease-out forwards;
-    }
-
-    &__information {
+    &__information { 
         display: flex;
+        flex-direction: column;
         align-items: center;
+        margin: 0 auto;
+        justify-content: space-evenly;
+        padding: 3rem;
+        background-image: linear-gradient(to right bottom, aqua, cornflowerblue);
         
         &__element {
+            box-shadow: 0 .4rem .8rem 0 rgba(black,0.2);
+            background: white;
+            margin: auto 1rem;
+            width: 60%;
+            font-size: larger;
+            margin: 1rem 0;
+            padding: 1rem;
+            display: flex;
             opacity: 0;
             animation: 1s fadeIn ease-out forwards;
 
             &:nth-child(1) {
-                animation-delay: 2s;
+                animation-delay: .5s;
             }
 
             &:nth-child(2) {
+                animation-delay: 1s;
+            }
+
+            &:nth-child(3) {
+                animation-delay: 1.5s;
+            }
+
+            &:nth-child(4) {
+                animation-delay: 2s;
+            }
+
+            &:nth-child(5) {
                 animation-delay: 2.5s;
             }
-    
-            &:nth-child(3) {
-                animation-delay: 3s;
-            }
-        }
 
-        &__section {
-            display: flex;
-            flex-direction: column;
-            flex-basis: 50%;
-            align-items: center;
-
-            & > .saveWorkout {
-                width: 70%;
-                text-align: center;
-
-                & > .workoutNameInput {
-                    display: flex;
-                    flex-direction: column;
-                    margin-top: 3rem;
-                    align-items: center;
-
-                    & > div {
-                        margin: 1rem 0;
-                    }
-
-                }
+            &.vertical {
+                flex-direction: column;
             }
 
             &__label {
-                font-size: 2rem;
-                padding: 3rem 0;
+                text-align: center;
+                font-size: larger;
             }
+            
+            &--section {
+                display: flex;
+                flex-direction: column;
+                flex-basis: 50%;
 
-            &__data {
-                font-size: 1.5rem;
+                & > * {
+                    flex-grow: 1;
+                }
+
+                &:first-child {
+                    border-right: 1px solid black;
+                }
+
+                & > .subsection {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 1rem 0;
+
+                    &.noPadding {
+                        padding: 0;
+                    }
+
+                    &:not(:last-child) {
+                        border-bottom: 1px solid black;
+                    }
+
+                    &.vertical {
+                        flex-direction: column;
+                        align-items: center;
+
+                        & > * {
+                            margin: 0.5rem;
+                        }
+                    }
+
+                    &.spaceAround {
+                        justify-content: space-around;
+                    }
+
+                    .profilePic__container > img {
+                        width: 5rem;
+                        height: 5rem;
+                        border-radius: 50%;
+                        object-fit: cover;
+                        transform: translate3d(0px, 0px, 0.1px);
+                    }
+
+                    .info_block {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        margin: 0 1rem;
+
+                        &.center {
+                            text-align: center;
+                        }
+                    }
+                }
             }
-        }
-
-        &__vertical-divider {
-            border-right: 1px solid black;
-            height: 50vh;
         }
     }
 }
 
+.paddingAllSides {
+    padding: 1rem;
+}
+
 .homeButton {
-    width: 100%;
-    padding-top: 3rem;
-    opacity: 0;
-    animation: 1s fadeIn ease-out forwards;
+    background: white;
+    border-radius: 2rem;
     animation-delay: 3.5s;
 
     & > div {
@@ -115,20 +141,123 @@
     }
 }
 
+.graphElement {
+    height: 25rem;
+}
+
+.smallText {
+    font-size: small;
+}
+
+.bigText {
+    font-size: larger;
+}
+
+.centered {
+    text-align: center;
+}
+
+.suitIcon {
+    font-size: 2rem;
+}
+
+.exerciseDescription {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // align-items: center;
+    text-align: center;
+    padding: 1rem;
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &:not(:last-child)::after {
+            content : "";
+            margin-top: .5rem;
+            width: 50%;
+            border-bottom: 1px solid black;
+        }
+    }
+
+    .centeredVertical {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.suitIcon {
+    font-size: 2rem;
+}
+
+.workoutNameInput {
+    display: flex;
+    margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
+
+    & > div {
+        margin-right:.5rem;
+    }
+}
+
+.feedbackTextarea {
+    width: 80%;
+    font-size: 1rem;
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    resize: none;
+}
+
+.starSection > svg:hover {
+    cursor: pointer;
+}
+
+.noteButtonRow {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+@include landscape_tablet {
+    .finished-page {
+        &__information {
+            &__element {
+                width: 70%;
+            }
+        }
+    }
+}
+
+@include tablet {
+    .finished-page {
+        &__information {
+            &__element {
+                width: 80%;
+                flex-direction: column;
+
+                &--section:first-child {
+                    border-right: 0;
+                    border-bottom: 1px solid black;
+                }
+            }
+        }
+    }
+}
+
 @include mobile {
     .finished-page {
-        width: 100%;
-        height: 100%;
-        position: static;
-
         &__information {
-            flex-direction: column;
-    
-            &__vertical-divider {
-                border-right: 0;
-                border-bottom: 1px solid black;
-                height: auto;
-                width: 90vw;
+            &__element {
+                width: 90%;
+                flex-direction: column;
+
+                &--section:first-child {
+                    border-right: 0;
+                    border-bottom: 1px solid black;
+                }
             }
         }
     }
