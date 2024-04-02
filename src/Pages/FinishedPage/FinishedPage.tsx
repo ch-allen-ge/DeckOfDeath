@@ -161,8 +161,6 @@ const FinishedPage = () => {
         workoutFinished
     } : FinishedPageProps = state;
 
-    console.log(workoutFinished);
-
     const isMobile = window.innerWidth < 800;
     const onFinishedPage = useMatch('/finished');
 
@@ -209,7 +207,6 @@ const FinishedPage = () => {
 
     const addWorkoutCompleted = useMutation({
         mutationFn: async (completedWorkout: any) => {
-            console.log(hrMonitorUsed);
             const response = await addTheWorkoutCompleted(completedWorkout);
             return response;
         }
