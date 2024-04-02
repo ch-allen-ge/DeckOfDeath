@@ -43,8 +43,8 @@ const getPowerScore = (heartRateArray : number[], maxHeartRate: number, totalTim
     const pointsScoredArray: number[] = [];
 
     if (heartRateArray.length === 0) {
-        return totalTimeSpent / 6;
-    }
+        return parseFloat((totalTimeSpent / 6).toFixed(2));
+    };
 
     for (let heartRate of heartRateArray) {
         if (heartRate <= 0.645 * maxHeartRate) {
