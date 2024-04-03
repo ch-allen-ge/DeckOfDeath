@@ -4,11 +4,13 @@ import { registerTheUser } from "../../api/postRoutes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import './registerPageStyles.scss'
 import { AxiosError } from "axios";
+import { useAuth } from "../../auth/AuthContext";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const formRef = useRef(null);
+    const { isLoggedIn } = useAuth();
     const [usernameTakenError, setUsernameTakenError] = useState(false);
     const [passwordTooShortError, setPasswordTooShortError] = useState(false);
 
@@ -38,6 +40,10 @@ const RegisterPage = () => {
             }
         }
     });
+
+    if (isLoggedIn) {
+        navigate('/');
+    };
 
     const handleSubmit = (event: any) => {
         event.preventDefault();

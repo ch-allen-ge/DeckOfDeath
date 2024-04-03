@@ -164,8 +164,6 @@ const FinishedPage = () => {
         workoutFinished
     } : FinishedPageProps = state;
 
-    const isMobile = window.innerWidth < 800;
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isLoggedIn } = useAuth();

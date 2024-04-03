@@ -1,101 +1,107 @@
-import { useState } from "react";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { validateLoginCredentials } from "../../utils/Validation";
-import './loginPageStyles.scss';
 import { useAuth } from "../../auth/AuthContext";
+import './loginPageStyles.scss';
 
-//if logged in already, redirect to /
 const Login = () => {
-    const [usernameInput, setUsernameInput] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [submitted, setSubmitted] = useState<boolean>(false);
     const [showError, setShowError] = useState<boolean>(false);
-    const [showValidationError, setShowValidationError] = useState<boolean>(false);
     const navigate = useNavigate();
-    const { logIn } = useAuth();
+    const { isLoggedIn, logIn } = useAuth();
+    const formRef = useRef(null);
 
-    const loginUser = async () => {
-        const response = await logIn.mutateAsync({
-            username: usernameInput,
-            password
-        });
-        
-        if (response && response.status === 200) {
+    if (isLoggedIn) {
+        navigate('/');
+    };
+
+    const handleSubmit = async (event: any) => {
+        event.preventDefault();
+
+        try {
+            await logIn.mutateAsync({
+                username,
+                password
+            });
+
             navigate('/');
-        } else {
+        } catch (error) {
             setShowError(true);
         }
-    }
-
-    const handleSubmit = () => {
-        setSubmitted(true);
-        if (validateLoginCredentials({
-            username: usernameInput,
-            password
-        })) {
-            loginUser();
-        } else {
-            setShowValidationError(true);
-        }
-    }
+    };
 
     return (
         <>
-            <div className='loginContainer'>
-                <h1>Log In</h1>
+            <div className='loginPage'>
+                <div className="loginPage__card">
+                    <div className="loginPage__card__formContainer">
+                        <form className="loginPage__card__formContainer__form" onSubmit={handleSubmit} ref={formRef}>
+                            <div className="bigBoldText">
+                                Log In
+                            </div>
 
-                <div className="loginInputFields">
-                    <TextField
-                        className=""
-                        label='username'
-                        variant="outlined"
-                        autoComplete='off'
-                        inputProps={{ maxLength: 50 }}
-                        onChange={(e) => {
-                            const text = e.target.value;
-                            setUsernameInput(text);
-                            setShowValidationError(false);
-                        }}
-                        error={submitted && usernameInput === ''}
-                    />
-                    <br />
-                    <TextField
-                        className=""
-                        label='password'
-                        type='password'
-                        variant="outlined"
-                        autoComplete='off'
-                        inputProps={{ maxLength: 50 }}
-                        onChange={(e) => {
-                            const text = e.target.value;
-                            setPassword(text);
-                            setShowValidationError(false);
-                        }}
-                        error={submitted && password === ''}
-                    />
+                            <div className="form__group">
+                                <input
+                                    type="text"
+                                    className="form__input"
+                                    placeholder="Username"
+                                    id="username"
+                                    name='username'
+                                    required
+                                    onChange={(e) => {
+                                        setShowError(false);
+                                        setUsername(e.target.value)
+                                    }}
+                                />
+                            </div>
+
+                            <div className="form__group">
+                                <input
+                                    type="password"
+                                    className="form__input"
+                                    placeholder="Password (min 6 characters)"
+                                    id="password"
+                                    name='password'
+                                    required 
+                                    onChange={(e) => {
+                                        setShowError(false);
+                                        setPassword(e.target.value);
+                                    }} 
+                                />
+                            </div>
+                            <div className="submitButton">
+                                <button type='submit'>
+                                    Submit
+                                </button>
+                            </div>
+
+                            <div
+                                className="cancelButton"
+                                onClick={() => navigate('/')}
+                            >
+                                <u>Cancel</u>
+                            </div>
+                            
+                            {showError && (
+                                <div className="errorText">
+                                    Incorrect username or password
+                                </div>
+                            )}
+                        </form>
+                    </div>
+                    
+
+                    <div className="loginPage__card__description">
+                        <div className="bigBoldText">
+                            GET PUMPED
+                        </div>
+                        <div className="loginPage__card__description__blob">
+                            Log in to save all your completed workouts and look back at all the times you've conquered them
+                        </div>
+                    </div>
                 </div>
-
-                {showValidationError &&
-                    <div className="errorText">
-                        Please fill in all fields
-                    </div>
-                }
-                
-                <Button
-                    variant="contained"
-                    onClick={handleSubmit}
-                >
-                    Login
-                </Button>
-
-                {showError &&
-                    <div className="errorText">
-                        Error logging in
-                    </div>
-                }
             </div>
+            
         </>
     )
 };

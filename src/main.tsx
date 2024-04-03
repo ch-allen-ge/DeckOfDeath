@@ -63,9 +63,6 @@ const App = () => {
                                     <Route path="/profile" element={<ProfilePage /> } />
                                     <Route path="/coach" element={ <CoachPage />} />
                                     <Route path="/savedWorkouts" element={<SavedWorkoutsPage /> } />
-
-                                    <Route path="/finished" element={<FinishedPage /> } />
-
                                     <Route path='*' element={<ErrorPage /> } />
                                 </Routes>
                             </Suspense>
