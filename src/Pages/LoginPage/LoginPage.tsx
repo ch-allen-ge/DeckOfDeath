@@ -1,11 +1,11 @@
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useAppDispatch } from '../../hooks';
 import { useNavigate } from "react-router-dom";
 import { validateLoginCredentials } from "../../utils/Validation";
 import './loginPageStyles.scss';
 import { useAuth } from "../../auth/AuthContext";
+
 //if logged in already, redirect to /
 const Login = () => {
     const [usernameInput, setUsernameInput] = useState<string>('');
@@ -13,7 +13,6 @@ const Login = () => {
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [showError, setShowError] = useState<boolean>(false);
     const [showValidationError, setShowValidationError] = useState<boolean>(false);
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { logIn } = useAuth();
 

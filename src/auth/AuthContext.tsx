@@ -26,7 +26,9 @@ const AuthProvider = ({ children } : {children : React.ReactNode}) => {
 
     const { data: isLoggedIn, status: isLoggedInStatus } = useQuery({
         queryKey: ['authenticated'],
-        queryFn: authenticate
+        queryFn: authenticate,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     });
 
     const logOut = useMutation({

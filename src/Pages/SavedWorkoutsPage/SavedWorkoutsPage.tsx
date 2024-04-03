@@ -46,22 +46,25 @@ const SavedWorkoutPage = () => {
         },
         onSuccess: () => queryClient.invalidateQueries({queryKey: ['savedWorkouts']})
     });
-    
+
     const {
         data: savedWorkouts,
         status: savedWorkoutsStatus
     } = useQuery({
         queryKey: ['savedWorkouts'],
-        queryFn: getSavedWorkouts
+        queryFn: getSavedWorkouts,
+        enabled: isLoggedIn,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false
     });
-
-    if (savedWorkoutsStatus === 'pending') {
-        return (<CircularProgress />);
-    };
 
     if (!isLoggedIn) {
         return (<LoginRegisterPage />);
     }
+    
+    if (savedWorkoutsStatus === 'pending') {
+        return (<CircularProgress />);
+    };
 
     const startWorkout = (selectedWorkout: WorkoutInterface) => {
         dispatch(setClubsExercise(selectedWorkout.clubs_exercise));
@@ -84,7 +87,7 @@ const SavedWorkoutPage = () => {
                 </div>
                 {savedWorkouts.length === 0 ?
                     <div className="noSavedWorkouts">
-                        Save a workout after completion to quick start it again here later!
+                        Save a workout after completion to quick start it again here!
                     </div>
                     :
                     <div className="rowDisplay">

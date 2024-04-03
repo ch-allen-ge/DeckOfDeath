@@ -1,14 +1,13 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../auth/AuthContext";
 import { registerTheUser } from "../../api/postRoutes";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import './registerPageStyles.scss'
 import { AxiosError } from "axios";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
-    const { logIn } = useAuth();
+    const queryClient = useQueryClient();
     const formRef = useRef(null);
     const [usernameTakenError, setUsernameTakenError] = useState(false);
     const [passwordTooShortError, setPasswordTooShortError] = useState(false);
@@ -20,23 +19,9 @@ const RegisterPage = () => {
 
             return response;
         },
-        onSuccess: async (response) => {
-            const formData = new FormData(formRef.current as unknown as HTMLFormElement);
-            const username = formData.get('username');
-            const password = formData.get('password');
-
-            if (response && response.status === 200) {
-                const logInResponse = await logIn.mutateAsync({
-                    username,
-                    password
-                });
-
-                if (logInResponse && logInResponse.status === 200) {
-                    navigate('/');
-                } else {
-                    
-                }
-            }
+        onSuccess: async () => {
+            queryClient.setQueryData(['authenticated'], true);
+            navigate('/');
         },
         onError: (error: AxiosError) => {
             if (error.response?.status === 400) {

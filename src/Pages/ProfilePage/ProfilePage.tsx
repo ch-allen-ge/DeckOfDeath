@@ -103,7 +103,9 @@ const ProfilePage = () => {
         status: proPicUrlStatus
     } = useQuery({ 
         queryKey: ['proPicUrl'],
-        queryFn: getProPicUrl
+        queryFn: getProPicUrl,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     });
 
     const {
@@ -111,7 +113,9 @@ const ProfilePage = () => {
         status: profileStatus
     } = useQuery({
         queryKey: ['profile'],
-        queryFn: getProfile
+        queryFn: getProfile,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     });
 
     const {
@@ -119,7 +123,9 @@ const ProfilePage = () => {
         status: currentUserStatus,
     } = useQuery({
         queryKey: ['currentUser'],
-        queryFn: getCurrentUser
+        queryFn: getCurrentUser,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     });
 
     if (isLoggedInStatus === 'pending' || completedWorkoutsStatus === 'pending' || proPicUrlStatus == 'pending' || profileStatus === 'pending' || currentUserStatus === 'pending') {

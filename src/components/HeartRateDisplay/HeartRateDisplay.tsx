@@ -15,7 +15,9 @@ const HeartRateDisplay = ({updateHeartRateArray}: HeartRateDisplayProps) => {
         data: currentUser
     } = useQuery({
         queryKey: ['currentUser'],
-        queryFn: getCurrentUser
+        queryFn: getCurrentUser,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     });
 
     const { heartRateValue } = useHeartRateMonitor();

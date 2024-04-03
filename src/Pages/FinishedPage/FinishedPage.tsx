@@ -2,7 +2,7 @@ import { TextField } from '@mui/material';
 import './finishedPageStyles.scss';
 import Button from '../../components/Button';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useLocation, useMatch } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { resetExercises } from '../../reduxSlices/exercisesChosenSlice';
 import { resetOptions } from '../../reduxSlices/workoutOptionsSlice';
 import { useEffect, useRef, useState } from 'react';
@@ -150,8 +150,11 @@ const NoteSection = ({savedWorkoutId} : {savedWorkoutId: number}) => {
     );
 };
 
-//is rerendered like, 5 times for some reason
 const FinishedPage = () => {
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+    });
+
     const { state } = useLocation();
     let {
         totalTimeSpent,
@@ -162,7 +165,6 @@ const FinishedPage = () => {
     } : FinishedPageProps = state;
 
     const isMobile = window.innerWidth < 800;
-    const onFinishedPage = useMatch('/finished');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -178,7 +180,9 @@ const FinishedPage = () => {
         data: currentUser
     } = useQuery({
         queryKey: ['currentUser'],
-        queryFn: getCurrentUser
+        queryFn: getCurrentUser,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     });
 
     const avgHeartRate = calculateAvg(heartRateArray);
@@ -233,6 +237,10 @@ const FinishedPage = () => {
     });
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         const saveWorkoutToDb = async () => {
             if (isLoggedIn) {
                 try {
@@ -248,9 +256,7 @@ const FinishedPage = () => {
             }
         };
         
-        if (!onFinishedPage) {
-            saveWorkoutToDb();
-        };
+        saveWorkoutToDb();
     }, []);
 
     const setStars = (starNumber: number) => {
@@ -268,7 +274,9 @@ const FinishedPage = () => {
         data: proPicUrl
     } = useQuery({ 
         queryKey: ['proPicUrl'],
-        queryFn: getProPicUrl
+        queryFn: getProPicUrl,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     });
 
     const saveWorkout = useMutation({
@@ -301,108 +309,92 @@ const FinishedPage = () => {
                             </div>
                         </div>
 
-                        {isMobile ? (
-                            <div className='subsection spaceAround'>
-                                <div className='info_block center'>
-                                    <div className='bigText'>{totalTimeSpent}</div>
-                                    <div className='smallText'>Time Spent</div>
-                                </div>
-                                <div className='info_block center'>
-                                    <div className='bigText'>{caloriesBurned}</div>
-                                    <div className='smallText'>Calories Burned</div>
-                                </div>
-                                <div className='info_block center'>
-                                    <div className='bigText'>{powerScore}</div>
-                                    <div className='smallText'>Power Score</div>
-                                </div>
+                        <div className='subsection vertical spaceAround'>
+                            <div className='info_block center'>
+                                <div className='bigText'>{totalTimeSpent}</div>
+                                <div className='smallText'>Time Spent</div>
                             </div>
-                        ) : (
-                            <NoteSection savedWorkoutId={savedWorkoutId.current as number} />
-                        )}
-
-                        <div className='subsection vertical'>
-                            Rate this workout: 
-                            <div className='starSection'>
-                                <StarRateIcon
-                                    sx={{color: starColor[0]}}
-                                    onClick={() => {
-                                        setStars(1);
-                                    }}
-                                />
-                                <StarRateIcon
-                                    sx={{color: starColor[1]}}
-                                    onClick={() => {
-                                        setStars(2);
-                                    }}
-                                />
-                                <StarRateIcon
-                                    sx={{color: starColor[2]}}
-                                    onClick={() => {
-                                        setStars(3);
-                                    }}
-                                />
-                                <StarRateIcon
-                                    sx={{color: starColor[3]}}
-                                    onClick={() => {
-                                        setStars(4);
-                                    }}
-                                />
-                                <StarRateIcon
-                                    sx={{color: starColor[4]}}
-                                    onClick={() => {
-                                        setStars(5);
-                                    }}
-                                />
+                            <div className='info_block center'>
+                                <div className='bigText'>{caloriesBurned}</div>
+                                <div className='smallText'>Calories Burned</div>
+                            </div>
+                            <div className='info_block center'>
+                                <div className='bigText'>{powerScore}</div>
+                                <div className='smallText'>Power Score</div>
                             </div>
                         </div>
                     </div>
 
                     <div className='finished-page__information__element--section'>
-                        {isMobile ? (
-                            <NoteSection savedWorkoutId={savedWorkoutId.current as number} />
-                        ) : (
-                            <div className='subsection spaceAround'>
-                                <div className='info_block center'>
-                                    <div className='bigText'>{totalTimeSpent}</div>
-                                    <div className='smallText'>Time Spent</div>
+                        <div className='subsection vertical noPadding'>
+                            <div className='exerciseDescription vertical'>
+                                <div>
+                                    <span className='suitIcon'>&#9827;</span> {workoutCompleted.clubs_exercise}
                                 </div>
-                                <div className='info_block center'>
-                                    <div className='bigText'>{caloriesBurned}</div>
-                                    <div className='smallText'>Calories Burned</div>
+                                <div>
+                                    <span className='suitIcon'>&#9830;</span> {workoutCompleted.diamonds_exercise}
                                 </div>
-                                <div className='info_block center'>
-                                    <div className='bigText'>{powerScore}</div>
-                                    <div className='smallText'>Power Score</div>
+                                <div>
+                                    <span className='suitIcon'>&#9829;</span> {workoutCompleted.hearts_exercise}{workoutCompleted.hearts_exercise}
                                 </div>
+                                <div>
+                                    <span className='suitIcon'>&#9824;</span> {workoutCompleted.spades_exercise}
+                                </div>
+                                {workoutCompleted.aces_exercise && (
+                                    <div>
+                                        <span className='suitIcon'>&#x41;</span> {workoutCompleted.aces_exercise}
+                                    </div>
+                                )}
                             </div>
-                        )}
-                        
-
-                        {isLoggedIn && (
-                            <div className='subsection vertical noPadding'>
-                                <div className='exerciseDescription vertical'>
-                                    <div>
-                                        <span className='suitIcon'>&#9827;</span> {workoutCompleted.clubs_exercise}
-                                    </div>
-                                    <div>
-                                        <span className='suitIcon'>&#9830;</span> {workoutCompleted.diamonds_exercise}
-                                    </div>
-                                    <div>
-                                        <span className='suitIcon'>&#9829;</span> {workoutCompleted.hearts_exercise}{workoutCompleted.hearts_exercise}
-                                    </div>
-                                    <div>
-                                        <span className='suitIcon'>&#9824;</span> {workoutCompleted.spades_exercise}
-                                    </div>
-                                    {workoutCompleted.aces_exercise && (
-                                        <div>
-                                            <span className='suitIcon'>&#x41;</span> {workoutCompleted.aces_exercise}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
+                        </div>
                     </div>
                 </div>
+
+                {isLoggedIn && (
+                    <div className='finished-page__information__element'>
+                        <div className='finished-page__information__element--section'>
+                            <NoteSection savedWorkoutId={savedWorkoutId.current as number} />
+                        </div>
+
+                        <div className='finished-page__information__element--section'>
+                            <div className='subsection vertical'>
+                                Rate this workout: 
+                                <div className='starSection'>
+                                    <StarRateIcon
+                                        sx={{color: starColor[0]}}
+                                        onClick={() => {
+                                            setStars(1);
+                                        }}
+                                    />
+                                    <StarRateIcon
+                                        sx={{color: starColor[1]}}
+                                        onClick={() => {
+                                            setStars(2);
+                                        }}
+                                    />
+                                    <StarRateIcon
+                                        sx={{color: starColor[2]}}
+                                        onClick={() => {
+                                            setStars(3);
+                                        }}
+                                    />
+                                    <StarRateIcon
+                                        sx={{color: starColor[3]}}
+                                        onClick={() => {
+                                            setStars(4);
+                                        }}
+                                    />
+                                    <StarRateIcon
+                                        sx={{color: starColor[4]}}
+                                        onClick={() => {
+                                            setStars(5);
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 <div className='finished-page__information__element vertical'>
                     <div className='finished-page__information__element__label'>Time breakdown</div>
