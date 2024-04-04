@@ -166,6 +166,21 @@
     cursor: pointer;
 }
 
+.loginError {
+    margin: 1rem;
+    color: red;
+    text-align: center;
+    visibility: hidden;
+
+    &.visible {
+        visibility: visible;
+    }
+
+    &.invisible {
+        visibility: hidden;
+    }
+}
+
 @include landscape_tablet {
     .loginPage {
         &__card {

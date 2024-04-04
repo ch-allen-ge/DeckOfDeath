@@ -81,12 +81,10 @@ const Login = () => {
                             >
                                 <u>Cancel</u>
                             </div>
-                            
-                            {showError && (
-                                <div className="errorText">
-                                    Incorrect username or password
-                                </div>
-                            )}
+
+                            <div className={`loginError ${showError ? 'visible' : 'invisible'}`}>
+                                Incorrect username or password
+                            </div>
                         </form>
                     </div>
                     
