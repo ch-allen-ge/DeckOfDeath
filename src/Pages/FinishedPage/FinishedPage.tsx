@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { resetExercises } from '../../reduxSlices/exercisesChosenSlice';
 import { resetOptions } from '../../reduxSlices/workoutOptionsSlice';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useAuth } from '../../auth/AuthContext';
 import { addTheWorkoutCompleted, saveTheCustomWorkout } from '../../api/postRoutes';
@@ -18,16 +18,16 @@ import {
     BarChart
 } from '@mui/x-charts';
 import { getCurrentUser, getProPicUrl } from '../../api/getRoutes';
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { calculateAvg, getDateString, getMaxHeartRate, timeStringToMinNumber } from '../../utils/utils';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import { getPowerScore, getCaloriesBurned } from '../../utils/utils';
 import {
     updateTheNumberWorkoutsCompleted,
     updateTheTotalTime,
-    setTheRating,
-    saveTheNote
+    setTheRating
 } from '../../api/patchRoutes';
+import NotesSection from '../../components/NotesSection';
+import ErrorPage from '../ErrorPage';
 
 interface FinishedPageProps {
     totalTimeSpent: string,
@@ -61,101 +61,14 @@ const getGenericWorkoutName = () => {
     }
 };
 
-const NoteSection = ({savedWorkoutId} : {savedWorkoutId: number}) => {
-    const [note, setNote] = useState('');
-    const [addingNotes, setAddingNotes] = useState<boolean>(false);
-
-    const saveNote = useMutation({
-        mutationFn: async (note: string) => {
-            if (savedWorkoutId) {
-                await saveTheNote(savedWorkoutId, note);
-            }
-        }
-    });
-
-    return (
-        <div className='subsection vertical'>
-            <h3>
-                {note === '' ? 'How did it go?' : 'Notes'}
-            </h3>
-            {addingNotes ? (
-                <>
-                    <TextareaAutosize
-                        onChange={(e) => {
-                            setNote(e.target.value);
-                        }}
-                        value={note}
-                        minRows={3}
-                        maxRows={3}
-                        className='feedbackTextarea'
-                    />
-                    <div className='noteButtonRow'>
-                        <Button
-                            onClick={() => {
-                                if (note !== '') {
-                                    saveNote.mutate(note);
-                                }
-                                setAddingNotes(false);
-                            }}
-                            styles={{
-                                fontSize: 'small'
-                            }}
-                        >
-                            Save
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                setAddingNotes(false);
-                            }}
-                            styles={{
-                                fontSize: 'small'
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                    </div>
-                </>
-            ): (
-                <>
-                    {note === '' ? (
-                        <Button
-                            onClick={() => {
-                                setAddingNotes(true);
-                            }}
-                            styles={{
-                                fontSize: 'small'
-                            }}
-                        >
-                            Add notes
-                        </Button>
-                    ) : (
-                        <>
-                            <div>{note}</div>
-                            <Button
-                                onClick={() => {
-                                    setAddingNotes(true);
-                                }}
-                                styles={{
-                                    fontSize: 'small'
-                                }}
-                            >
-                                Edit
-                            </Button>
-                        </>
-                        
-                    )}
-                </>
-            )}
-        </div>
-    );
-};
-
 const FinishedPage = () => {
-    setTimeout(() => {
-        window.scrollTo(0, 0);
-    });
-
     const { state } = useLocation();
+    const navigate = useNavigate();
+
+    if (state === null) {
+        return <ErrorPage />
+    };
+    
     let {
         totalTimeSpent,
         heartRateArray,
@@ -165,7 +78,6 @@ const FinishedPage = () => {
     } : FinishedPageProps = state;
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { isLoggedIn } = useAuth();
     const [workoutName, setWorkoutName] = useState<string>(() => getGenericWorkoutName());
     const [saveWorkoutError, setSaveWorkoutError] = useState<boolean>(false);
@@ -234,7 +146,7 @@ const FinishedPage = () => {
         }
     });
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
@@ -351,7 +263,7 @@ const FinishedPage = () => {
                 {isLoggedIn && (
                     <div className='finished-page__information__element'>
                         <div className='finished-page__information__element--section'>
-                            <NoteSection savedWorkoutId={savedWorkoutId.current as number} />
+                            <NotesSection savedWorkoutId={savedWorkoutId.current as number} savedNote={null}/>
                         </div>
 
                         <div className='finished-page__information__element--section'>

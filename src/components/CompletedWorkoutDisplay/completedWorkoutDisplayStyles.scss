@@ -1,0 +1,138 @@
+@import "../../mixins.scss";
+
+.completedWorkoutDisplay {
+    margin: 2rem 0;
+
+    &__header {
+        padding: 1rem 0;
+        text-align: center;
+        background: cornflowerblue;
+
+        & > .title {
+            font-size: 1.5rem;
+        }
+    }
+
+    &__body {
+        display: flex;
+
+        &__section {
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+    
+            &:first-child {
+                flex-basis: 50%;
+            }
+    
+            &:not(:first-child) {
+                flex-basis: 25%;
+            }
+
+            &:not(:last-child) {
+                border-right: 1px solid black;
+            }
+    
+            &__stats {
+                display: flex;
+                margin: auto 0;
+                width: 100%;
+    
+                & div {
+                    flex-grow: 1;
+                    text-align: center;
+                }
+            }
+    
+            &__exerciseList {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 1rem;
+    
+                & > div {
+                    width: 100%;
+                    padding: 1rem;
+    
+                    &:not(:last-child)::after {
+                        display: block;
+                        content : "";
+                        left: 0;
+                        right: 0;
+                        margin: auto;
+                        padding: .5rem 0;
+                        width: 50%;
+                        border-bottom: 1px solid black;
+                    }
+                }
+            }
+        }
+    }   
+}
+
+.data {
+    font-size: 1.5rem;
+}
+
+@include landscape_tablet {
+    .completedWorkoutDisplay {
+        &__body {
+            &__section {
+                &__stats {
+                    flex-direction: column;
+
+                    & > div {
+                        padding: 1rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include tablet {
+    .completedWorkoutDisplay {
+        &__body {
+            flex-direction: column;
+
+            &__section {
+                &__stats {
+                    flex-direction: column;
+
+                    & > div {
+                        padding: 1rem;
+                    }
+                }
+
+                &:not(:last-child) {
+                    border-right: none;
+                    border-bottom: 1px solid black;
+                }
+            }
+        }
+    }
+}
+
+@include mobile {
+    .completedWorkoutDisplay {
+        &__body {
+            flex-direction: column;
+
+            &__section {
+                &__stats {
+                    flex-direction: column;
+
+                    & > div {
+                        padding: 1rem;
+                    }
+                }
+
+                &:not(:last-child) {
+                    border-right: none;
+                    border-bottom: 1px solid black;
+                }
+            }
+        }
+    }
+}

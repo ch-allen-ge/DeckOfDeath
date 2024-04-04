@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './profilePageStyles.scss';
-import WorkoutDisplay from '../../components/WorkoutDisplay';
+import CompletedWorkoutDisplay from '../../components/CompletedWorkoutDisplay';
 import StatsRow from '../../components/StatsRow';
 import CircularProgress from '@mui/material/CircularProgress';
 import LoginRegisterPage from '../LoginReigsterPage';
@@ -23,6 +23,8 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Button from '../../components/Button';
 
 interface CompletedWorkout {
+    workout_completed_id: number,
+    username: string,
     clubs_exercise: string,
     diamonds_exercise: string,
     hearts_exercise: string,
@@ -33,11 +35,18 @@ interface CompletedWorkout {
     aces_minutes_to_do: number,
     aces_seconds_to_do: number,
     time_spent: {
-        hours?: number,
+        hours: number,
         minutes: number,
         seconds: number
     },
-    date_completed: string
+    date_completed: string,
+    name: string,
+    rating: number,
+    notes: string,
+    calories_burnt: number,
+    power_score: number,
+    average_heart_rate: number,
+    hr_monitor_used: boolean
 };
 
 const ProfilePage = () => {
@@ -151,18 +160,6 @@ const ProfilePage = () => {
         setShowPopup(false);
     };
 
-    const timeSpentToString = (workout : CompletedWorkout) => {
-        if (workout.time_spent.hours) {
-            return `${workout.time_spent.hours} ${workout.time_spent.hours === 1 ? 'hour' : 'hours'} 
-                    ${workout.time_spent.minutes ?? 0} ${workout.time_spent.minutes === 1 ? 'minute' : 'minutes'} 
-                    ${workout.time_spent.seconds ?? 0} ${workout.time_spent.seconds === 1 ? 'second' : 'seconds'}`;
-        } else if (workout.time_spent.minutes) {
-            return `${workout.time_spent.minutes} minutes ${workout.time_spent.seconds ?? 0} seconds`;
-        } else {
-            return `${workout.time_spent.seconds} seconds`;
-        }
-    };
-
     return (
         <div className='profile-page'>
                 <div className='profile-page__content'>
@@ -247,14 +244,11 @@ const ProfilePage = () => {
                                 {completedWorkouts.pages.map((group, index) => (
                                     <div key={index}>
                                         {group.map((workout: CompletedWorkout, index: number) => 
-                                            <WorkoutDisplay workout={workout} index={index} key={index}>
-                                                <div className='profile-page__content__completed-workouts__info'>
-                                                    {new Date(workout.date_completed).toDateString()}
-                                                </div>
-                                                <div className='profile-page__content__completed-workouts__info'>
-                                                    {timeSpentToString(workout)}
-                                                </div>
-                                            </WorkoutDisplay>
+                                            <CompletedWorkoutDisplay
+                                                workout={workout}
+                                                index={index}
+                                                key={index}
+                                            />
                                         )}
                                     </div>
                                 ))}

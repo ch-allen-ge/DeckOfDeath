@@ -24,11 +24,9 @@ const LoginPage = lazy(() =>  import('./Pages/LoginPage'));
 const ProfilePage = lazy(() => import('./Pages/ProfilePage'));
 const CoachPage = lazy(() => import('./Pages/CoachPage'));
 const SavedWorkoutsPage = lazy(() => import('./Pages/SavedWorkoutsPage'));
+const FinishedPage = lazy(() => import('./Pages/FinishedPage'));
 const ErrorPage = lazy(() => import('./Pages/ErrorPage'));
 const queryClient = new QueryClient();
-
-import FinishedPage from './Pages/FinishedPage/FinishedPage.tsx';
-
 
 const HideOnErrorPage = ({children} : {children : React.ReactNode}) => {
     const onHomePage = useMatch('/');
@@ -63,6 +61,7 @@ const App = () => {
                                     <Route path="/profile" element={<ProfilePage /> } />
                                     <Route path="/coach" element={ <CoachPage />} />
                                     <Route path="/savedWorkouts" element={<SavedWorkoutsPage /> } />
+                                    <Route path="/finished" element={<FinishedPage /> } />
                                     <Route path='*' element={<ErrorPage /> } />
                                 </Routes>
                             </Suspense>
