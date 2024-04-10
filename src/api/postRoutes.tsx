@@ -1,8 +1,7 @@
 import { dodPost } from "../axios-config";
 
-interface CompletedWorkout {
-    name?: string
-    time_spent?: string,
+interface Workout {
+    name: string
     clubs_exercise: string,
     diamonds_exercise: string,
     hearts_exercise: string,
@@ -13,6 +12,10 @@ interface CompletedWorkout {
     aces_minutes_to_do: number,
     aces_seconds_to_do: number
 };
+
+interface CompletedWorkout extends Workout {
+    time_spent: string,
+}
 
 const registerTheUser = async (params: FormData) => {
     const response = await dodPost('/register', params);
@@ -29,7 +32,7 @@ const uploadAndSaveTheProPic = async (proPic: FormData) => {
     return response;
 };
 
-const saveTheCustomWorkout = async (workout: CompletedWorkout) => {
+const saveTheCustomWorkout = async (workout: Workout) => {
     const response = await dodPost('/workouts/saveCustomWorkout', workout);
     return response;
 }

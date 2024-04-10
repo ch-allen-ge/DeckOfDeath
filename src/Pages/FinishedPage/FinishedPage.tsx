@@ -65,9 +65,9 @@ const FinishedPage = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
 
-    if (state === null) {
-        return <ErrorPage />
-    };
+    // if (state === null) {
+    //     return <ErrorPage />
+    // };
     
     let {
         totalTimeSpent,
