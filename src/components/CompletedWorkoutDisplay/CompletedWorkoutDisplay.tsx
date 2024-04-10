@@ -1,4 +1,4 @@
-import './CompletedWorkoutDisplayStyles.scss';
+import './completedWorkoutDisplayStyles.scss';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import NotesSection from '../NotesSection';
 
