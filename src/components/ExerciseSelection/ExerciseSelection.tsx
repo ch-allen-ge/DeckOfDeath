@@ -19,7 +19,7 @@ import './exerciseSelection.scss';
 
 interface ExerciseSelectionProps {
     suit: string;
-    showError: boolean
+    showError: boolean,
 }
 
 const ExerciseSelection = ({suit, showError} : ExerciseSelectionProps) => {

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { resetExercises } from '../../reduxSlices/exercisesChosenSlice';
 import { resetOptions } from '../../reduxSlices/workoutOptionsSlice';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useAuth } from '../../auth/AuthContext';
 import { addTheWorkoutCompleted, saveTheCustomWorkout } from '../../api/postRoutes';
@@ -28,8 +28,10 @@ import {
 } from '../../api/patchRoutes';
 import NotesSection from '../../components/NotesSection';
 import ErrorPage from '../ErrorPage';
+import { calculateAge } from '../../utils/utils';
 
 interface FinishedPageProps {
+    coachWorkoutName: string | null,
     totalTimeSpent: string,
     heartRateArray: number[],
     timeSpentEachCard: number[],
@@ -74,12 +76,13 @@ const FinishedPage = () => {
         heartRateArray,
         timeSpentEachCard,
         progressionTimes,
-        workoutFinished
+        workoutFinished,
+        coachWorkoutName
     } : FinishedPageProps = state;
 
     const dispatch = useDispatch();
     const { isLoggedIn } = useAuth();
-    const [workoutName, setWorkoutName] = useState<string>(() => getGenericWorkoutName());
+    const [workoutName, setWorkoutName] = useState<string>(() => coachWorkoutName ? coachWorkoutName : getGenericWorkoutName());
     const [saveWorkoutError, setSaveWorkoutError] = useState<boolean>(false);
     const [savedWorkout, setSavedWorkout] = useState<boolean>(false);
     const [starColor, setStarColor] = useState<string[]>(['lightgray', 'lightgray', 'lightgray', 'lightgray', 'lightgray']);
@@ -91,6 +94,7 @@ const FinishedPage = () => {
     } = useQuery({
         queryKey: ['currentUser'],
         queryFn: getCurrentUser,
+        enabled: isLoggedIn,
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });
@@ -100,13 +104,15 @@ const FinishedPage = () => {
     const timeSpentEachCardMinutes = timeSpentEachCard.map((secondsTotal: number) => secondsTotal / 60);
     const maxHeartRate = getMaxHeartRate(currentUser ? currentUser.age : 30);
     const powerScore = getPowerScore(heartRateArray, maxHeartRate, totalMinSpent);
+    const age = calculateAge(currentUser.age, currentUser.joined_date);
+    console.log(age);
     const caloriesBurned = getCaloriesBurned({
         avgHeartRate,
         totalMinSpent,
         gender: currentUser ? currentUser.gender : 'male',
         weight: currentUser ? currentUser.weight : 150,
         weightUnits: currentUser ? currentUser.weightUnits : 'lbs',
-        age: currentUser ? currentUser.age : 30
+        age: currentUser ? age : 30
     });
     const hrMonitorUsed = heartRateArray.length !== 0;
 
@@ -146,10 +152,6 @@ const FinishedPage = () => {
         }
     });
 
-    useLayoutEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
     useEffect(() => {
         const saveWorkoutToDb = async () => {
             if (isLoggedIn) {
@@ -185,6 +187,8 @@ const FinishedPage = () => {
     } = useQuery({ 
         queryKey: ['proPicUrl'],
         queryFn: getProPicUrl,
+        enabled: isLoggedIn,
+        initialData: '/images/default_pro_pic.png',
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });
@@ -245,7 +249,7 @@ const FinishedPage = () => {
                                     <span className='suitIcon'>&#9830;</span> {workoutCompleted.diamonds_exercise}
                                 </div>
                                 <div>
-                                    <span className='suitIcon'>&#9829;</span> {workoutCompleted.hearts_exercise}{workoutCompleted.hearts_exercise}
+                                    <span className='suitIcon'>&#9829;</span> {workoutCompleted.hearts_exercise}
                                 </div>
                                 <div>
                                     <span className='suitIcon'>&#9824;</span> {workoutCompleted.spades_exercise}
@@ -446,12 +450,11 @@ const FinishedPage = () => {
                     </div>
                 )}
 
-                <div className='homeButton'>
-                    <Button
-                        onClick={returnHome}
-                    >
-                        Back Home
-                    </Button>
+                <div
+                    className='finished-page__information__element homeButton'
+                    onClick={returnHome}
+                >
+                    Back Home
                 </div>
             </div>
 

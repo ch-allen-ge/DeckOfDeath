@@ -9,7 +9,7 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    border: 1px solid cornflowerblue;
+    border-right: 1px solid cornflowerblue;
     background: white;
     height: 100vh;
     padding: 2rem 1rem;
@@ -30,8 +30,9 @@
         font-size: 1rem;
         transition: transform .2s;
         cursor: pointer;
-        border-radius: 1.5rem;
         color: cornflowerblue;
+        padding: .5rem;
+        border-radius: .5rem;
 
         &:hover,
         &:focus {
@@ -48,12 +49,19 @@
     }
 }
 
+.currentTab {
+    background: cornflowerblue;
+    color: white;
+}
+
 @include mobile {
     .navbar {
         flex-direction: row;
         height: 4rem;
         width: 100%;
         padding: 1rem 0.5rem;
+        border-right: none;
+        border-bottom: 1px solid cornflowerblue;
 
         svg {
             font-size: 1rem !important;
@@ -66,7 +74,7 @@
         &__button-container {
             margin: 0;
             display: inline-block;
-            padding: 0;
+            padding: .2rem;
             font-size: 0.8rem;
         }
     }

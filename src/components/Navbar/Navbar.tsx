@@ -11,11 +11,33 @@ import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import '../../mixins.scss';
 import { useAuth } from "../../auth/AuthContext";
+import { useState } from "react";
 
 interface iconButtonProps {
   children: React.ReactNode,
   onClick: () => void,
-  icon: React.ReactNode
+  icon: React.ReactNode,
+  tab?: Tabs
+}
+
+enum Tabs {
+  Profile = "Profile",
+  Saved = "Saved",
+  Coach = "Coach",
+  Register = "Register",
+  Login = "Login"
+}
+
+const getCurrentTab = (location: any) => {
+  if (location.pathname === '/profile') {
+    return Tabs.Profile;
+  } else if (location.pathname === '/saved') {
+    return Tabs.Saved;
+  } else if (location.pathname === '/coach') {
+    return Tabs.Coach;
+  } else {
+    return '';
+  }
 }
 
 const Navbar = () => {
@@ -23,6 +45,7 @@ const Navbar = () => {
     const dispatch = useAppDispatch();
     const location = useLocation();
     const {isLoggedIn, logOut} = useAuth();
+    const [currentTab, setCurrentTab] = useState<String>(getCurrentTab(location));
 
     if (location.pathname === '/workout' || location.pathname === '/finished' || location.pathname === '/register') {
       return null;
@@ -31,12 +54,13 @@ const Navbar = () => {
     const IconButton = ({
       children,
       onClick,
-      icon
+      icon,
+      tab
     }: iconButtonProps) => {
 
       return (
         <div
-          className={'navbar__button-container'}
+          className={`navbar__button-container ${currentTab === tab ? 'currentTab' : ''}`}
           onClick={onClick}
         >
           {icon}
@@ -68,6 +92,7 @@ const Navbar = () => {
               navigate('/login');
             }}
             icon = {<LoginOutlinedIcon /> }
+            tab={Tabs.Login}
           >
             Login
           </IconButton>
@@ -77,6 +102,7 @@ const Navbar = () => {
               navigate('/register');
             }}
             icon = {<CreateOutlinedIcon /> }
+            tab={Tabs.Register}
           >
             Register
           </IconButton>
@@ -89,6 +115,7 @@ const Navbar = () => {
             <div className='navbar__home-button' onClick={() => {
               dispatch(resetExercises());
               dispatch(resetOptions());
+              setCurrentTab('');
               navigate('/');
             }}>
               Deck
@@ -101,8 +128,10 @@ const Navbar = () => {
             <IconButton
               onClick={() => {
                 navigate(`/profile`);
+                setCurrentTab(Tabs.Profile);
               }}
               icon = {<Person2OutlinedIcon />}
+              tab={Tabs.Profile}
             >
               Profile
             </IconButton>
@@ -110,8 +139,10 @@ const Navbar = () => {
             <IconButton
               onClick={() => {
                 navigate(`/savedWorkouts`);
+                setCurrentTab(Tabs.Saved);
               }}
               icon = {<BookmarkBorderOutlinedIcon /> }
+              tab={Tabs.Saved}
             >
               Saved
             </IconButton>
@@ -119,8 +150,10 @@ const Navbar = () => {
             <IconButton
               onClick={() => {
                 navigate('/coach');
+                setCurrentTab(Tabs.Coach);
               }}
               icon = {<DirectionsRunOutlinedIcon />}
+              tab={Tabs.Coach}
             >
               Coach
             </IconButton>

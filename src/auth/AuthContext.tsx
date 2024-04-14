@@ -27,6 +27,7 @@ const AuthProvider = ({ children } : {children : React.ReactNode}) => {
     const { data: isLoggedIn, status: isLoggedInStatus } = useQuery({
         queryKey: ['authenticated'],
         queryFn: authenticate,
+        retry: false,
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });

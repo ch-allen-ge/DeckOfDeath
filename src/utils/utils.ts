@@ -33,6 +33,13 @@ const getDateString = () => {
     return `${monthName} ${day}, ${year} ${hourAmerican}:${minWithZero}${amOrPm}`;
 };
 
+const calculateAge = (age: number, joinedDate: Date) => {
+    const currentYear = new Date().getFullYear();
+    const joinedYear = new Date(joinedDate).getFullYear();
+    const yearDifference = currentYear - joinedYear;
+    return age + yearDifference;
+}
+
 const getMaxHeartRate = (age: number) => {
     return 220 - age;
 }
@@ -133,6 +140,7 @@ const debounce = (func: (args: any) => any, delay: number) => {
 export {
     timeToString,
     getDateString,
+    calculateAge,
     getMaxHeartRate,
     getPowerScore,
     getCaloriesBurned,

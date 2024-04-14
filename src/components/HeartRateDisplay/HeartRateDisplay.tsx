@@ -4,6 +4,7 @@ import { useHeartRateMonitor } from '../../devices/BluetoothContext';
 import { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentUser } from '../../api/getRoutes';
+import { calculateAge } from '../../utils/utils';
 
 interface HeartRateDisplayProps {
     updateHeartRateArray: (heartRateValue: number) => void
@@ -23,7 +24,7 @@ const HeartRateDisplay = ({updateHeartRateArray}: HeartRateDisplayProps) => {
     const { heartRateValue } = useHeartRateMonitor();
     const [heartRateColor, setHeartRateColor] = useState<string>('#2debd4');
     const [pointerLocation, setPointerLocation] = useState<number>(0);
-    const age = currentUser.age;
+    const age = calculateAge(currentUser.age, currentUser.joined_date);
     const maxHeartRate = 208 - (0.7 * age);
     const heartRateBarRef = useRef<HTMLDivElement>(null);
     const isMobile = window.innerWidth < 600;

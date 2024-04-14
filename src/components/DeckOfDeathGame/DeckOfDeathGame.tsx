@@ -5,7 +5,7 @@ import DeterminateCountdown from "../DeterminateCountdown/DeterminateCountdown";
 import CountdownTimer from "../CountdownTimer";
 import MetricsBar from "../MetricsBar/MetricsBar";
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { resetExercises } from "../../reduxSlices/exercisesChosenSlice";
 import { resetOptions } from "../../reduxSlices/workoutOptionsSlice";
@@ -27,15 +27,14 @@ interface TimerProps {
     finished: boolean;
 }
 
-interface AceCardProps {
+interface RegularCardProps {
     text: string;
+}
+
+interface AceCardProps extends RegularCardProps {
     timerUsed: boolean;
     minutes: number;
     seconds: number;
-}
-
-interface RegularCardProps {
-    text: string;
 }
 
 interface Card {
@@ -50,6 +49,14 @@ const DeckOfDeathGame = () => {
     const drawCard = useDeckOfCards();
     const { heartRateMonitor } = useHeartRateMonitor();
     const heartRateArray = useRef<number[]>([]);
+
+    let coachWorkoutName = null;
+
+    const { state } = useLocation();
+
+    if (state) {
+        coachWorkoutName = state.coachWorkoutName
+    };
 
     const exercisesChosen = useAppSelector((state) => state.exercisesChosen);
     const breakoutAces = useAppSelector((state) => state.workoutOptions.breakoutAces);
@@ -199,6 +206,7 @@ const DeckOfDeathGame = () => {
 
         navigate('/finished', {
             state: {
+                coachWorkoutName,
                 totalTimeSpent,
                 heartRateArray: heartRateArray.current,
                 timeSpentEachCard: timeSpentEachCard.current,
@@ -368,7 +376,11 @@ const DeckOfDeathGame = () => {
 
                                             {isMobile ? 
                                                 <div>
-                                                    {!timerStatus.inProgress && <Button variant="contained" onClick={handleWorkoutButtonClicked}>{getInstructions()}</Button>}
+                                                    {!timerStatus.inProgress && (
+                                                        <Button variant="contained" onClick={handleWorkoutButtonClicked}>
+                                                            {getInstructions()}
+                                                        </Button>
+                                                    )}
                                                 </div>
                                                 :
                                                 <div>

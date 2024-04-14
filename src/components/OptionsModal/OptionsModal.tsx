@@ -59,6 +59,7 @@ const OptionsModal = ({modalOpen, handleClose}: OptionsModalProps) => {
                         OFF
                     </div>
                 </div>
+
                 <div className="options-modal__row">
                     <div className='options-modal__row__label'>
                         Easy Deck
@@ -66,7 +67,6 @@ const OptionsModal = ({modalOpen, handleClose}: OptionsModalProps) => {
                     <div className='options-modal__row__content'>
                         COMING SOON
                     </div>
-                    
                 </div>
 
                 {/* @ts-ignore */}

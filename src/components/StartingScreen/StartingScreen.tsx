@@ -60,17 +60,22 @@ const StartingScreen = () => {
         
         <div className='startingscreen__deathrow'>
           {
-            ['clubs', 'diamonds', 'hearts', 'spades'].map((suit) => <ExerciseSelection key={suit} suit={suit} showError={showError}/>)
+            ['clubs', 'diamonds', 'hearts', 'spades'].map((suit) => (
+              <ExerciseSelection
+                key={suit}
+                suit={suit}
+                showError={showError}
+              />
+            ))
           }
-          {
-            (breakoutAces || acesExercise) && <ExerciseSelection suit='aces' showError={showError}/>
+          {(breakoutAces || acesExercise) && <ExerciseSelection suit='aces' showError={showError}/>
           }
         </div>
-        {showError &&
-          <div className="errorRow">
-            *Please fill in all exercises*
-          </div>
-        }
+
+        <div className={`errorRow ${showError ? 'visbile' : 'invisible'}`}>
+          *Please fill in all exercises*
+        </div>
+        
         <div className="startingscreen__buttonrow">
             <Button
               onClick={() => {

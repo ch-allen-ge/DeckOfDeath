@@ -15,7 +15,7 @@ import {
 } from '../../reduxSlices/exercisesChosenSlice';
 import { setBreakoutAces } from '../../reduxSlices/workoutOptionsSlice';
 import TimerIcon from '@mui/icons-material/Timer';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface CoachWorkout {
     name: string,
@@ -38,6 +38,7 @@ const CoachZone = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
+    //coach name is in selectedWorkout.name
     const handleClick = (selectedWorkout : CoachWorkout) => {
         dispatch(setClubsExercise(selectedWorkout.clubs_exercise));
         dispatch(setDiamondsExercise(selectedWorkout.diamonds_exercise));
@@ -48,7 +49,11 @@ const CoachZone = () => {
         dispatch(setAcesTimerUsed(selectedWorkout.timer_used));
         dispatch(setAcesMinutesToDo(selectedWorkout.aces_minutes_to_do));
         dispatch(setAcesSecondsToDo(selectedWorkout.aces_seconds_to_do));
-        navigate('/workout');
+        navigate('/workout', {
+            state: {
+                coachWorkoutName: selectedWorkout.name
+            }
+        });
     }
     
     const getWorkoutContent = (workout: CoachWorkout) => {
@@ -152,10 +157,10 @@ const CoachZone = () => {
     return (
         <div className='coachzone'>
             <div className='coachzone__workout-container'>
-                {workouts.map((workout, index) =>
+                {workouts.map((workout) =>
                     <CoachCard
                         workout={workout}
-                        key={index}
+                        key={workout.name}
                     />
                 )}
             </div>
