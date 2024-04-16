@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 import './loginPageStyles.scss';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Login = () => {
     const [username, setUsername] = useState<string>('');
@@ -10,6 +12,7 @@ const Login = () => {
     const navigate = useNavigate();
     const { isLoggedIn, logIn } = useAuth();
     const formRef = useRef(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     if (isLoggedIn) {
         navigate('/');
@@ -53,11 +56,12 @@ const Login = () => {
                                         setUsername(e.target.value)
                                     }}
                                 />
+                                <label htmlFor="username" className="form__label">Username</label>
                             </div>
 
                             <div className="form__group">
                                 <input
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     className="form__input"
                                     placeholder="Password (min 6 characters)"
                                     id="password"
@@ -68,6 +72,16 @@ const Login = () => {
                                         setPassword(e.target.value);
                                     }} 
                                 />
+
+                                <label htmlFor="username" className="form__label">Password</label>
+
+                                <div className="visibility-icon-login" onClick={() => setShowPassword((prevState) => !prevState)}>
+                                    {showPassword ? (
+                                        <VisibilityOffIcon />
+                                    ) : (
+                                        <VisibilityIcon />
+                                    )}
+                                </div>
                             </div>
                             <div className="submitButton">
                                 <button type='submit'>

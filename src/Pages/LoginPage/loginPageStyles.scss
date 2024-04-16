@@ -81,6 +81,7 @@
     &__group {
         display: flex;
         flex-direction: column;
+        position: relative;
 
         &:not(:last-child) {
             margin-bottom: 1rem;
@@ -179,6 +180,13 @@
     &.invisible {
         visibility: hidden;
     }
+}
+
+.visibility-icon-login {
+    position: absolute;
+    cursor: pointer;
+    right: 10px;
+    top: 15%;
 }
 
 @include landscape_tablet {

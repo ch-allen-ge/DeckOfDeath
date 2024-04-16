@@ -5,6 +5,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import './registerPageStyles.scss'
 import { AxiosError } from "axios";
 import { useAuth } from "../../auth/AuthContext";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -13,6 +15,7 @@ const RegisterPage = () => {
     const { isLoggedIn } = useAuth();
     const [usernameTakenError, setUsernameTakenError] = useState(false);
     const [passwordTooShortError, setPasswordTooShortError] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const registerUser = useMutation({
         mutationFn: async () => {
@@ -70,12 +73,29 @@ const RegisterPage = () => {
                             </div>
 
                             <div className="form__group">
-                                <input type="password" className="form__input" placeholder="Password (min 6 characters)" id="password" name='password' required onChange={() => setPasswordTooShortError(false)}/>
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    className="form__input"
+                                    placeholder="Password (min 6 characters)"
+                                    id="password"
+                                    name='password'
+                                    required
+                                    onChange={() => setPasswordTooShortError(false)}
+                                />
+
                                 {passwordTooShortError ? (
                                     <span className="errorMessage">Minimum 6 characters</span>
                                 ) : (
                                     <label htmlFor="username" className="form__label">Password</label>
                                 )}
+                                
+                                <div className="visibility-icon-register" onClick={() => setShowPassword((prevState) => !prevState)}>
+                                    {showPassword ? (
+                                        <VisibilityOffIcon />
+                                    ) : (
+                                        <VisibilityIcon />
+                                    )}
+                                </div>
                             </div>
 
                             <div className="form__group sharedRow">
