@@ -116,7 +116,7 @@ const SavedWorkoutPage = () => {
                                         <Button
                                             onClick={() => deleteWorkout.mutate(workout.saved_custom_workout_id)}
                                             styles={{
-                                                backgroundColor: 'red'
+                                                color: 'red'
                                             }}
                                         >
                                             Delete

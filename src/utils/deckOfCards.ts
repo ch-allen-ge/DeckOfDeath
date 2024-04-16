@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 interface Card {
     code: string,
     value: string,
@@ -277,14 +279,11 @@ const useDeckOfCards = () => {
         }
     ];
 
-    let suffledDeckOfCards = shuffle(deckOfCards);
+    let shuffledDeckOfCards = shuffle(deckOfCards);
 
-    const drawCard = () => {
-        const drawnIndex = Math.floor(Math.random() * suffledDeckOfCards.length); //random number between 0 and 51 inclusive
-        const cardDrawn = suffledDeckOfCards[drawnIndex];
-        suffledDeckOfCards = [...suffledDeckOfCards.slice(0, drawnIndex), ...suffledDeckOfCards.slice(drawnIndex+1, suffledDeckOfCards.length)];
-        return cardDrawn;
-    }
+    const drawCard = useCallback(() => {
+        return shuffledDeckOfCards.pop();
+    }, []);
 
     return drawCard;
 }

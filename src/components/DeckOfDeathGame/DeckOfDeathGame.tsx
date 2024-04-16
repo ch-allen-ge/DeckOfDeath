@@ -130,20 +130,21 @@ const DeckOfDeathGame = () => {
                     !timerStatusRef.current.finished
                 )
             ) { //space bar
-                setAllowCardDraw(false);
+                //setAllowCardDraw(false);
                 setShowTheWorkoutTimer(false);
                 drawNewCard(false);
-                setTimeout(() => {
-                    setAllowCardDraw(true);
-                }, 1000);
+                // setTimeout(() => {
+                //     setAllowCardDraw(true);
+                // }, 1000);
             }
         };
     
-        document.addEventListener('keydown', handleKeyDown);
+        if (!isMobile) {
+            document.addEventListener('keydown', handleKeyDown);
+        }
 
         drawNewCard(true);
 
-        // cleaning up
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
@@ -161,7 +162,6 @@ const DeckOfDeathGame = () => {
                 timeSpentEachCard.current[suitsArray.indexOf(currentCard.suit)]++;
             }, 1000);
 
-            
             const currentTime = new Date();
             //@ts-ignore
             const timeElapsed = currentTime.getTime() - startTime.current.getTime();
@@ -374,7 +374,7 @@ const DeckOfDeathGame = () => {
                                                 {showWorkoutTimer && !timerStatus.finished && <CountdownTimer timerInfo={currentExerciseRef.current as AceCardProps ?? null} setTimerStatus={setTheTimerStatus}/>}
                                             </div>
 
-                                            {isMobile ? 
+                                            {isMobile ? (
                                                 <div>
                                                     {!timerStatus.inProgress && (
                                                         <Button variant="contained" onClick={handleWorkoutButtonClicked}>
@@ -382,11 +382,11 @@ const DeckOfDeathGame = () => {
                                                         </Button>
                                                     )}
                                                 </div>
-                                                :
+                                            ) : (
                                                 <div>
                                                     {getInstructions()}
                                                 </div>
-                                            }
+                                            )}
                                         </div>
                                     </div>
 

@@ -104,8 +104,8 @@ const FinishedPage = () => {
     const timeSpentEachCardMinutes = timeSpentEachCard.map((secondsTotal: number) => secondsTotal / 60);
     const maxHeartRate = getMaxHeartRate(currentUser ? currentUser.age : 30);
     const powerScore = getPowerScore(heartRateArray, maxHeartRate, totalMinSpent);
-    const age = calculateAge(currentUser.age, currentUser.joined_date);
-    console.log(age);
+    const age = currentUser ? calculateAge(currentUser.age, currentUser.joined_date) : 30;
+
     const caloriesBurned = getCaloriesBurned({
         avgHeartRate,
         totalMinSpent,

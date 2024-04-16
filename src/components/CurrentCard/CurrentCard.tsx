@@ -17,6 +17,8 @@ const getCardValue = (value: string) => {
         return 'Q';
     } else if (value === 'KING') {
         return 'K';
+    } else if (value === 'ACE') {
+        return 'A';
     } else {
         return '';
     }
