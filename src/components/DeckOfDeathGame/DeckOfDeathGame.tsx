@@ -130,12 +130,12 @@ const DeckOfDeathGame = () => {
                     !timerStatusRef.current.finished
                 )
             ) { //space bar
-                //setAllowCardDraw(false);
+                setAllowCardDraw(false);
                 setShowTheWorkoutTimer(false);
                 drawNewCard(false);
-                // setTimeout(() => {
-                //     setAllowCardDraw(true);
-                // }, 1000);
+                setTimeout(() => {
+                    setAllowCardDraw(true);
+                }, 1000);
             }
         };
     
