@@ -106,13 +106,13 @@
             border: 2px solid aliceblue;
             position: absolute;
 
-            &:active {
-                transform: scale(0.98);
-            }
+            // &:active {
+            //     transform: scale(0.98);
+            // }
 
-            &:hover {
-                cursor: pointer;
-            }
+            // &:hover {
+            //     cursor: pointer;
+            // }
         }
 
         &__preview-pic {

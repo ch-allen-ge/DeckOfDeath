@@ -50,39 +50,39 @@ interface CompletedWorkout {
 };
 
 const ProfilePage = () => {
-    const queryClient = useQueryClient();
+    // const queryClient = useQueryClient();
     const { isLoggedIn, isLoggedInStatus } = useAuth();
-    const [file, setFile] = useState<File | null>(null);
-    const [showPopup, setShowPopup] = useState(false);
-    const [newProPicPreview, setNewProPicPreview] = useState<string>('');
+    //const [file, setFile] = useState<File | null>(null);
+    // const [showPopup, setShowPopup] = useState(false);
+    //const [newProPicPreview, setNewProPicPreview] = useState<string>('');
 
-    const setProPic = useMutation({
-        mutationFn: async () => {
-            let params = new FormData();
+    // const setProPic = useMutation({
+    //     mutationFn: async () => {
+    //         let params = new FormData();
 
-            if (file) {
-                params.append('profilePic', file);
-                const response = await uploadAndSaveTheProPic(params);
-                return response.data;
-            };
-        },
-        onSuccess: (newProPicUrl) => {
-            queryClient.setQueryData(["proPicUrl"], newProPicUrl);
-            setNewProPicPreview('');
-            setShowPopup(false);
-        }
-    });
+    //         if (file) {
+    //             params.append('profilePic', file);
+    //             const response = await uploadAndSaveTheProPic(params);
+    //             return response.data;
+    //         };
+    //     },
+    //     onSuccess: (newProPicUrl) => {
+    //         queryClient.setQueryData(["proPicUrl"], newProPicUrl);
+    //         setNewProPicPreview('');
+    //         setShowPopup(false);
+    //     }
+    // });
 
-    const deleteProPic = useMutation({
-        mutationFn: async () => {
-            await deleteTheProPic();
-        },
-        onSuccess: () => {
-            setFile(null);
-            setShowPopup(false);
-            queryClient.setQueryData(["proPicUrl"], '/images/default_pro_pic.png');
-        }
-    });
+    // const deleteProPic = useMutation({
+    //     mutationFn: async () => {
+    //         await deleteTheProPic();
+    //     },
+    //     onSuccess: () => {
+    //         setFile(null);
+    //         setShowPopup(false);
+    //         queryClient.setQueryData(["proPicUrl"], '/images/default_pro_pic.png');
+    //     }
+    // });
 
     if ( !isLoggedIn ) {
         return <LoginRegisterPage />;
@@ -107,15 +107,15 @@ const ProfilePage = () => {
         }
     });
 
-    const {
-        data: proPicUrl,
-        status: proPicUrlStatus
-    } = useQuery({ 
-        queryKey: ['proPicUrl'],
-        queryFn: getProPicUrl,
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-    });
+    // const {
+    //     data: proPicUrl,
+    //     status: proPicUrlStatus
+    // } = useQuery({ 
+    //     queryKey: ['proPicUrl'],
+    //     queryFn: getProPicUrl,
+    //     refetchOnMount: false,
+    //     refetchOnWindowFocus: false,
+    // });
 
     const {
         data: profile,
@@ -137,28 +137,28 @@ const ProfilePage = () => {
         refetchOnWindowFocus: false,
     });
 
-    if (isLoggedInStatus === 'pending' || completedWorkoutsStatus === 'pending' || proPicUrlStatus == 'pending' || profileStatus === 'pending' || currentUserStatus === 'pending') {
+    if (isLoggedInStatus === 'pending' || completedWorkoutsStatus === 'pending' || profileStatus === 'pending' || currentUserStatus === 'pending') {
         return (<CircularProgress />);
     };
 
-    if (completedWorkoutsStatus === 'error' || proPicUrlStatus === 'error' || profileStatus === 'error' || currentUserStatus === 'error') {
+    if (completedWorkoutsStatus === 'error' || profileStatus === 'error' || currentUserStatus === 'error') {
         return <h1>Error Loading Profile</h1>;
     };
   
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            const file = e.target.files[0];
-            setFile(file);
-            const objectUrl = URL.createObjectURL(file);
-            setNewProPicPreview(objectUrl);
-            setShowPopup(false);
-        }
-    };
+    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     if (e.target.files) {
+    //         const file = e.target.files[0];
+    //         setFile(file);
+    //         const objectUrl = URL.createObjectURL(file);
+    //         setNewProPicPreview(objectUrl);
+    //         setShowPopup(false);
+    //     }
+    // };
 
-    const cancelNewProPic = () => {
-        setNewProPicPreview('');
-        setShowPopup(false);
-    };
+    // const cancelNewProPic = () => {
+    //     setNewProPicPreview('');
+    //     setShowPopup(false);
+    // };
 
     return (
         <div className='profile-page'>
@@ -175,8 +175,13 @@ const ProfilePage = () => {
                                 </div>
 
                                 <div className='profile-card__picture-container'>
-                                    <img className='profile-card__picture-container__pic' id='proPic' src={proPicUrl} onClick={() => setShowPopup((prevValue) => !prevValue)}/>
-                                    {newProPicPreview && <img className='profile-card__picture-container__preview-pic' src={newProPicPreview}/>}
+                                    <img
+                                        className='profile-card__picture-container__pic'
+                                        id='proPic'
+                                        src='/images/default_pro_pic.png'
+                                        //onClick={() => setShowPopup((prevValue) => !prevValue)}
+                                    />
+                                    {/* {newProPicPreview && <img className='profile-card__picture-container__preview-pic' src={newProPicPreview}/>}
                                     {showPopup && 
                                         <ClickAwayListener onClickAway={() => setShowPopup(false)}>
                                             <Popper open={showPopup} anchorEl={document.getElementById('proPic')}>
@@ -205,11 +210,11 @@ const ProfilePage = () => {
                                                 </div>
                                             </Popper>
                                         </ClickAwayListener>
-                                    }
+                                    } */}
                                 </div>
                             </div>
 
-                            {newProPicPreview && 
+                            {/* {newProPicPreview && 
                                 <div className='profile-page__content__top-section__profile__edit-options'>
                                     <div>
                                         <Button
@@ -228,7 +233,7 @@ const ProfilePage = () => {
                                         </Button>
                                     </div>
                                 </div>
-                            }
+                            } */}
                         </div>
 
                         <StatsRow totalTimeSpent={profile.total_time_spent} numberWorkoutsCompleted={profile.number_workouts_completed} />

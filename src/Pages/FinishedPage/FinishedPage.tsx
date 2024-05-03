@@ -182,16 +182,16 @@ const FinishedPage = () => {
         navigate('/');
     };
 
-    const {
-        data: proPicUrl
-    } = useQuery({ 
-        queryKey: ['proPicUrl'],
-        queryFn: getProPicUrl,
-        enabled: isLoggedIn,
-        initialData: '/images/default_pro_pic.png',
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-    });
+    // const {
+    //     data: proPicUrl
+    // } = useQuery({ 
+    //     queryKey: ['proPicUrl'],
+    //     queryFn: getProPicUrl,
+    //     enabled: isLoggedIn,
+    //     initialData: '/images/default_pro_pic.png',
+    //     refetchOnMount: false,
+    //     refetchOnWindowFocus: false,
+    // });
 
     const saveWorkout = useMutation({
         mutationFn: async () => {
@@ -214,7 +214,7 @@ const FinishedPage = () => {
                     <div className='finished-page__information__element--section'>
                         <div className='subsection'>
                             <div className='profilePic__container'>
-                                <img className='profilePic' src={proPicUrl}/>
+                                <img className='profilePic' src='/images/default_pro_pic.png'/>
                             </div>
                             
                             <div className='info_block'>
